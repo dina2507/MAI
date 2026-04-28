@@ -117,6 +117,7 @@ export const askGemini = onCall(
     secrets: [GEMINI_API_KEY],
     cors: true,
     maxInstances: 10,
+    memory: "1GiB",
   },
   async (request) => {
     const rawQuestion = request.data?.question;
