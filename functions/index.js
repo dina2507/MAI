@@ -197,6 +197,7 @@ export const askGeminiStream = onRequest(
     secrets: [GEMINI_API_KEY],
     cors: true,
     maxInstances: 10,
+    memory: "1GiB",
   },
   async (req, res) => {
     // Basic CORS
