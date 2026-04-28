@@ -15,7 +15,7 @@ export default function ProgressDots({ history, current, accent, stepIndex, tota
       </div>
       {typeof stepIndex === "number" && totalSteps > 0 && (
         <div className="progress-counter text-caption">
-          {stepIndex + 1} / {totalSteps}
+          Step {stepIndex + 1} of {totalSteps}
         </div>
       )}
     </div>

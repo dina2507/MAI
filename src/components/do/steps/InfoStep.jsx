@@ -1,8 +1,17 @@
+import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 export default function InfoStep({ step, onNext }) {
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Enter") onNext(step.nextStepId);
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [step, onNext]);
+
   return (
     <motion.div
       className="step step-info"

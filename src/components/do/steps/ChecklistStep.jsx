@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -20,6 +20,16 @@ export default function ChecklistStep({ step, onNext, journey, onSaveData }) {
   const requiredItems = step.items.filter((i) => i.required);
   const allRequiredChecked = requiredItems.every((i) => checked[i.id]);
   const checkedCount = Object.values(checked).filter(Boolean).length;
+
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Enter" && (requiredItems.length === 0 || allRequiredChecked)) {
+        onNext(step.continueStepId, { checked });
+      }
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [step, onNext, checked, allRequiredChecked, requiredItems]);
 
   return (
     <motion.div

@@ -45,7 +45,8 @@
 - [x] Enhancement — Journey completion badges (green ✓ icon + "Completed" on selector cards)
 - [x] Enhancement — Inline exit modal (replaced window.confirm with animated design-system modal)
 - [x] Enhancement — WhatsApp/native share on completion
-- [x] Enhancement — Keyboard shortcuts (Escape to close helper or go back)
+- [x] Enhancement — Keyboard shortcuts (Escape, Enter to continue, Number keys for choices)
+- [x] Enhancement — Step-level TTS (Web Speech API "Read aloud" button in topbar)
 
 ## DO Mode Architecture
 ```

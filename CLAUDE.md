@@ -127,7 +127,7 @@ src/
 - [x] ASK Mode — Complete ✅
 - [x] DO Mode — All 11 phases + Enhancement Pass complete ✅
   - Bug fixes: calendar regex, checklist persistence, dead code, home nav
-  - UX: step counter, auto-submit helpers, confetti, completion badges, inline exit modal, share, keyboard shortcuts
+  - UX: Step counter ("Step X of Y"), auto-submit helpers, confetti, completion badges, inline exit modal, share, keyboard shortcuts (Enter/Numbers/Escape), and TTS Read-aloud.
 - [x] LEARN Mode — Complete ✅
   - 6 chapters with real ECI content (5 section types each)
   - Interactive quiz per chapter with reveal animation

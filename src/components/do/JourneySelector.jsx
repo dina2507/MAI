@@ -17,6 +17,10 @@ export default function JourneySelector() {
             <span className="text-caption">MAI — DO</span>
           </Link>
         </div>
+        <Link to="/" className="step-secondary-btn" style={{ padding: '8px 12px', height: 'auto', alignSelf: 'center' }}>
+          <Icons.ChevronLeft size={16} />
+          Back to Home
+        </Link>
       </header>
 
       <main className="do-home-main">

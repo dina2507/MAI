@@ -1,8 +1,21 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 export default function ChoiceStep({ step, onNext }) {
+  useEffect(() => {
+    function handleKey(e) {
+      const num = parseInt(e.key, 10);
+      if (!isNaN(num) && num > 0 && num <= step.choices.length) {
+        const choice = step.choices[num - 1];
+        onNext(choice.nextStepId, { picked: choice.label });
+      }
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [step, onNext]);
+
   return (
     <motion.div
       className="step step-choice"

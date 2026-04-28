@@ -1,10 +1,18 @@
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Calendar, Phone, Copy, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 
 export default function ActionStep({ step, onNext }) {
   const [actionDone, setActionDone] = useState(false);
+
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Enter") onNext(step.continueStepId);
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [step, onNext]);
 
   function handleAction() {
     const a = step.action;
@@ -68,7 +76,7 @@ function addToGoogleCalendar({ title, description, date }) {
   const end = new Date(start.getTime() + 60 * 60 * 1000);
   const fmt = (d) => {
     const iso = d.toISOString();
-    return iso.replace(/-/g, "").replace(/:/g, "").replace(/\.\d{3}/, "");
+    return iso.replace(/[-:]|\.\d{3}/g, "");
   };
   const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent(description || "")}`;
   window.open(url, "_blank", "noopener");

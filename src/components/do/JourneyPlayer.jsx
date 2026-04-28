@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, X, HelpCircle, RotateCcw } from "lucide-react";
+import { ChevronLeft, X, HelpCircle, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useJourney } from "../../hooks/useJourney";
 import { useJourneyProgress, loadProgress, clearProgress } from "../../hooks/useJourneyProgress";
@@ -51,6 +51,7 @@ export default function JourneyPlayer() {
 function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showHelper, setShowHelper }) {
   const [shouldResume, setShouldResume] = useState(null);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const initialState = shouldResume === true ? resumeFrom : {};
   const j = useJourney(journey, initialState);
@@ -61,6 +62,25 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
     data: j.data,
     currentStep: j.currentStep,
   });
+
+  useEffect(() => {
+    window.speechSynthesis?.cancel();
+    setIsSpeaking(false);
+  }, [j.currentStepId]);
+
+  function handleSpeak() {
+    if (!window.speechSynthesis) return;
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    const text = (j.currentStep?.title || "") + ". " + (j.currentStep?.body || j.currentStep?.summary || "").replace(/[^a-zA-Z0-9.,?!\s]/g, "");
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => setIsSpeaking(false);
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  }
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -119,6 +139,9 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
           <ProgressDots history={j.history} current={j.currentStepId} accent={journey.accent} stepIndex={j.stepIndex} totalSteps={j.totalSteps} />
         </div>
         <div className="topbar-right">
+          <button className="topbar-btn" onClick={handleSpeak} aria-label="Read aloud">
+            {isSpeaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
+          </button>
           {!j.isComplete && (
             <button className="topbar-btn" onClick={handleRestart} aria-label="Restart journey">
               <RotateCcw size={18} />
