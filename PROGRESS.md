@@ -5,7 +5,7 @@
 - [x] Day 2 — RAG pipeline (ECI docs → Firestore → grounded Gemini)
 - [x] Day 3 — FSM Journey engine (DO mode — all 6 journeys, all 11 phases)
 - [x] Day 4 — LEARN mode (6 chapters + interactive quiz + EVM/VVPAT simulator)
-- [ ] Day 5 — Voice layer (TTS + STT + Translate) OR Deploy + polish
+- [x] Day 5 — Deploy + TTS Voice Layer + Home Page Redesign + Error Boundary
 - [ ] Day 6 — Maps + Calendar + Auth + Polish
 - [ ] Day 7 — Testing + Firebase deploy + Demo video
 
@@ -126,11 +126,21 @@ src/components/learn/
 | `/learn` | LearnHome | ✅ |
 | `/learn/:chapterId` | ChapterReader | ✅ |
 
+### Day 5 — Deploy + Voice + Polish ✅
+- [x] Production deploy to Firebase Hosting (https://maiapp-494222.web.app)
+- [x] Premium home page redesign — hero badge, stats row, mode cards with descriptions/CTAs
+- [x] TTS on LEARN mode chapters — Listen/Stop button in reader topbar
+- [x] TTS on DO mode steps — Read-aloud button in journey topbar (user-implemented)
+- [x] Keyboard shortcuts in all step types — Enter, number keys, Escape (user-implemented)
+- [x] Error boundary wrapping entire app — friendly recovery UI
+- [x] SEO — OG meta tags, keywords, PWA apple-mobile tags
+- [x] CSP updated — allow generativelanguage.googleapis.com, blob: media
+
 ## Current Blocker
-None. ASK, DO, and LEARN modes are all fully built and tested locally.
+None. All 3 modes fully built, tested, and deployed to production.
 
 ## Next Session Pick Up From
-- **Firebase deploy** — push all three modes live
-- **Voice layer** — TTS on chapter sections (Web Speech API, free)
-- **Home page polish** — make the landing page more impressive for judges
+- **Demo video** — record walkthrough of all 3 modes
 - **Analytics** — fire events for chapter_started, quiz_answered, journey_completed
+- **STT (Speech-to-Text)** — voice input for ASK mode
+- **Translate** — multi-language support via Translate API

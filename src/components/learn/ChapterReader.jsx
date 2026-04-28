@@ -1,7 +1,8 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
-import { ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
+import { ChevronLeft, ChevronRight, BookOpen, Volume2, VolumeX } from "lucide-react";
 import { CHAPTER_MAP, CHAPTERS } from "../../learn/chapters";
 import SectionRenderer from "./SectionRenderer";
 import "../learn/learn.css";
@@ -10,10 +11,47 @@ export default function ChapterReader() {
   const { chapterId } = useParams();
   const navigate = useNavigate();
   const chapter = CHAPTER_MAP[chapterId];
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const currentIndex = CHAPTERS.findIndex((c) => c.id === chapterId);
   const prevChapter = CHAPTERS[currentIndex - 1] || null;
   const nextChapter = CHAPTERS[currentIndex + 1] || null;
+
+  // Stop speech on chapter change
+  useEffect(() => {
+    window.speechSynthesis?.cancel();
+    setIsSpeaking(false);
+  }, [chapterId]);
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => window.speechSynthesis?.cancel();
+  }, []);
+
+  function handleSpeak() {
+    if (!window.speechSynthesis) return;
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    // Gather all prose text from sections
+    const text = chapter.sections
+      .filter((s) => s.type === "prose" || s.type === "callout")
+      .map((s) => {
+        const title = s.title ? s.title + ". " : "";
+        const body = (s.body || "").replace(/[*#_\[\]()>]/g, "").replace(/\n+/g, " ");
+        return title + body;
+      })
+      .join("\n\n");
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.95;
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  }
 
   if (!chapter) {
     return (
@@ -36,9 +74,20 @@ export default function ChapterReader() {
           <ChevronLeft size={16} />
           All chapters
         </Link>
-        <span className="learn-reader-number text-caption">
-          Chapter {chapter.number}
-        </span>
+        <div className="learn-reader-bar-right">
+          <button
+            className="learn-tts-btn"
+            onClick={handleSpeak}
+            aria-label={isSpeaking ? "Stop reading" : "Read aloud"}
+            title={isSpeaking ? "Stop reading" : "Read chapter aloud"}
+          >
+            {isSpeaking ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            <span className="text-caption">{isSpeaking ? "Stop" : "Listen"}</span>
+          </button>
+          <span className="learn-reader-number text-caption">
+            Chapter {chapter.number}
+          </span>
+        </div>
       </header>
 
       {/* Hero */}
@@ -66,7 +115,7 @@ export default function ChapterReader() {
 
       {/* Content */}
       <main className="learn-reader-content">
-        {chapter.sections.map((section, i) => (
+        {chapter.sections.map((section) => (
           <SectionRenderer key={section.id} section={section} />
         ))}
       </main>

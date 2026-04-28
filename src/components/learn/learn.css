@@ -248,6 +248,30 @@
 }
 .learn-reader-back:hover { color: var(--paper-100); text-decoration: none; }
 
+.learn-reader-bar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.learn-tts-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: var(--ink-700);
+  border: 1px solid var(--ink-500);
+  border-radius: 999px;
+  color: var(--ink-300);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  font-family: var(--font-body);
+}
+.learn-tts-btn:hover {
+  color: var(--paper-100);
+  border-color: var(--chapter-accent, var(--saffron-500));
+}
+
 .learn-reader-number {
   color: var(--chapter-accent, var(--saffron-500));
   font-family: var(--font-mono);

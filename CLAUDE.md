@@ -132,5 +132,10 @@ src/
   - 6 chapters with real ECI content (5 section types each)
   - Interactive quiz per chapter with reveal animation
   - EVM/VVPAT Simulator (3-panel state machine, 7s countdown)
-- [ ] Deploy to Firebase + Demo polish — Next
+  - TTS Listen button in chapter reader topbar
+- [x] Day 5 — Deploy + Polish ✅
+  - Production live at https://maiapp-494222.web.app
+  - Premium home page with hero, stats, mode cards
+  - Error boundary, SEO meta tags, CSP hardened
+- [ ] Day 6 — Testing, video, final polish
 → Check PROGRESS.md for detailed status
