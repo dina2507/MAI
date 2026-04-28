@@ -3,17 +3,24 @@ import missingName from "./missing-name.json";
 import movedCities from "./moved-cities.json";
 import migrantWorker from "./migrant-worker.json";
 import electionDay from "./election-day.json";
-import pwdSenior from "./pwd-senior.json";
+import seniorPwd from "./pwd-senior.json";
 
-export const journeys = [
+export const ALL_JOURNEYS = [
   firstTimeVoter,
   missingName,
   movedCities,
   migrantWorker,
   electionDay,
-  pwdSenior
+  seniorPwd,
 ];
 
+export const JOURNEY_MAP = Object.fromEntries(
+  ALL_JOURNEYS.map((j) => [j.id, j])
+);
+
 export function getJourney(id) {
-  return journeys.find(j => j.id === id);
+  return JOURNEY_MAP[id] || null;
 }
+
+// Legacy export for backward compat
+export const journeys = ALL_JOURNEYS;

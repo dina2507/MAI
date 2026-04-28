@@ -1,60 +1,125 @@
 {
   "id": "first-time-voter",
-  "title": "First-Time Voter Registration",
-  "description": "A step-by-step guide to registering as a voter using Form 6.",
-  "estimatedTime": "5 mins",
-  "initialNodeId": "start",
-  "nodes": {
-    "start": {
-      "type": "question",
-      "content": "Are you an Indian citizen who is 18 years of age or older?",
-      "options": [
-        { "label": "Yes", "targetNodeId": "age_proof" },
-        { "label": "No", "targetNodeId": "not_eligible" }
+  "title": "Register as a first-time voter",
+  "subtitle": "If you just turned 18 (or about to)",
+  "icon": "UserPlus",
+  "accent": "#FF6B35",
+  "estimatedTime": "8 min",
+  "startStepId": "intro",
+  "steps": {
+    "intro": {
+      "id": "intro",
+      "type": "info",
+      "eyebrow": "Step 1 — Welcome",
+      "title": "Becoming a voter is your right.",
+      "body": "We'll walk you through how to register, what you need, and what to expect. Takes about 8 minutes.",
+      "nextStepId": "ageCheck"
+    },
+    "ageCheck": {
+      "id": "ageCheck",
+      "type": "choice",
+      "eyebrow": "Step 2 — Eligibility",
+      "title": "Have you turned 18?",
+      "body": "You can register to vote on any of four qualifying dates: January 1, April 1, July 1, or October 1 of the year.",
+      "choices": [
+        {
+          "label": "Yes, I've turned 18",
+          "sublabel": "Or will turn 18 by the next qualifying date",
+          "nextStepId": "documents"
+        },
+        {
+          "label": "Not yet",
+          "sublabel": "I'm under 17",
+          "nextStepId": "tooYoung"
+        }
       ]
     },
-    "not_eligible": {
+    "tooYoung": {
+      "id": "tooYoung",
       "type": "info",
-      "content": "You must be an Indian citizen and at least 18 years old to register to vote.",
-      "isTerminal": true
+      "eyebrow": "Hold on a moment",
+      "title": "You'll be eligible soon.",
+      "body": "Bookmark this journey. Once you turn 17, you can pre-register so your name appears in the roll the moment you turn 18.\n\nIndia introduced 4 qualifying dates per year specifically so young voters don't lose any time.",
+      "nextStepId": "documents"
     },
-    "age_proof": {
-      "type": "question",
-      "content": "Do you have a valid Proof of Age document (e.g., Aadhaar Card, PAN Card, Driving License, 10th Class Certificate)?",
-      "options": [
-        { "label": "Yes, I have one", "targetNodeId": "address_proof" },
-        { "label": "No, I don't", "targetNodeId": "age_proof_alternatives" }
-      ]
+    "documents": {
+      "id": "documents",
+      "type": "checklist",
+      "eyebrow": "Step 3 — Gather your documents",
+      "title": "You'll need three things.",
+      "body": "Don't worry if you don't have them all right now — most are easy to arrange.",
+      "items": [
+        {
+          "id": "age-proof",
+          "label": "Age proof",
+          "hint": "Aadhaar, Birth Certificate, 10th certificate, Passport, or PAN",
+          "required": true
+        },
+        {
+          "id": "address-proof",
+          "label": "Address proof",
+          "hint": "Aadhaar, recent utility bill (last 3 months), bank passbook, or rent agreement",
+          "required": true
+        },
+        {
+          "id": "photo",
+          "label": "Recent passport-size photograph",
+          "hint": "One color photo with white background",
+          "required": true
+        }
+      ],
+      "continueStepId": "applyOnline"
     },
-    "age_proof_alternatives": {
-      "type": "info",
-      "content": "If you don't have the standard documents, you can also provide a birth certificate from a municipal authority or a baptism certificate. Once you have a valid document, proceed to the next step.",
-      "nextNodeId": "address_proof"
-    },
-    "address_proof": {
-      "type": "question",
-      "content": "Do you have a valid Proof of Residence document (e.g., Aadhaar Card, Indian Passport, Electricity/Water/Gas bill, Bank Passbook)?",
-      "options": [
-        { "label": "Yes, I have one", "targetNodeId": "photo_req" },
-        { "label": "No, I don't", "targetNodeId": "address_proof_alternatives" }
-      ]
-    },
-    "address_proof_alternatives": {
-      "type": "info",
-      "content": "If you live with your parents, you can use their proof of address along with a document establishing your relationship with them. Once ready, proceed to the next step.",
-      "nextNodeId": "photo_req"
-    },
-    "photo_req": {
-      "type": "info",
-      "content": "Great. You will also need a recent passport-size photograph (with a light background). Keep a scanned copy ready if applying online.",
-      "nextNodeId": "apply_online"
-    },
-    "apply_online": {
+    "applyOnline": {
+      "id": "applyOnline",
       "type": "action",
-      "content": "You have all the necessary documents. You can now apply online by filling out **Form 6** on the Voter Services Portal.",
-      "actionLabel": "Go to NVSP Portal",
-      "actionUrl": "https://voters.eci.gov.in/",
-      "isTerminal": true
+      "eyebrow": "Step 4 — Submit Form 6",
+      "title": "Apply online — it's free.",
+      "body": "Form 6 is the official application for new voters. The portal is the fastest way. You can also visit your nearest BLO if you prefer offline.",
+      "action": {
+        "type": "link",
+        "label": "Open voters.eci.gov.in",
+        "url": "https://voters.eci.gov.in"
+      },
+      "continueStepId": "afterSubmit"
+    },
+    "afterSubmit": {
+      "id": "afterSubmit",
+      "type": "info",
+      "eyebrow": "Step 5 — What happens next",
+      "title": "Your application begins a verification.",
+      "body": "**A Booth Level Officer (BLO) will visit your home** to verify your address. This usually happens within 2–4 weeks.\n\nKeep your documents ready. The BLO will confirm your details and approve your inclusion in the electoral roll.",
+      "nextStepId": "trackStatus"
+    },
+    "trackStatus": {
+      "id": "trackStatus",
+      "type": "action",
+      "eyebrow": "Step 6 — Track your status",
+      "title": "You can check your application anytime.",
+      "body": "Use your reference number on the same portal to see if your form is verified, accepted, or needs corrections.",
+      "action": {
+        "type": "link",
+        "label": "Track on voters.eci.gov.in",
+        "url": "https://voters.eci.gov.in/Account/LoginActivity.aspx"
+      },
+      "continueStepId": "complete"
+    },
+    "complete": {
+      "id": "complete",
+      "type": "completion",
+      "title": "You're on your way to becoming a voter.",
+      "summary": "Once approved, you'll receive your EPIC (Voter ID card). You can then check your name at electoralsearch.eci.gov.in and find your polling booth.",
+      "nextActions": [
+        {
+          "label": "Find my polling booth",
+          "type": "journey",
+          "target": "election-day"
+        },
+        {
+          "label": "Back to all journeys",
+          "type": "close"
+        }
+      ]
     }
   }
 }

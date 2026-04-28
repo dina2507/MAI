@@ -1,55 +1,144 @@
 {
   "id": "missing-name",
-  "title": "Name Missing From Voter List",
-  "description": "Diagnostic steps and remedies if your name is not on the electoral roll.",
-  "estimatedTime": "3 mins",
-  "initialNodeId": "start",
-  "nodes": {
-    "start": {
-      "type": "question",
-      "content": "Have you previously registered to vote and had an EPIC (Voter ID) card?",
-      "options": [
-        { "label": "Yes", "targetNodeId": "have_epic" },
-        { "label": "No, I never registered", "targetNodeId": "never_registered" }
-      ]
-    },
-    "never_registered": {
+  "title": "My name is missing from the voter list",
+  "subtitle": "Diagnose what happened and fix it",
+  "icon": "SearchX",
+  "accent": "#F59E0B",
+  "estimatedTime": "10 min",
+  "startStepId": "intro",
+  "steps": {
+    "intro": {
+      "id": "intro",
       "type": "info",
-      "content": "If you have never registered, your name will not be on the list. You need to register as a first-time voter using Form 6.",
-      "isTerminal": true
+      "eyebrow": "Don't panic",
+      "title": "This is more common than you think.",
+      "body": "Names go missing for many reasons — and most are fixable. Let's figure out what happened to yours and what to do.",
+      "nextStepId": "verify"
     },
-    "have_epic": {
-      "type": "question",
-      "content": "Did you search the electoral roll using your EPIC number exactly as it appears on your card?",
-      "options": [
-        { "label": "Yes, still missing", "targetNodeId": "search_details" },
-        { "label": "No, I haven't", "targetNodeId": "search_epic" }
-      ]
-    },
-    "search_epic": {
+    "verify": {
+      "id": "verify",
       "type": "action",
-      "content": "Please search the Electoral Search portal using your EPIC number. Sometimes names are misspelled, but searching by EPIC number is the most reliable method.",
-      "actionLabel": "Search by EPIC",
-      "actionUrl": "https://electoralsearch.eci.gov.in/",
-      "isTerminal": true
+      "eyebrow": "Step 1 — Verify it's actually missing",
+      "title": "Try every search method first.",
+      "body": "Sometimes the name is there but searched wrong — wrong spelling, wrong constituency, or your EPIC works but not your name.",
+      "action": {
+        "type": "link",
+        "label": "Open Electoral Search",
+        "url": "https://electoralsearch.eci.gov.in"
+      },
+      "continueStepId": "verifyResult"
     },
-    "search_details": {
-      "type": "question",
-      "content": "Have you moved to a new assembly constituency since you last voted?",
-      "options": [
-        { "label": "Yes", "targetNodeId": "moved" },
-        { "label": "No", "targetNodeId": "not_moved" }
+    "verifyResult": {
+      "id": "verifyResult",
+      "type": "choice",
+      "eyebrow": "Step 2 — What did you find?",
+      "title": "After searching, what's the situation?",
+      "choices": [
+        {
+          "label": "I found my name (problem solved)",
+          "sublabel": "It just took some digging",
+          "nextStepId": "foundIt"
+        },
+        {
+          "label": "Definitely not there",
+          "sublabel": "I tried EPIC, name, and address",
+          "nextStepId": "diagnose"
+        }
       ]
+    },
+    "foundIt": {
+      "id": "foundIt",
+      "type": "completion",
+      "title": "Great — you're registered.",
+      "summary": "Save your booth details and EPIC number. We recommend setting an election day reminder so you don't forget on the day.",
+      "nextActions": [
+        {
+          "label": "Set election day reminder",
+          "type": "journey",
+          "target": "election-day"
+        },
+        {
+          "label": "Back to all journeys",
+          "type": "close"
+        }
+      ]
+    },
+    "diagnose": {
+      "id": "diagnose",
+      "type": "choice",
+      "eyebrow": "Step 3 — Why might it be missing?",
+      "title": "Pick what most likely applies to you.",
+      "choices": [
+        {
+          "label": "I never registered",
+          "sublabel": "Or I'm not sure if I did",
+          "nextStepId": "neverRegistered"
+        },
+        {
+          "label": "I moved recently",
+          "sublabel": "Different city or constituency",
+          "nextStepId": "moved"
+        },
+        {
+          "label": "I was registered before but it's gone",
+          "sublabel": "Possibly removed in Summary Revision",
+          "nextStepId": "deleted"
+        }
+      ]
+    },
+    "neverRegistered": {
+      "id": "neverRegistered",
+      "type": "info",
+      "eyebrow": "Path A — Fresh registration",
+      "title": "You'll need to file Form 6.",
+      "body": "Form 6 is for new voters. It's the same form first-time voters use. Takes about 8 minutes to complete online.",
+      "nextStepId": "form6Action"
     },
     "moved": {
+      "id": "moved",
       "type": "info",
-      "content": "If you moved to a different constituency, your name might have been deleted from the old list. You must submit **Form 8** to shift your residence and get your name added to your new constituency's list.",
-      "isTerminal": true
+      "eyebrow": "Path B — Transfer needed",
+      "title": "You need to register in your new constituency.",
+      "body": "If you moved to a different assembly constituency, you must file Form 6 at your new address. Your old registration will be deleted automatically once the new one is approved.\n\nIf you only moved within the same constituency, file Form 8 instead (correction).",
+      "nextStepId": "form6Action"
     },
-    "not_moved": {
+    "deleted": {
+      "id": "deleted",
       "type": "info",
-      "content": "If you haven't moved and your name was deleted without notice, it might be an error or due to non-verification. You should contact your Electoral Registration Officer (ERO) or submit **Form 6** to re-register.",
-      "isTerminal": true
+      "eyebrow": "Path C — Possible deletion",
+      "title": "Your name was likely removed during a roll revision.",
+      "body": "This happens during Special Summary Revision drives if a BLO couldn't verify your address. The fix is to file Form 6 again with current address proof.\n\nAlso talk to your **BLO directly** — they can investigate why you were marked for deletion.",
+      "nextStepId": "form6Action"
+    },
+    "form6Action": {
+      "id": "form6Action",
+      "type": "action",
+      "eyebrow": "Take action",
+      "title": "File Form 6 now.",
+      "body": "Make sure you have:\n- Aadhaar or other age proof\n- Recent address proof\n- Passport-size photograph",
+      "action": {
+        "type": "link",
+        "label": "Apply on voters.eci.gov.in",
+        "url": "https://voters.eci.gov.in/Account/RegistrationOnline.aspx"
+      },
+      "continueStepId": "afterAction"
+    },
+    "afterAction": {
+      "id": "afterAction",
+      "type": "completion",
+      "title": "Submitted. Now follow up.",
+      "summary": "Track your application status weekly. Contact your BLO via the Voter Helpline app if you don't see progress in 2 weeks. Election deadlines are strict — typically 30 days before polling day.",
+      "nextActions": [
+        {
+          "label": "Call Voter Helpline 1950",
+          "type": "link",
+          "target": "tel:1950"
+        },
+        {
+          "label": "Back to all journeys",
+          "type": "close"
+        }
+      ]
     }
   }
 }

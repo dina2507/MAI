@@ -91,4 +91,5 @@ src/
 10. RAG answers must cite which ECI document they came from
 
 ## Current Phase
-→ Check PROGRESS.md for live status
+- [x] Phase 1 (DO Mode) — Complete Build Done
+→ Check PROGRESS.md for next steps (LEARN Mode)

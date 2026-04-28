@@ -1,55 +1,114 @@
 {
   "id": "election-day",
-  "title": "Election Day Companion",
-  "description": "Your step-by-step guide on what to do on voting day.",
-  "estimatedTime": "5 mins",
-  "initialNodeId": "start",
-  "nodes": {
-    "start": {
-      "type": "question",
-      "content": "Do you know where your polling booth is located?",
-      "options": [
-        { "label": "Yes", "targetNodeId": "documents" },
-        { "label": "No", "targetNodeId": "find_booth" }
-      ]
+  "title": "It's election day — guide me through it",
+  "subtitle": "Step-by-step walkthrough of voting day",
+  "icon": "Vote",
+  "accent": "#FF6B35",
+  "estimatedTime": "10 min",
+  "startStepId": "intro",
+  "steps": {
+    "intro": {
+      "id": "intro",
+      "type": "info",
+      "eyebrow": "Welcome",
+      "title": "Let's make sure today goes smoothly.",
+      "body": "We'll cover what to carry, what to expect at the booth, how the EVM works, and what to do if something goes wrong. About 10 minutes.",
+      "nextStepId": "checkName"
     },
-    "find_booth": {
+    "checkName": {
+      "id": "checkName",
       "type": "action",
-      "content": "You can find your exact polling booth and part number by searching your EPIC on the Electoral Search portal or the Voter Helpline App.",
-      "actionLabel": "Find Polling Booth",
-      "actionUrl": "https://electoralsearch.eci.gov.in/",
-      "isTerminal": false,
-      "options": [
-        { "label": "I have found it. What's next?", "targetNodeId": "documents" }
-      ]
+      "eyebrow": "Step 1 — Confirm your name",
+      "title": "Quick check — is your name on the roll?",
+      "body": "Even if you've voted before, do this 5-second check now. Better to know in advance than at the booth.",
+      "action": { "type": "link", "label": "Check on Electoral Search", "url": "https://electoralsearch.eci.gov.in" },
+      "continueStepId": "checkBooth"
+    },
+    "checkBooth": {
+      "id": "checkBooth",
+      "type": "info",
+      "eyebrow": "Step 2 — Find your exact booth",
+      "title": "You can only vote at one specific booth.",
+      "body": "Your polling station is shown on the same Electoral Search page. Note the **booth name and address** — Google Maps it now.\n\nIf you're at the wrong booth, you cannot vote. They will not redirect you.",
+      "nextStepId": "documents"
     },
     "documents": {
-      "type": "question",
-      "content": "Do you have your EPIC (Voter ID) card with you?",
-      "options": [
-        { "label": "Yes", "targetNodeId": "booth_process" },
-        { "label": "No", "targetNodeId": "alt_documents" }
+      "id": "documents",
+      "type": "checklist",
+      "eyebrow": "Step 3 — What to carry",
+      "title": "Tick what you have.",
+      "body": "You need only ONE of these — EPIC is preferred but any work:",
+      "items": [
+        { "id": "epic", "label": "EPIC (Voter ID card)" },
+        { "id": "aadhaar", "label": "Aadhaar Card" },
+        { "id": "passport", "label": "Indian Passport" },
+        { "id": "dl", "label": "Driving Licence" },
+        { "id": "pan", "label": "PAN Card" },
+        { "id": "bank", "label": "Bank/Post Office passbook with photo" },
+        { "id": "pension", "label": "Pension Document with photo" },
+        { "id": "mgnrega", "label": "MNREGS Job Card" }
+      ],
+      "continueStepId": "leaveBehind"
+    },
+    "leaveBehind": {
+      "id": "leaveBehind",
+      "type": "info",
+      "eyebrow": "Step 4 — Leave at home",
+      "title": "Don't bring these into the booth.",
+      "body": "**Mobile phones are not allowed inside the polling booth.** You'll need to switch off and submit it at the entrance, or leave it home.\n\nAlso leave behind: campaign material, anything with party symbols, and any food/drink.",
+      "nextStepId": "atBooth"
+    },
+    "atBooth": {
+      "id": "atBooth",
+      "type": "info",
+      "eyebrow": "Step 5 — At the booth",
+      "title": "Here's exactly what happens.",
+      "body": "**1.** Stand in queue. Senior citizens and PwD voters get priority — wave them ahead.\n\n**2.** First polling officer checks your name on the roll and your photo ID.\n\n**3.** Second officer marks indelible ink on your **left index finger**.\n\n**4.** Third officer hands you a slip and points you to the EVM compartment.\n\n**5.** You vote. We'll cover that next.",
+      "nextStepId": "evmStep"
+    },
+    "evmStep": {
+      "id": "evmStep",
+      "type": "info",
+      "eyebrow": "Step 6 — Using the EVM",
+      "title": "The EVM is just two buttons.",
+      "body": "**1.** Find your candidate's name and symbol on the Ballot Unit.\n\n**2.** Press the blue button next to them. **One press, one vote.**\n\n**3.** A red light glows next to your choice. A beep confirms.\n\n**4.** Look at the VVPAT machine on the side — a paper slip prints showing your candidate's name and symbol. It's visible for 7 seconds.\n\n**5.** That slip drops automatically into a sealed box. You don't take it.\n\nYou cannot vote again. The machine locks for you.",
+      "nextStepId": "vvpatTip"
+    },
+    "vvpatTip": {
+      "id": "vvpatTip",
+      "type": "info",
+      "eyebrow": "Step 7 — Pro tip",
+      "title": "Verify your VVPAT slip carefully.",
+      "body": "The 7-second VVPAT window is your only verification that the machine recorded your vote correctly.\n\nIf the printed slip doesn't match the candidate you chose, **call the Presiding Officer immediately**. They can take action including challenging the EVM.",
+      "nextStepId": "problem"
+    },
+    "problem": {
+      "id": "problem",
+      "type": "choice",
+      "eyebrow": "Step 8 — If something goes wrong",
+      "title": "What if there's an issue?",
+      "choices": [
+        { "label": "My name's not on the roll", "sublabel": "I checked and was told it's not there", "nextStepId": "nameMissing" },
+        { "label": "Nothing's wrong — I'm ready", "sublabel": "Continue", "nextStepId": "complete" }
       ]
     },
-    "alt_documents": {
+    "nameMissing": {
+      "id": "nameMissing",
       "type": "info",
-      "content": "If you don't have your EPIC card, you can still vote if your name is on the electoral roll. You must bring one of the 12 alternative approved photo ID documents (e.g., Aadhaar, PAN Card, Passport, Driving License).",
-      "nextNodeId": "booth_process"
+      "eyebrow": "Emergency steps",
+      "title": "If your name's missing on election day:",
+      "body": "**1.** Ask the polling officer to search alternate spellings of your name.\n\n**2.** Ask to see the marked copy of the electoral roll yourself.\n\n**3.** Request to file a **Tendered Vote** — you can vote, but it's kept separate.\n\n**4.** File a written complaint with the Sector Officer or Returning Officer that day.\n\n**5.** Call **1950** while at the booth.",
+      "nextStepId": "complete"
     },
-    "booth_process": {
-      "type": "info",
-      "content": "At the booth:\n\n1. **Polling Officer 1** will check your name on the voter list and your ID proof.\n2. **Polling Officer 2** will ink your finger, give you a slip, and take your signature.\n3. **Polling Officer 3** takes the slip and allows you to proceed to the voting compartment.",
-      "nextNodeId": "evm"
-    },
-    "evm": {
-      "type": "info",
-      "content": "In the voting compartment:\n\n1. Press the blue button on the **EVM** (Electronic Voting Machine) next to the candidate/symbol of your choice.\n2. You will hear a loud beep sound.",
-      "nextNodeId": "vvpat"
-    },
-    "vvpat": {
-      "type": "info",
-      "content": "Verify your vote:\n\n1. Look at the **VVPAT** machine next to the EVM.\n2. A printed slip will be visible behind the glass for 7 seconds, showing the serial number, name, and symbol of the candidate you voted for.\n3. It will then cut and drop into the sealed box.\n\nYour vote is cast successfully!",
-      "isTerminal": true
+    "complete": {
+      "id": "complete",
+      "type": "completion",
+      "title": "You're ready. Go vote.",
+      "summary": "Your finger gets inked. Your VVPAT slip drops. Democracy advances by exactly one vote — yours.\n\nThank you for showing up today.",
+      "nextActions": [
+        { "label": "Call Voter Helpline 1950", "type": "link", "target": "tel:1950" },
+        { "label": "Back to all journeys", "type": "close" }
+      ]
     }
   }
 }

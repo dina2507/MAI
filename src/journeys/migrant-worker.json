@@ -1,42 +1,82 @@
 {
   "id": "migrant-worker",
-  "title": "Migrant Worker Rights",
-  "description": "Understand your voting rights and address proof requirements as a migrant worker.",
-  "estimatedTime": "3 mins",
-  "initialNodeId": "start",
-  "nodes": {
-    "start": {
-      "type": "question",
-      "content": "Where do you want to vote?",
-      "options": [
-        { "label": "At my native village/hometown", "targetNodeId": "native" },
-        { "label": "At my current place of work", "targetNodeId": "current" }
-      ]
-    },
-    "native": {
+  "title": "I work in a different state from where I'm registered",
+  "subtitle": "Understanding your voting rights as a migrant",
+  "icon": "Briefcase",
+  "accent": "#15803D",
+  "estimatedTime": "6 min",
+  "startStepId": "intro",
+  "steps": {
+    "intro": {
+      "id": "intro",
       "type": "info",
-      "content": "You can remain registered at your native place if you retain your ordinary residence there and visit regularly. However, you must travel there on election day to cast your vote. There is currently no remote voting facility for domestic migrants.",
-      "isTerminal": true
+      "eyebrow": "For India's 450 million migrant workers",
+      "title": "You have voting rights. Let's understand them.",
+      "body": "Right now, India doesn't yet have a remote voting system that works for migrants. But you do have options. Let's walk through them.",
+      "nextStepId": "options"
     },
-    "current": {
-      "type": "question",
-      "content": "To vote at your current work location, you need to register there using Form 6 (or Form 8 if already registered elsewhere). Do you have a proof of residence for your current address (like a rental agreement, electricity bill, or bank passbook)?",
-      "options": [
-        { "label": "Yes", "targetNodeId": "have_proof" },
-        { "label": "No", "targetNodeId": "no_proof" }
+    "options": {
+      "id": "options",
+      "type": "choice",
+      "eyebrow": "Step 1 — What works for you?",
+      "title": "Which option fits your situation?",
+      "choices": [
+        { "label": "I want to keep voting in my home village/town", "sublabel": "I'll travel back when there's an election", "nextStepId": "stayHome" },
+        { "label": "I want to register where I work now", "sublabel": "I've been here a while and don't plan to return", "nextStepId": "registerHere" },
+        { "label": "I'm not sure — show me both", "sublabel": "Help me decide", "nextStepId": "compare" }
       ]
     },
-    "have_proof": {
+    "compare": {
+      "id": "compare",
+      "type": "info",
+      "eyebrow": "Step 2 — Compare options",
+      "title": "Both have trade-offs.",
+      "body": "**Voting at home:**\n- Keep your existing registration\n- Need to physically travel for elections\n- Better if you eventually plan to return\n\n**Registering here:**\n- File a fresh Form 6 at current address\n- Old registration auto-deleted\n- Better if you're settled\n\nThere's no remote postal ballot for migrants currently.\nThe ECI is piloting Remote Voting Machines (RVMs) but they're not deployed yet.",
+      "nextStepId": "options"
+    },
+    "stayHome": {
+      "id": "stayHome",
+      "type": "info",
+      "eyebrow": "Path A — Home voting",
+      "title": "You're already registered. Plan ahead.",
+      "body": "Track your home constituency's election schedule. Many states announce 5–8 weeks ahead. Plan travel and request leave from your employer.",
+      "nextStepId": "calendar"
+    },
+    "registerHere": {
+      "id": "registerHere",
+      "type": "info",
+      "eyebrow": "Path B — Register at current address",
+      "title": "You'll file Form 6 at your current address.",
+      "body": "Address proof options for migrants:\n- Aadhaar with current address\n- Rent agreement (formal or informal)\n- Letter from employer\n- Bank passbook with current address\n- Utility bill in your name",
+      "nextStepId": "registerAction"
+    },
+    "registerAction": {
+      "id": "registerAction",
       "type": "action",
-      "content": "Great. You can use your rental agreement or other accepted documents to apply for registration at your new address.",
-      "actionLabel": "Apply on NVSP",
-      "actionUrl": "https://voters.eci.gov.in/",
-      "isTerminal": true
+      "eyebrow": "Action",
+      "title": "File Form 6 here.",
+      "action": { "type": "link", "label": "Open voters.eci.gov.in", "url": "https://voters.eci.gov.in" },
+      "continueStepId": "complete"
     },
-    "no_proof": {
-      "type": "info",
-      "content": "If you don't have standard proofs, a registered rent agreement or a letter from your employer (in some cases, subject to ERO approval) can help. A post office passbook delivered to your address is also an easy way to get a valid address proof.",
-      "isTerminal": true
+    "calendar": {
+      "id": "calendar",
+      "type": "action",
+      "eyebrow": "Step 3 — Plan ahead",
+      "title": "Add an election watch reminder.",
+      "body": "Set a recurring reminder to check your home constituency's election schedule every 6 months.",
+      "action": {
+        "type": "calendar",
+        "label": "Add 6-month reminder to calendar",
+        "calendar": { "title": "Check home election schedule (MAI reminder)", "description": "Visit eci.gov.in to check upcoming elections in your home constituency" }
+      },
+      "continueStepId": "complete"
+    },
+    "complete": {
+      "id": "complete",
+      "type": "completion",
+      "title": "You're set up to vote.",
+      "summary": "Migrant voter rights are improving. Watch the news for Remote Voting Machine pilots from ECI — when launched, they'll let you vote without travel.",
+      "nextActions": [{ "label": "Back to all journeys", "type": "close" }]
     }
   }
 }

@@ -1,51 +1,74 @@
 {
-  "id": "pwd-senior",
-  "title": "PwD / Senior Citizen Guide",
-  "description": "Information on Home Voting, Saksham app, and special polling station facilities.",
-  "estimatedTime": "3 mins",
-  "initialNodeId": "start",
-  "nodes": {
-    "start": {
-      "type": "question",
-      "content": "Are you checking for yourself or someone else who is an 85+ senior citizen or a Person with Disability (PwD)?",
-      "options": [
-        { "label": "For an 85+ Senior Citizen", "targetNodeId": "home_voting" },
-        { "label": "For a Person with Disability (PwD)", "targetNodeId": "pwd_options" },
-        { "label": "I just want to know about booth facilities", "targetNodeId": "booth_facilities" }
-      ]
-    },
-    "home_voting": {
+  "id": "senior-pwd",
+  "title": "I'm a senior citizen or have a disability",
+  "subtitle": "Special facilities and home voting options",
+  "icon": "HeartHandshake",
+  "accent": "#7C3AED",
+  "estimatedTime": "7 min",
+  "startStepId": "intro",
+  "steps": {
+    "intro": {
+      "id": "intro",
       "type": "info",
-      "content": "Senior citizens above 85 years of age are eligible for the Home Voting facility. You need to fill out **Form 12D** within 5 days of the election notification.",
-      "nextNodeId": "booth_facilities"
+      "eyebrow": "We've got you",
+      "title": "ECI provides several facilities for you.",
+      "body": "Whether you'd prefer to vote at home, at the booth with assistance, or anywhere in between — there's a process for it.",
+      "nextStepId": "category"
     },
-    "pwd_options": {
-      "type": "question",
-      "content": "Are you marked as a PwD voter in the electoral roll?",
-      "options": [
-        { "label": "Yes", "targetNodeId": "pwd_marked" },
-        { "label": "No", "targetNodeId": "pwd_unmarked" }
+    "category": {
+      "id": "category",
+      "type": "choice",
+      "eyebrow": "Step 1 — Which applies to you?",
+      "title": "Pick the category that fits.",
+      "choices": [
+        { "label": "Senior citizen, 85 years or older", "sublabel": "Eligible for home voting", "nextStepId": "homeVote" },
+        { "label": "Person with 40%+ disability", "sublabel": "Eligible for home voting & priority access", "nextStepId": "homeVote" },
+        { "label": "Senior under 85, or PwD with under 40%", "sublabel": "Booth voting with priority access", "nextStepId": "boothPriority" }
       ]
     },
-    "pwd_unmarked": {
+    "homeVote": {
+      "id": "homeVote",
+      "type": "info",
+      "eyebrow": "Home Voting (Doorstep Ballot)",
+      "title": "A polling team will come to you.",
+      "body": "On a designated day before the main election, a polling team visits eligible voters' homes with a ballot. You vote in privacy. The sealed ballot is collected and counted on counting day.\n\nThe key is to **apply early** — usually within the first few days after election notification.",
+      "nextStepId": "applyHomeVote"
+    },
+    "applyHomeVote": {
+      "id": "applyHomeVote",
       "type": "action",
-      "content": "You can register yourself as a PwD voter using the Saksham ECI App or the Voter Services Portal. This ensures special facilities are arranged for you.",
-      "actionLabel": "Download Saksham App",
-      "actionUrl": "https://play.google.com/store/apps/details?id=pwd.eci.com.pwdapp",
-      "isTerminal": false,
-      "options": [
-        { "label": "What are my voting options?", "targetNodeId": "pwd_marked" }
+      "eyebrow": "Step 2 — Apply for home voting",
+      "title": "File Form 12D with your ERO.",
+      "body": "Download Form 12D from the ECI portal. Submit it to your Electoral Registration Officer (ERO) within the deadline. PwD applicants attach their disability certificate.",
+      "action": { "type": "link", "label": "Find your ERO contact", "url": "https://voters.eci.gov.in" },
+      "continueStepId": "saksham"
+    },
+    "boothPriority": {
+      "id": "boothPriority",
+      "type": "info",
+      "eyebrow": "Booth voting with priority",
+      "title": "You don't have to stand in line.",
+      "body": "All polling booths must:\n- Have **wheelchair access ramps**\n- Allow **priority entry** for senior and PwD voters (skip the queue)\n- Permit a **companion** (18+) inside the voting compartment\n- Provide **Braille** ballot for visually impaired voters\n\nYou can also request transport via the Saksham app.",
+      "nextStepId": "saksham"
+    },
+    "saksham": {
+      "id": "saksham",
+      "type": "action",
+      "eyebrow": "Step 3 — Saksham App",
+      "title": "Get personalized assistance.",
+      "body": "ECI's **Saksham app** is built for senior and PwD voters. Use it to:\n- Request transport to your booth\n- Request a wheelchair on-site\n- Apply for home voting\n- Find the most accessible booth near you",
+      "action": { "type": "link", "label": "Search 'Saksham ECI' on Play Store", "url": "https://play.google.com/store/search?q=saksham%20eci" },
+      "continueStepId": "complete"
+    },
+    "complete": {
+      "id": "complete",
+      "type": "completion",
+      "title": "Your vote, your way.",
+      "summary": "Whether at home or at the booth, you're entitled to a smooth voting experience. Don't hesitate to ask the Presiding Officer for assistance — it's their job.",
+      "nextActions": [
+        { "label": "Election day walkthrough", "type": "journey", "target": "election-day" },
+        { "label": "Back to all journeys", "type": "close" }
       ]
-    },
-    "pwd_marked": {
-      "type": "info",
-      "content": "As a registered PwD voter with a 40% benchmark disability, you are eligible for the Home Voting facility. Submit **Form 12D** within 5 days of notification. Alternatively, you can use special facilities at the polling booth.",
-      "nextNodeId": "booth_facilities"
-    },
-    "booth_facilities": {
-      "type": "info",
-      "content": "If visiting the polling station, these facilities are available:\n\n- Assured Minimum Facilities (AMF) including ramps and drinking water.\n- Wheelchairs on request.\n- Priority voting (no need to stand in line).\n- Free transport facility (can be booked via Saksham App).\n- Braille on EVMs and Braille voter slips for visually impaired voters.",
-      "isTerminal": true
     }
   }
 }
