@@ -12,7 +12,7 @@ const STEP_COMPONENTS = {
   completion: CompletionStep,
 };
 
-export default function StepRenderer({ step, journey, onNext, onComplete }) {
+export default function StepRenderer({ step, journey, onNext, onComplete, onSaveData }) {
   const Component = STEP_COMPONENTS[step.type];
   if (!Component) {
     return <div>Unknown step type: {step.type}</div>;
@@ -23,6 +23,7 @@ export default function StepRenderer({ step, journey, onNext, onComplete }) {
       journey={journey}
       onNext={onNext}
       onComplete={onComplete}
+      onSaveData={onSaveData}
     />
   );
 }

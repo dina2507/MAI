@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 const STORAGE_PREFIX = "mai-journey-";
+const COMPLETED_KEY = "mai-journeys-completed";
 
 export function saveProgress(journeyId, state) {
   try {
@@ -41,13 +42,40 @@ export function clearProgress(journeyId) {
 }
 
 /**
+ * Mark a journey as completed — tracked separately from in-progress state.
+ */
+export function markComplete(journeyId) {
+  try {
+    const raw = localStorage.getItem(COMPLETED_KEY);
+    const completed = raw ? JSON.parse(raw) : {};
+    completed[journeyId] = Date.now();
+    localStorage.setItem(COMPLETED_KEY, JSON.stringify(completed));
+    clearProgress(journeyId);
+  } catch (e) {}
+}
+
+/**
+ * Check if a journey has been completed at any point.
+ */
+export function isJourneyComplete(journeyId) {
+  try {
+    const raw = localStorage.getItem(COMPLETED_KEY);
+    if (!raw) return false;
+    const completed = JSON.parse(raw);
+    return !!completed[journeyId];
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
  * useJourneyProgress — auto-saves journey state on change
  */
 export function useJourneyProgress(journeyId, state) {
   useEffect(() => {
     if (!journeyId) return;
     if (state.currentStep?.type === "completion") {
-      // Don't persist completed journeys
+      // Don't persist completed journeys — markComplete handles it
       clearProgress(journeyId);
       return;
     }

@@ -3,11 +3,18 @@ import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
-export default function ChecklistStep({ step, onNext }) {
-  const [checked, setChecked] = useState({});
+export default function ChecklistStep({ step, onNext, journey, onSaveData }) {
+  // Restore checked state from journey data if navigating back
+  const savedData = journey?._stepData?.[step.id];
+  const [checked, setChecked] = useState(savedData?.checked || {});
 
   const toggle = (id) => {
-    setChecked((c) => ({ ...c, [id]: !c[id] }));
+    setChecked((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      // Proactively save to FSM so back-navigation preserves state
+      onSaveData?.(step.id, { checked: next });
+      return next;
+    });
   };
 
   const requiredItems = step.items.filter((i) => i.required);

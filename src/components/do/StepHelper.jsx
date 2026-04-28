@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { X, Send } from "lucide-react";
 import { askMai } from "../../services/askClient";
@@ -7,19 +7,22 @@ export default function StepHelper({ journey, step, onClose }) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
+  const abortRef = useRef(null);
 
-  async function handleAsk() {
-    if (!question.trim() || loading) return;
+  async function handleAsk(q) {
+    const queryText = q || question;
+    if (!queryText.trim() || loading) return;
     setLoading(true);
     setAnswer("");
+    setQuestion(queryText);
 
     // Build context-rich question
-    const fullQuestion = `Context: A user is going through the journey "${journey.title}", currently on step "${step.title}". Their question is: ${question}`;
+    const fullQuestion = `Context: A user is going through the journey "${journey.title}", currently on step "${step.title}". Their question is: ${queryText}`;
 
-    const abort = new AbortController();
+    abortRef.current = new AbortController();
     let buffer = "";
 
-    await askMai(fullQuestion, abort.signal, {
+    await askMai(fullQuestion, abortRef.current.signal, {
       onSources: () => {},
       onToken: (token) => {
         buffer += token;
@@ -68,12 +71,12 @@ export default function StepHelper({ journey, step, onClose }) {
         <div className="helper-body">
           {!answer && !loading && (
             <div className="helper-suggestions">
-              <div className="text-caption">Or try one of these</div>
+              <div className="text-caption">Tap one to ask instantly</div>
               {suggestions.map((s) => (
                 <button
                   key={s}
                   className="helper-suggestion"
-                  onClick={() => setQuestion(s)}
+                  onClick={() => handleAsk(s)}
                 >
                   {s}
                 </button>
@@ -108,7 +111,7 @@ export default function StepHelper({ journey, step, onClose }) {
           />
           <button
             className="helper-send"
-            onClick={handleAsk}
+            onClick={() => handleAsk()}
             disabled={!question.trim() || loading}
           >
             <Send size={16} />

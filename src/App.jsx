@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import AskPage from "./components/ask/AskPage";
 import JourneySelector from "./components/do/JourneySelector";
 import JourneyPlayer from "./components/do/JourneyPlayer";
+import LearnHome from "./components/learn/LearnHome";
+import ChapterReader from "./components/learn/ChapterReader";
 import "./App.css";
 
 function HomePage() {
@@ -13,23 +15,25 @@ function HomePage() {
         <span className="text-display-italic">informed and ready.</span>
       </h1>
       <p className="text-body-lg home-subtitle">
-        Design system active. Choose a mode below.
+        Your complete guide to Indian elections — ask, do, and learn.
       </p>
       <nav className="home-nav">
-        <Link className="home-nav-link" to="/ask">ASK — RAG Chatbot</Link>
-        <Link className="home-nav-link" to="/do">DO — Guided Journeys</Link>
-        <Link className="home-nav-link" to="/learn">LEARN — Election Guide</Link>
+        <Link className="home-nav-link ask-link" to="/ask">
+          <span className="home-nav-icon">✦</span>
+          <span>ASK</span>
+          <span className="home-nav-sub">RAG Chatbot</span>
+        </Link>
+        <Link className="home-nav-link do-link" to="/do">
+          <span className="home-nav-icon">→</span>
+          <span>DO</span>
+          <span className="home-nav-sub">Guided Journeys</span>
+        </Link>
+        <Link className="home-nav-link learn-link" to="/learn">
+          <span className="home-nav-icon">◎</span>
+          <span>LEARN</span>
+          <span className="home-nav-sub">Election Guide</span>
+        </Link>
       </nav>
-    </div>
-  );
-}
-
-function Placeholder({ name }) {
-  return (
-    <div className="page">
-      <Link className="placeholder-back" to="/">← Back</Link>
-      <h1 className="text-display-xl placeholder-title">{name}</h1>
-      <p className="text-body placeholder-body">Coming soon.</p>
     </div>
   );
 }
@@ -42,7 +46,8 @@ export default function App() {
         <Route path="/ask" element={<AskPage />} />
         <Route path="/do" element={<JourneySelector />} />
         <Route path="/do/:journeyId" element={<JourneyPlayer />} />
-        <Route path="/learn" element={<Placeholder name="LEARN Mode" />} />
+        <Route path="/learn" element={<LearnHome />} />
+        <Route path="/learn/:chapterId" element={<ChapterReader />} />
       </Routes>
     </BrowserRouter>
   );

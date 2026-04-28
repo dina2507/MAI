@@ -10,8 +10,8 @@ process, timelines, and steps in an interactive and easy-to-follow way.
 Three modes, one mission — make every Indian voter informed and ready:
 
 1. **LEARN** — Interactive chapter-by-chapter election explainer + EVM Simulator
-2. **DO** — FSM-driven guided journeys for 6 real voter situations
-3. **ASK** — Gemini RAG chatbot grounded ONLY on public ECI documents
+2. **DO** — FSM-driven guided journeys for 6 real voter situations ✅ COMPLETE
+3. **ASK** — Gemini RAG chatbot grounded ONLY on public ECI documents ✅ COMPLETE
 
 ## Tech Stack
 - **Frontend:** React + Vite (NO component libraries — custom design system)
@@ -35,15 +35,15 @@ Three modes, one mission — make every Indian voter informed and ready:
 | Google Maps JS API | Polling booth + ERO office locator |
 | Google Translate API | 10 Indian languages |
 | Google Text-to-Speech API | Audio on every step |
-| Google Calendar API | Election date reminders |
+| Google Calendar API | Election date reminders (integrated in DO mode ActionStep) |
 
-## The 6 DO-Mode Journeys (FSM)
-1. First-time voter → Form 6 walkthrough
-2. Name missing from list → Diagnostic + remedies
-3. Moved cities / student away → Form 8 / transfer guide
-4. Migrant worker → Rights + alternative address proofs
-5. Election day companion → Booth → EVM → VVPAT
-6. PwD / Senior citizen → Home voting + Saksham guide
+## The 6 DO-Mode Journeys (FSM) — ALL BUILT ✅
+1. First-time voter → Form 6 walkthrough (8 steps)
+2. Name missing from list → Diagnostic + 3 branching paths (9 steps)
+3. Moved cities / student away → Form 8 / transfer guide (7 steps)
+4. Migrant worker → Rights + compare loop + calendar (6 steps)
+5. Election day companion → Booth → EVM → VVPAT (10 steps)
+6. PwD / Senior citizen → Home voting + Saksham guide (7 steps)
 
 ## Data Sources (ALL free and public — no paid APIs)
 - ECI FAQ: https://www.eci.gov.in/faq
@@ -65,18 +65,51 @@ Three modes, one mission — make every Indian voter informed and ready:
 - Motion: subtle, purposeful — Framer Motion only
 
 ## File Structure
+```
 src/
 ├── components/
 │   ├── ui/           ← Custom base components (Button, Card, etc.)
-│   ├── learn/        ← LEARN mode components
-│   ├── do/           ← DO mode FSM components
-│   └── ask/          ← ASK mode chatbot
-├── journeys/         ← FSM journey definitions (data, not components)
+│   ├── learn/        ← LEARN mode components (TODO)
+│   ├── do/           ← DO mode FSM components ✅
+│   │   ├── JourneySelector.jsx    DO home (6 cards)
+│   │   ├── JourneyPlayer.jsx      Full-screen player
+│   │   ├── StepRenderer.jsx       Step type dispatcher
+│   │   ├── ProgressDots.jsx       Dynamic progress dots
+│   │   ├── StepHelper.jsx         Gemini fallback drawer
+│   │   ├── do.css                 Complete DO stylesheet
+│   │   └── steps/
+│   │       ├── InfoStep.jsx
+│   │       ├── ChoiceStep.jsx
+│   │       ├── ChecklistStep.jsx
+│   │       ├── ActionStep.jsx
+│   │       └── CompletionStep.jsx
+│   └── ask/          ← ASK mode chatbot ✅
+├── journeys/         ← FSM journey definitions (JSON data) ✅
+│   ├── _types.js
+│   ├── first-time-voter.json
+│   ├── missing-name.json
+│   ├── moved-cities.json
+│   ├── migrant-worker.json
+│   ├── election-day.json
+│   ├── pwd-senior.json
+│   └── index.js
+├── hooks/            ← Custom React hooks ✅
+│   ├── useJourney.js              FSM engine
+│   └── useJourneyProgress.js      localStorage persistence
 ├── rag/              ← RAG pipeline utilities
-├── hooks/            ← Custom React hooks
 ├── services/         ← Firebase + Google API wrappers
 ├── design-system/    ← tokens.css, typography, animations
 └── pages/            ← Route-level components
+```
+
+## Routes
+| Path | Component | Status |
+|---|---|---|
+| `/` | HomePage | ✅ |
+| `/ask` | AskPage | ✅ |
+| `/do` | JourneySelector | ✅ |
+| `/do/:journeyId` | JourneyPlayer | ✅ |
+| `/learn` | Placeholder | TODO |
 
 ## Agent Rules (READ BEFORE EVERY ACTION)
 1. NEVER install shadcn/ui, MUI, Ant Design, Chakra, or any component library
@@ -91,5 +124,13 @@ src/
 10. RAG answers must cite which ECI document they came from
 
 ## Current Phase
-- [x] Phase 1 (DO Mode) — Complete Build Done
-→ Check PROGRESS.md for next steps (LEARN Mode)
+- [x] ASK Mode — Complete ✅
+- [x] DO Mode — All 11 phases + Enhancement Pass complete ✅
+  - Bug fixes: calendar regex, checklist persistence, dead code, home nav
+  - UX: step counter, auto-submit helpers, confetti, completion badges, inline exit modal, share, keyboard shortcuts
+- [x] LEARN Mode — Complete ✅
+  - 6 chapters with real ECI content (5 section types each)
+  - Interactive quiz per chapter with reveal animation
+  - EVM/VVPAT Simulator (3-panel state machine, 7s countdown)
+- [ ] Deploy to Firebase + Demo polish — Next
+→ Check PROGRESS.md for detailed status

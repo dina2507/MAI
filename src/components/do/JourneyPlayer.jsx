@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, X, HelpCircle, RotateCcw } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useJourney } from "../../hooks/useJourney";
 import { useJourneyProgress, loadProgress, clearProgress } from "../../hooks/useJourneyProgress";
 import { getJourney } from "../../journeys";
@@ -50,6 +50,7 @@ export default function JourneyPlayer() {
 
 function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showHelper, setShowHelper }) {
   const [shouldResume, setShouldResume] = useState(null);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   const initialState = shouldResume === true ? resumeFrom : {};
   const j = useJourney(journey, initialState);
@@ -61,19 +62,32 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
     currentStep: j.currentStep,
   });
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Escape") {
+        if (showHelper) {
+          setShowHelper(false);
+        } else if (j.canGoBack) {
+          j.back();
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [showHelper, j.canGoBack, j.back]);
+
   function handleExit() {
     if (!j.isComplete && j.history.length > 0) {
-      const ok = window.confirm("Leave this journey? Your progress is saved automatically — you can resume later.");
-      if (!ok) return;
+      setShowExitModal(true);
+      return;
     }
     onExit();
   }
 
   function handleRestart() {
-    if (window.confirm("Start over from the beginning?")) {
-      clearProgress(journey.id);
-      j.reset();
-    }
+    clearProgress(journey.id);
+    j.reset();
   }
 
   if (resumeFrom && shouldResume === null) {
@@ -102,7 +116,7 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
           <X size={20} />
         </button>
         <div className="topbar-center">
-          <ProgressDots history={j.history} current={j.currentStepId} accent={journey.accent} />
+          <ProgressDots history={j.history} current={j.currentStepId} accent={journey.accent} stepIndex={j.stepIndex} totalSteps={j.totalSteps} />
         </div>
         <div className="topbar-right">
           {!j.isComplete && (
@@ -118,8 +132,9 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
           <StepRenderer
             key={j.currentStepId}
             step={j.currentStep}
-            journey={journey}
+            journey={{ ...journey, _stepData: j.data }}
             onNext={j.goTo}
+            onSaveData={j.saveStepData}
           />
         </AnimatePresence>
       </main>
@@ -146,6 +161,18 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
           />
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {showExitModal && (
+          <ExitModal
+            onStay={() => setShowExitModal(false)}
+            onLeave={() => {
+              setShowExitModal(false);
+              onExit();
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -169,6 +196,34 @@ function ResumePrompt({ journey, onResume, onStartOver }) {
           <button className="step-secondary-btn" onClick={onStartOver}>Start over</button>
         </div>
       </div>
+    </motion.div>
+  );
+}
+
+function ExitModal({ onStay, onLeave }) {
+  return (
+    <motion.div
+      className="exit-backdrop"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onStay}
+    >
+      <motion.div
+        className="exit-modal"
+        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 12 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="text-display-lg">Leave this journey?</h3>
+        <p className="text-body exit-body">Your progress is saved automatically — you can resume later.</p>
+        <div className="exit-actions">
+          <button className="step-primary-btn" onClick={onStay}>Stay</button>
+          <button className="step-secondary-btn" onClick={onLeave}>Leave</button>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

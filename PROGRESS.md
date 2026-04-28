@@ -1,15 +1,17 @@
 # MAI — Build Progress
 
 ## 7-Day Roadmap
-- [ ] Day 1 — Vite setup + Firebase init + Gemini hello world + Design system
+- [x] Day 1 — Vite setup + Firebase init + Gemini hello world + Design system
 - [x] Day 2 — RAG pipeline (ECI docs → Firestore → grounded Gemini)
-- [x] Day 3 — FSM Journey engine (DO mode — 6 journeys)
-- [ ] Day 4 — LEARN mode (6 chapters + EVM simulator)
-- [ ] Day 5 — Voice layer (TTS + STT + Translate)
+- [x] Day 3 — FSM Journey engine (DO mode — all 6 journeys, all 11 phases)
+- [x] Day 4 — LEARN mode (6 chapters + interactive quiz + EVM/VVPAT simulator)
+- [ ] Day 5 — Voice layer (TTS + STT + Translate) OR Deploy + polish
 - [ ] Day 6 — Maps + Calendar + Auth + Polish
 - [ ] Day 7 — Testing + Firebase deploy + Demo video
 
 ## What's Done
+
+### Foundation & ASK Mode
 - [x] CLAUDE.md created
 - [x] PROGRESS.md created
 - [x] .gitignore configured
@@ -18,65 +20,116 @@
 - [x] Phase 3 — The Retrieval + Generation Cloud Function
 - [x] Phase 4 — The Design System (Editorial Civic Journal) + responsive polish
 - [x] Phase 5-9 — ASK Mode (Chat UI, Streaming Integration, Hardening, Deployment)
-- [x] DO Mode Phase 1 — Journey Data Model (_types.js, 5 step types)
-- [x] DO Mode Phase 2 — All 6 Journey Definitions (new FSM schema)
-- [x] DO Mode Phase 3 — FSM Engine (useJourney hook, useJourneyProgress hook)
-- [x] DO Mode Phase 4 — Component Library (StepRenderer, InfoStep, ChoiceStep, ChecklistStep, ActionStep, CompletionStep)
-- [x] DO Mode Phase 5 — Full-Screen Journey Player (JourneyPlayer.jsx with resume prompt)
-- [x] DO Mode Phase 6 — Journey Selector (JourneySelector.jsx with icons + progress badges)
-- [x] DO Mode Phase 7 — Checklist & Interactive Elements (required gating, live counters)
-- [x] DO Mode Phase 8 — Gemini Fallback Helper (StepHelper.jsx, reuses ASK endpoint)
-- [x] DO Mode Phase 9 — Lightweight Persistence (localStorage, 7-day expiry)
-- [x] DO Mode Phase 10 — Polish & Animations (complete do.css, progress dots, per-journey theming)
-- [x] DO Mode Phase 11 — App.jsx routing updated (/do, /do/:journeyId)
 
-## Today's Session
-**Date:** 2026-04-28
-**Goal:** Phase 1 (DO Mode) — Complete Build Done
+### DO Mode — ALL 11 PHASES COMPLETE ✅
+- [x] DO Phase 1 — Journey Data Model (`_types.js`, 5 step types: info, choice, checklist, action, completion)
+- [x] DO Phase 2 — All 6 Journey Definitions (first-time-voter, missing-name, moved-cities, migrant-worker, election-day, pwd-senior)
+- [x] DO Phase 3 — FSM Engine (`useJourney.js` hook + `useJourneyProgress.js` persistence hook)
+- [x] DO Phase 4 — Component Library (`StepRenderer`, `InfoStep`, `ChoiceStep`, `ChecklistStep`, `ActionStep`, `CompletionStep`)
+- [x] DO Phase 5 — Full-Screen Journey Player (`JourneyPlayer.jsx` with resume prompt, exit confirmation)
+- [x] DO Phase 6 — Journey Selector (`JourneySelector.jsx` — DO home with icons, accent colors, "In progress" badges)
+- [x] DO Phase 7 — Checklist & Interactive Elements (required gating, live counters, toggle states)
+- [x] DO Phase 8 — Gemini Fallback Helper (`StepHelper.jsx` — drawer that reuses ASK endpoint with step context)
+- [x] DO Phase 9 — Lightweight Persistence (localStorage, 7-day expiry, auto-clear on completion)
+- [x] DO Phase 10 — Polish & Animations (`do.css` — per-journey accent theming, `ProgressDots.jsx`, mobile responsive)
+- [x] DO Phase 11 — Routing updated (`/do` → JourneySelector, `/do/:journeyId` → JourneyPlayer)
 
-### What was built:
-#### Data Layer
-- `_types.js` — JSDoc type definitions for Journey, Step, Choice, Action, etc.
-- 6 journey JSON files — All rewritten with the new FSM schema (steps, choices, checklists, actions, completions)
-- `index.js` — Updated exports with ALL_JOURNEYS, JOURNEY_MAP, getJourney()
+### DO Mode — Enhancement Pass ✅
+- [x] Bug Fix — Calendar regex (ActionStep date formatting was double-escaped)
+- [x] Bug Fix — Checklist state persistence (`saveStepData` + proactive saves on toggle)
+- [x] Bug Fix — Dead code cleanup (removed orphan DoPage.jsx, JourneyRunner.jsx)
+- [x] Bug Fix — Home navigation (added back-to-home link in JourneySelector header)
+- [x] Enhancement — Step counter in topbar ("3 / 8" below progress dots)
+- [x] Enhancement — Auto-submit helper suggestions (click = instant Gemini query)
+- [x] Enhancement — Completion confetti celebration (canvas particle animation, no library)
+- [x] Enhancement — Journey completion badges (green ✓ icon + "Completed" on selector cards)
+- [x] Enhancement — Inline exit modal (replaced window.confirm with animated design-system modal)
+- [x] Enhancement — WhatsApp/native share on completion
+- [x] Enhancement — Keyboard shortcuts (Escape to close helper or go back)
 
-#### FSM Engine (Hooks)
-- `useJourney.js` — Core FSM hook (state pointer, history stack, transitions, back/reset)
-- `useJourneyProgress.js` — LocalStorage persistence with 7-day expiry & auto-clear on completion
+## DO Mode Architecture
+```
+src/journeys/
+  ├── _types.js                  JSDoc types & helpers
+  ├── first-time-voter.json      8 steps
+  ├── missing-name.json          9 steps with branches
+  ├── moved-cities.json          7 steps
+  ├── migrant-worker.json        6 steps with compare loop
+  ├── election-day.json          10 steps
+  ├── pwd-senior.json            7 steps
+  └── index.js                   ALL_JOURNEYS, JOURNEY_MAP, getJourney()
 
-#### Component Library
-- `StepRenderer.jsx` — Dispatcher that maps step type → component
-- 5 step components: `InfoStep`, `ChoiceStep`, `ChecklistStep`, `ActionStep`, `CompletionStep`
-- `ProgressDots.jsx` — Dynamic progress indicator
-- `StepHelper.jsx` — Gemini fallback drawer (reuses ASK endpoint)
+src/hooks/
+  ├── useJourney.js              FSM engine (state, history, goTo, back, reset, saveStepData)
+  └── useJourneyProgress.js      localStorage persistence (save, load, clear, markComplete, isJourneyComplete)
 
-#### Full-Screen Player & Selector
-- `JourneyPlayer.jsx` — Immersive full-screen player with resume prompt, back/restart, helper drawer
-- `JourneySelector.jsx` — DO home page with 6 journey cards, icons, accent colors, "In progress" badges
-
-#### Styling & Routing
-- `do.css` — Complete stylesheet (journey shell, steps, checklist, actions, completion, helper drawer, mobile responsive)
-- `App.jsx` — Updated with `/do` → JourneySelector, `/do/:journeyId` → JourneyPlayer
-
-### Verified ✅
-- Build succeeds cleanly
-- All 6 journey cards render on the selector
-- Step transitions work (info → choice → checklist → action → completion)
-- Persistence works — "In progress" badge shows after exiting mid-journey
-- No console errors
+src/components/do/
+  ├── JourneySelector.jsx        DO home page (6 cards)
+  ├── JourneyPlayer.jsx          Full-screen player (topbar, stage, footer, helper)
+  ├── StepRenderer.jsx           Step type dispatcher
+  ├── ProgressDots.jsx           Dynamic dot progress indicator
+  ├── StepHelper.jsx             Gemini fallback drawer
+  ├── do.css                     Complete DO mode stylesheet
+  └── steps/
+      ├── InfoStep.jsx           Pure info + continue
+      ├── ChoiceStep.jsx         Branching decisions
+      ├── ChecklistStep.jsx      Toggle items + required gating
+      ├── ActionStep.jsx         External actions (link, calendar, phone, copy)
+      └── CompletionStep.jsx     Journey end + next actions
+```
 
 ## Key Decisions
 - Custom design system only — no component libraries
 - RAG data source: ECI public PDFs only
-- Streaming SSE via Firebase Cloud Functions works natively without WebSockets.
-- Hardened function with input sanitation and rate-limiting.
-- FSM engine is data-driven (JSON journeys, 5 step types)
-- Per-journey accent theming via CSS custom properties
-- localStorage persistence with 7-day expiry
+- Streaming SSE via Firebase Cloud Functions works natively without WebSockets
+- Hardened function with input sanitation and rate-limiting
+- FSM engine is data-driven — journeys are pure JSON, engine renders any of them
+- Per-journey accent theming via CSS custom properties (`--journey-accent`)
+- localStorage persistence with 7-day expiry, auto-clear on completion
+- Gemini helper reuses 100% of ASK's Cloud Function — no new backend
+
+### LEARN Mode ✅
+- [x] 6 chapter data files (`src/learn/chapters.js`) — real ECI facts, no hallucination
+- [x] 5 section types: `prose`, `callout`, `timeline`, `quiz`, `evm`
+- [x] Interactive quiz per chapter — A/B/C/D, reveal animation, explanation on reveal
+- [x] Interactive EVM/VVPAT Simulator — 3-panel (Control Unit, Ballot Unit, VVPAT), state machine, 7s countdown
+- [x] Chapter reader with sticky topbar, hero, scroll-animated sections, prev/next nav
+- [x] LEARN home with 3-column chapter grid, accent-per-chapter theming, Interactive/Quiz badges
+- [x] Routing: `/learn` → LearnHome, `/learn/:chapterId` → ChapterReader
+- [x] Upgraded HomePage — mode cards with icons and accent hover effects
+
+## LEARN Mode Architecture
+```
+src/learn/
+  ├── _types.js            JSDoc types for Chapter, Section, QuizQuestion
+  └── chapters.js          6 chapter definitions (all real ECI data)
+
+src/components/learn/
+  ├── LearnHome.jsx        Chapter grid + EVM callout
+  ├── ChapterReader.jsx    Full article reader with nav
+  ├── SectionRenderer.jsx  Section type dispatcher
+  ├── learn.css            Complete LEARN stylesheet + EVM simulator CSS
+  └── sections/
+      ├── ContentSections.jsx  ProseSection, CalloutSection, TimelineSection
+      ├── QuizSection.jsx      Interactive quiz with reveal
+      └── EVMSimulator.jsx     3-panel EVM/VVPAT state machine
+```
+
+## Routes
+| Path | Component | Status |
+|---|---|---|
+| `/` | HomePage | ✅ |
+| `/ask` | AskPage | ✅ |
+| `/do` | JourneySelector | ✅ |
+| `/do/:journeyId` | JourneyPlayer | ✅ |
+| `/learn` | LearnHome | ✅ |
+| `/learn/:chapterId` | ChapterReader | ✅ |
 
 ## Current Blocker
-None. DO mode is fully built and tested locally. All 6 journeys render correctly with full FSM transitions, persistence, and resume.
+None. ASK, DO, and LEARN modes are all fully built and tested locally.
 
 ## Next Session Pick Up From
-- LEARN Mode — Interactive chapters + EVM simulator
-- OR: Firebase deploy of DO mode + testing all journeys end-to-end
+- **Firebase deploy** — push all three modes live
+- **Voice layer** — TTS on chapter sections (Web Speech API, free)
+- **Home page polish** — make the landing page more impressive for judges
+- **Analytics** — fire events for chapter_started, quiz_answered, journey_completed

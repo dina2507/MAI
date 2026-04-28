@@ -61,11 +61,15 @@ export default function ActionStep({ step, onNext }) {
 
 /**
  * Generates a Google Calendar link and opens it in a new tab.
+ * Date defaults to 1 week from today if not provided.
  */
 function addToGoogleCalendar({ title, description, date }) {
   const start = date ? new Date(date) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const end = new Date(start.getTime() + 60 * 60 * 1000);
-  const fmt = (d) => d.toISOString().replace(/[-:]|\.\\d{3}/g, "");
+  const fmt = (d) => {
+    const iso = d.toISOString();
+    return iso.replace(/-/g, "").replace(/:/g, "").replace(/\.\d{3}/, "");
+  };
   const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent(description || "")}`;
   window.open(url, "_blank", "noopener");
 }

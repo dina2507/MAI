@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { ALL_JOURNEYS } from "../../journeys";
-import { loadProgress } from "../../hooks/useJourneyProgress";
+import { loadProgress, isJourneyComplete } from "../../hooks/useJourneyProgress";
 import "./do.css";
 
 export default function JourneySelector() {
@@ -12,8 +12,10 @@ export default function JourneySelector() {
     <div className="do-home">
       <header className="do-home-header">
         <div className="do-home-masthead">
-          <span className="do-masthead-dot" />
-          <span className="text-caption">MAI — DO</span>
+          <Link to="/" className="do-home-link">
+            <span className="do-masthead-dot" />
+            <span className="text-caption">MAI — DO</span>
+          </Link>
         </div>
       </header>
 
@@ -39,10 +41,11 @@ export default function JourneySelector() {
           {ALL_JOURNEYS.map((journey, i) => {
             const Icon = Icons[journey.icon] || Icons.Compass;
             const inProgress = loadProgress(journey.id);
+            const completed = isJourneyComplete(journey.id);
             return (
               <motion.button
                 key={journey.id}
-                className="journey-card"
+                className={`journey-card ${completed ? "completed" : ""}`}
                 onClick={() => navigate(`/do/${journey.id}`)}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -51,14 +54,21 @@ export default function JourneySelector() {
                 style={{ "--card-accent": journey.accent }}
               >
                 <div className="journey-card-icon">
-                  <Icon size={22} />
+                  {completed ? (
+                    <Icons.CheckCircle2 size={22} />
+                  ) : (
+                    <Icon size={22} />
+                  )}
                 </div>
                 <div className="journey-card-body">
                   <h3 className="journey-card-title">{journey.title}</h3>
                   <p className="journey-card-subtitle">{journey.subtitle}</p>
                   <div className="journey-card-meta">
                     <span className="text-caption">{journey.estimatedTime}</span>
-                    {inProgress && (
+                    {completed && (
+                      <span className="journey-card-complete text-caption">Completed ✓</span>
+                    )}
+                    {!completed && inProgress && (
                       <span className="journey-card-resume text-caption">In progress</span>
                     )}
                   </div>

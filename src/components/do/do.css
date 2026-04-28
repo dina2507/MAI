@@ -54,10 +54,23 @@
 
 /* ====== PROGRESS DOTS ====== */
 
+.progress-dots-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
 .progress-dots {
   display: flex;
   gap: var(--space-2);
   align-items: center;
+}
+
+.progress-counter {
+  color: var(--ink-400);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .dot {
@@ -347,6 +360,16 @@
 .step-completion {
   text-align: center;
   align-items: center;
+  position: relative;
+}
+
+.confetti-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .completion-mark {
@@ -358,11 +381,15 @@
   display: grid;
   place-items: center;
   margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 1;
 }
 
 .step-completion .step-title {
   text-align: center;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .completion-actions {
@@ -474,6 +501,42 @@
 }
 
 .resume-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* ====== EXIT MODAL ====== */
+
+.exit-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.exit-modal {
+  max-width: 400px;
+  width: 100%;
+  background: var(--ink-800);
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.exit-body {
+  color: var(--ink-300);
+}
+
+.exit-actions {
   display: flex;
   gap: var(--space-3);
   margin-top: var(--space-2);
@@ -660,6 +723,19 @@
   gap: var(--space-2);
 }
 
+.do-home-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: inherit;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.do-home-link:hover {
+  opacity: 0.7;
+}
+
 .do-masthead-dot {
   width: 8px;
   height: 8px;
@@ -798,6 +874,20 @@
   background: var(--card-accent);
   transform: translateY(-50%);
   animation: resumePulse 2s ease-in-out infinite;
+}
+
+.journey-card-complete {
+  color: #34D399 !important;
+  font-weight: 500;
+}
+
+.journey-card.completed {
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.journey-card.completed .journey-card-icon {
+  color: #34D399;
+  border-color: rgba(52, 211, 153, 0.3);
 }
 
 @keyframes resumePulse {

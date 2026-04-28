@@ -45,6 +45,15 @@ export function useJourney(journey, initial = {}) {
     [journey, currentStepId]
   );
 
+  /**
+   * Save data for a specific step without navigating.
+   * Used by interactive steps (checklist) to persist state
+   * so back-navigation doesn't lose user input.
+   */
+  const saveStepData = useCallback((stepId, stepData) => {
+    setData((d) => ({ ...d, [stepId]: stepData }));
+  }, []);
+
   const back = useCallback(() => {
     if (history.length === 0) return;
     const prev = history[history.length - 1];
@@ -68,6 +77,7 @@ export function useJourney(journey, initial = {}) {
     goTo,
     back,
     reset,
+    saveStepData,
     isComplete,
     stepIndex,
     totalSteps,
