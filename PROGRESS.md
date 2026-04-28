@@ -16,22 +16,30 @@
 - [x] Phase 1 — Firebase & Project Foundation
 - [x] Phase 2 — The Ingestion Pipeline
 - [x] Phase 3 — The Retrieval + Generation Cloud Function
+- [x] Phase 4 — The Design System (Editorial Civic Journal) + responsive polish
 
 ## Today's Session
 **Date:** 2026-04-28
-**Goal:** Complete Phase 3 Cloud Function
-**Files touched:** functions/index.js
+**Goal:** Phase 4 — Design System
+**Files touched:**
+- src/design-system/tokens.css — added --page-padding-x/top/bottom responsive vars (desktop/tablet/mobile breakpoints), hover-only scrollbar, safe-area utilities, touch-action
+- src/design-system/typography.css — fixed clamp() minimums for 375px screens (was 3.5rem→2.25rem for display-2xl etc.)
+- src/App.css (new) — responsive layout classes replacing inline styles; nav stacks on <420px
+- src/App.jsx — moved inline styles to CSS classes
+- index.html — title, theme-color, viewport-fit=cover, apple-mobile-web-app metas
 
 ## Key Decisions
 - Custom design system only — no component libraries
 - RAG data source: ECI public PDFs only
 - Voice: Google STT/TTS (not Bhashini — too unstable)
 - FSM journeys stored as JSON in /src/journeys/
-- Dark-first UI with saffron + India blue palette
+- Dark-first UI with saffron (#F97316) + India blue (#1D4ED8) palette
+- Fonts: Fraunces (display/editorial serif) + Plus Jakarta Sans (body) + JetBrains Mono (code)
 
 ## Current Blocker
-None yet.
+None.
 
 ## Next Session Pick Up From
-Phase 4 — The Design System (Editorial Civic Journal)
-Reference: ASK_BUILD.md Section 8
+Phase 5 — Chat UI Components (ASK mode)
+Reference: ASK_BUILD.md Section 9
+Start with: src/components/ask/AskPage.jsx

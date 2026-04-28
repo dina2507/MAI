@@ -1,0 +1,148 @@
+/* ============================================================
+   TYPOGRAPHY — Editorial Civic Journal
+   Display: Fraunces — warm editorial serif, optical size axis
+   Body:    Plus Jakarta Sans — modern, precise sans
+   Mono:    JetBrains Mono — citations and technical elements
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html,
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  font-feature-settings: "cv11";
+}
+
+/* ============================================================
+   DISPLAY SCALE — ratio: 1.333 (perfect fourth)
+   ============================================================ */
+
+/* clamp(min, fluid, max)
+   min = mobile floor  |  fluid = scales with viewport  |  max = desktop cap
+   At 375px: vw value is tiny → min kicks in (keeps text readable)
+   At 1260px: fluid reaches max → text stops growing              */
+
+.text-display-2xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+  font-variation-settings: "opsz" 144;
+}
+
+.text-display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  font-variation-settings: "opsz" 90;
+}
+
+.text-display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 3.5vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+}
+
+.text-display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 2.5vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.text-display-italic {
+  font-style: italic;
+}
+
+/* ============================================================
+   BODY SCALE
+   ============================================================ */
+
+.text-body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.text-body {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.text-body-sm {
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   PROSE — for long-form body content
+   ============================================================ */
+
+.prose {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--paper-100);
+}
+
+.prose p + p {
+  margin-top: 1em;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: var(--paper-100);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5em;
+  margin: 0.75em 0;
+}
+
+.prose li + li {
+  margin-top: 0.35em;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--ink-700);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--saffron-400);
+}
