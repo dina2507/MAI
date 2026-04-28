@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import AskPage from "./components/ask/AskPage";
 import "./App.css";
 
 function HomePage() {
@@ -26,7 +27,7 @@ function Placeholder({ name }) {
     <div className="page">
       <Link className="placeholder-back" to="/">← Back</Link>
       <h1 className="text-display-xl placeholder-title">{name}</h1>
-      <p className="text-body placeholder-body">Coming in Phase 5.</p>
+      <p className="text-body placeholder-body">Coming soon.</p>
     </div>
   );
 }
@@ -36,10 +37,11 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/ask" element={<Placeholder name="ASK Mode" />} />
+        <Route path="/ask" element={<AskPage />} />
         <Route path="/do" element={<Placeholder name="DO Mode" />} />
         <Route path="/learn" element={<Placeholder name="LEARN Mode" />} />
       </Routes>
     </BrowserRouter>
   );
 }
+

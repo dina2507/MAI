@@ -5,6 +5,7 @@ import { defineSecret } from "firebase-functions/params";
 import { logger } from "firebase-functions";
 import admin from "firebase-admin";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { checkRateLimit } from "./rateLimit.js";
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -52,6 +53,18 @@ function topK(queryEmbedding, chunks, k = 5) {
     }))
     .sort((a, b) => b.score - a.score)
     .slice(0, k);
+}
+
+// ============================================================
+// INPUT SAFETY
+// ============================================================
+
+function sanitizeQuestion(q) {
+  return q
+    .slice(0, 500)
+    .replace(/<[^>]*>/g, "")        // no HTML
+    .replace(/[<>{}[\]]/g, "")       // no bracket injection
+    .trim();
 }
 
 // ============================================================
@@ -106,17 +119,28 @@ export const askGemini = onCall(
     maxInstances: 10,
   },
   async (request) => {
-    const { question } = request.data;
+    const rawQuestion = request.data?.question;
 
-    if (!question || typeof question !== "string" || question.length > 500) {
+    if (!rawQuestion || typeof rawQuestion !== "string") {
       throw new HttpsError(
         "invalid-argument",
-        "Question must be a string under 500 characters."
+        "Question must be a string."
       );
+    }
+    
+    const question = sanitizeQuestion(rawQuestion);
+    if (!question) {
+       throw new HttpsError("invalid-argument", "Question cannot be empty after sanitization.");
+    }
+    
+    // Rate limit
+    const fingerprint = request.auth?.uid || request.rawRequest?.ip || "anonymous";
+    const check = await checkRateLimit(fingerprint);
+    if (!check.ok) {
+       throw new HttpsError("resource-exhausted", `Too many requests (${check.reason})`);
     }
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY.value());
-    // Fix: Using gemini-embedding-2 with 768 output dimensions as verified in Phase 2
     const embedModel = genAI.getGenerativeModel({ model: "gemini-embedding-2" });
     const genModel = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
@@ -153,7 +177,11 @@ export const askGemini = onCall(
         })),
       };
     } catch (err) {
-      logger.error("askGemini error:", err);
+      logger.error("askGemini failure", {
+        question: question.slice(0, 100),
+        errorMessage: err.message,
+        stack: err.stack,
+      });
       throw new HttpsError("internal", "Failed to generate answer.");
     }
   }
@@ -181,9 +209,23 @@ export const askGeminiStream = onRequest(
       return;
     }
 
-    const { question } = req.body;
-    if (!question || typeof question !== "string" || question.length > 500) {
+    const rawQuestion = req.body?.question;
+    if (!rawQuestion || typeof rawQuestion !== "string") {
       res.status(400).json({ error: "Invalid question" });
+      return;
+    }
+    
+    const question = sanitizeQuestion(rawQuestion);
+    if (!question) {
+       res.status(400).json({ error: "Empty question after sanitization" });
+       return;
+    }
+
+    // Rate limit
+    const fingerprint = req.ip || "anonymous";
+    const check = await checkRateLimit(fingerprint);
+    if (!check.ok) {
+      res.status(429).json({ error: `Too many requests (${check.reason})` });
       return;
     }
 
@@ -192,7 +234,6 @@ export const askGeminiStream = onRequest(
     res.set("Connection", "keep-alive");
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY.value());
-    // Fix: Using gemini-embedding-2 with 768 output dimensions
     const embedModel = genAI.getGenerativeModel({ model: "gemini-embedding-2" });
     const genModel = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
@@ -229,7 +270,11 @@ export const askGeminiStream = onRequest(
       res.write(`data: ${JSON.stringify({ type: "done" })}\n\n`);
       res.end();
     } catch (err) {
-      logger.error("askGeminiStream error:", err);
+      logger.error("askGeminiStream failure", {
+        question: question.slice(0, 100),
+        errorMessage: err.message,
+        stack: err.stack,
+      });
       res.write(`data: ${JSON.stringify({ type: "error", message: "Failed to generate answer." })}\n\n`);
       res.end();
     }

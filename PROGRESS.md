@@ -17,29 +17,26 @@
 - [x] Phase 2 — The Ingestion Pipeline
 - [x] Phase 3 — The Retrieval + Generation Cloud Function
 - [x] Phase 4 — The Design System (Editorial Civic Journal) + responsive polish
+- [x] Phase 5-9 — ASK Mode (Chat UI, Streaming Integration, Hardening, Deployment)
 
 ## Today's Session
 **Date:** 2026-04-28
-**Goal:** Phase 4 — Design System
+**Goal:** Phase 5-9 — ASK Mode Completion
 **Files touched:**
-- src/design-system/tokens.css — added --page-padding-x/top/bottom responsive vars (desktop/tablet/mobile breakpoints), hover-only scrollbar, safe-area utilities, touch-action
-- src/design-system/typography.css — fixed clamp() minimums for 375px screens (was 3.5rem→2.25rem for display-2xl etc.)
-- src/App.css (new) — responsive layout classes replacing inline styles; nav stacks on <420px
-- src/App.jsx — moved inline styles to CSS classes
-- index.html — title, theme-color, viewport-fit=cover, apple-mobile-web-app metas
+- src/components/ask/* (AskPage, ChatStream, Message, Composer, Citation, etc.)
+- src/services/askClient.js (SSE Streaming logic)
+- functions/rateLimit.js & index.js (Production hardening, CSP, Rate limits)
+- firebase.json (Added CSP Headers)
 
 ## Key Decisions
 - Custom design system only — no component libraries
 - RAG data source: ECI public PDFs only
-- Voice: Google STT/TTS (not Bhashini — too unstable)
-- FSM journeys stored as JSON in /src/journeys/
-- Dark-first UI with saffron (#F97316) + India blue (#1D4ED8) palette
-- Fonts: Fraunces (display/editorial serif) + Plus Jakarta Sans (body) + JetBrains Mono (code)
+- Streaming SSE via Firebase Cloud Functions works natively without WebSockets.
+- Hardened function with input sanitation and rate-limiting.
 
 ## Current Blocker
-None.
+None. The ASK mode is fully live and successfully tested locally. (Note: Firebase Hosting may take 5-10 minutes to propagate the first time).
 
 ## Next Session Pick Up From
-Phase 5 — Chat UI Components (ASK mode)
-Reference: ASK_BUILD.md Section 9
-Start with: src/components/ask/AskPage.jsx
+DO Mode — FSM Guided Journeys
+Reference: Start building the state machine for the step-by-step voter tasks.
