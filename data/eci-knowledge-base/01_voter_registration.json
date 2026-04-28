@@ -1,0 +1,39 @@
+{
+  "source": "ECI — Voter Registration and Electoral Roll",
+  "sourceUrl": "https://voters.eci.gov.in",
+  "category": "voter_registration",
+  "chunks": [
+    {
+      "heading": "Who is eligible to register as a voter in India?",
+      "text": "Q: Who is eligible to register as a voter in India?\n\nA: Any Indian citizen who meets all of the following conditions is eligible to register as a voter:\n1. Must be a citizen of India.\n2. Must have attained the age of 18 years on the qualifying date. India now has four qualifying dates annually: January 1, April 1, July 1, and October 1.\n3. Must be ordinarily resident of the part or polling area of the constituency where they wish to be enrolled.\n4. Must not be disqualified under any law relating to corrupt practices or other offences in connection with elections.\n5. Must not be of unsound mind as declared by a competent court.\n\nNote: The four qualifying dates were introduced to ensure youth turning 18 can register sooner without waiting the entire year."
+    },
+    {
+      "heading": "What is Form 6 and when do I use it?",
+      "text": "Q: What is Form 6 and when should I use it?\n\nA: Form 6 is the Application Form for New Voters. Use Form 6 when:\n- You are registering as a voter for the first time anywhere in India.\n- You have shifted from one constituency to another (different district or state) and want to enroll in the new constituency.\n\nDocuments required:\n- Proof of Age: Aadhaar Card, Passport, Birth Certificate, School Leaving Certificate, or PAN Card.\n- Proof of Ordinary Residence: Aadhaar Card, Bank Passbook with photo, Utility bills (electricity, water, gas — within last 3 months), Rental Agreement, or Passport.\n- One recent passport-size photograph.\n\nYou can fill Form 6 online at https://voters.eci.gov.in or submit it at the office of the Electoral Registration Officer (ERO), Assistant ERO, or Booth Level Officer (BLO). Form 6 is available free of cost."
+    },
+    {
+      "heading": "What is Form 8 and when do I use it?",
+      "text": "Q: What is Form 8 and when should I use it?\n\nA: Form 8 is the Application for Correction of entries in the Electoral Roll or for shifting of residence within the same constituency.\n\nUse Form 8 when:\n- Your name, age, address, photo, or other particulars in the electoral roll need correction.\n- You have shifted your residence within the same assembly constituency.\n- You need to replace a lost or damaged EPIC (Voter ID card).\n- You want to mark yourself as a Person with Disability (PwD) in the electoral roll.\n\nFor shifting from one assembly constituency to another (inter-constituency transfer), you must file a fresh Form 6 in the new constituency — not Form 8.\n\nDocuments required: Proof of new address, and proof of correction where applicable."
+    },
+    {
+      "heading": "My name is missing from the voter list. What should I do?",
+      "text": "Q: My name is not found in the voter list even though I registered. What do I do?\n\nA: If your name is missing from the voter list, follow these steps:\n\nStep 1: Verify using multiple methods. Check via Electoral Search Portal at electoralsearch.eci.gov.in, the Voter Helpline App, and by calling 1950. Sometimes a name search fails but EPIC number search works.\n\nStep 2: Check if you are searching the correct constituency. If you moved, your name may still be in your old constituency.\n\nStep 3: If genuinely missing, file a fresh Form 6 at voters.eci.gov.in or at your nearest ERO office. Carry age proof and address proof.\n\nStep 4: Contact your Booth Level Officer (BLO). The BLO can investigate why your name is missing — common causes include Summary Revision deletion, duplicate flag, or data entry error.\n\nStep 5: If election day is imminent, file a complaint with the Returning Officer. You may be offered a Tendered Vote, though this is rarely counted.\n\nIMPORTANT: Check your name at least 1-2 weeks before election day. Registration deadlines apply — new applications typically need to be filed at least 30 days before the election."
+    },
+    {
+      "heading": "What are the 12 valid photo IDs accepted at polling booths?",
+      "text": "Q: What photo identity documents are accepted at Indian polling booths?\n\nA: The ECI has notified 12 alternative photo identity documents acceptable at polling booths. You only need ONE of these:\n\n1. EPIC (Voter ID card) — the primary preferred document\n2. Aadhaar Card\n3. MNREGS Job Card\n4. Passbook with photograph issued by Bank or Post Office\n5. Health Insurance Smart Card issued under Ministry of Labour scheme\n6. Driving Licence\n7. PAN Card\n8. Smart Card issued by RGI under NPR\n9. Indian Passport\n10. Pension Document with photograph\n11. Service Identity Cards with photograph issued by Central/State Govt, PSUs, or Public Limited Companies\n12. Official identity cards issued to MPs, MLAs, or MLCs\n\nIMPORTANT: Carrying a valid ID but NOT being on the electoral roll means you cannot vote. Your name MUST appear in the electoral roll of that specific polling station."
+    },
+    {
+      "heading": "How do I transfer voter registration when I move to a new city?",
+      "text": "Q: I moved to a new city or state. How do I transfer my voter registration?\n\nA: The process depends on where you moved:\n\nCase 1 — Moved within the SAME Assembly Constituency:\nFile Form 8 (Shifting of residence within same constituency) at the ERO office or online at voters.eci.gov.in. Your name will be updated with the new address.\n\nCase 2 — Moved to a DIFFERENT Assembly Constituency (same or different state):\n1. File Form 6 in the NEW constituency with your new address proof.\n2. Your name will be deleted from the old constituency once enrolled in the new one.\n\nAddress proof for migrants and renters — the ECI accepts:\n- Aadhaar card with new address\n- Bank or Post Office passbook with photo\n- Recent utility bill (electricity, gas, water — within last 3 months)\n- Rent agreement\n- Letter from employer if living in company accommodation\n\nStudents: You can register either at your home address or your hostel/college address — not both simultaneously."
+    },
+    {
+      "heading": "What is e-EPIC and how do I download my digital voter ID?",
+      "text": "Q: What is e-EPIC and how can I download it?\n\nA: e-EPIC (Electronic Electoral Photo Identity Card) is the digital version of your Voter ID in PDF format. It can be stored on your smartphone and is a valid identity document.\n\nHow to download e-EPIC:\n1. Visit https://voters.eci.gov.in\n2. Click on Download e-EPIC\n3. Enter your EPIC number or reference number\n4. Verify with OTP sent to your registered mobile number\n5. Download the PDF\n\nEligibility: Your mobile number must be registered with your voter registration. New registrants can download after application is approved.\n\nThe e-EPIC is accepted as valid photo ID at polling booths along with all other alternative IDs listed by the ECI."
+    },
+    {
+      "heading": "What are the four qualifying dates for voter registration?",
+      "text": "Q: What are the qualifying dates for voter registration in India?\n\nA: India now has FOUR qualifying dates in a year for voter registration:\n1. January 1\n2. April 1\n3. July 1\n4. October 1\n\nWhat qualifying date means: You must be 18 years of age ON or BEFORE the qualifying date to be eligible to enroll in that revision cycle.\n\nThis change was introduced to allow youth turning 18 to register sooner — previously only January 1 was the qualifying date, meaning someone turning 18 in February would wait almost a year to vote.\n\nSpecial Summary Revision: The ECI conducts an annual Special Summary Revision of electoral rolls, typically around the January 1 qualifying date, when extensive enrollment drives are conducted."
+    }
+  ]
+}

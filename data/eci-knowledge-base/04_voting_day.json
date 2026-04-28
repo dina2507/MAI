@@ -1,0 +1,35 @@
+{
+  "source": "ECI — Voting Day Guide and Polling Booth Process",
+  "sourceUrl": "https://voters.eci.gov.in",
+  "category": "voting_day",
+  "chunks": [
+    {
+      "heading": "What to carry on voting day",
+      "text": "Q: What documents should I carry when I go to vote?\n\nA: Carry ONE valid photo identity document from this list:\n1. EPIC (Voter ID card) — preferred\n2. Aadhaar Card\n3. MNREGS Job Card\n4. Passbook with photograph (Bank or Post Office)\n5. Health Insurance Smart Card (Ministry of Labour)\n6. Driving Licence\n7. PAN Card\n8. Smart Card under NPR\n9. Indian Passport\n10. Pension Document with photograph\n11. Service Identity Card with photo (Govt, PSU, Public Ltd Company)\n12. Official identity cards for MPs, MLAs, MLCs\n\nOptional: Your Voter Slip (distributed by BLO before election day) speeds up verification but is NOT mandatory.\n\nDo NOT carry: Mobile phones inside voting compartment, weapons, or campaign materials.\n\nRemember: Even with valid ID, you cannot vote if your name is not on the electoral roll of that specific polling station."
+    },
+    {
+      "heading": "What if I go to the wrong polling booth?",
+      "text": "Q: I went to a polling booth but was told my name is not there. What do I do?\n\nA: Step 1: Ask the polling officer to check your name in the marked copy of the electoral roll at the booth.\n\nStep 2: Verify you are at the RIGHT booth. Your name is only on the roll of the specific polling station where you are registered. Check your correct booth at electoralsearch.eci.gov.in BEFORE election day.\n\nStep 3: If at the correct booth but name not found, show your EPIC or alternative ID. Ask to check under alternate spellings of your name.\n\nStep 4: If genuinely not found, you can request to cast a TENDER VOTE (challenged vote). Tender votes are kept separate and generally do not affect the result.\n\nStep 5: Lodge a complaint with the Sector Officer or Returning Officer on the day itself.\n\nPrevention is key: Check your name online at electoralsearch.eci.gov.in at least 1-2 weeks before election day."
+    },
+    {
+      "heading": "Polling station timings in India",
+      "text": "Q: What are the polling station timings in India?\n\nA: Standard polling station timings:\n- Opening time: 7:00 AM\n- Closing time: 6:00 PM\n\nImportant rules:\n1. If you are IN the queue before 6:00 PM closing time, you are entitled to vote even if the booth closes. You cannot be turned away.\n2. In remote, tribal, or sensitive areas, different timings may be specified and announced in advance.\n3. Polling can be extended beyond normal hours in exceptional circumstances (EVM breakdown, law and order issues) by the Returning Officer or ECI.\n\nAlways check the official ECI notification for your specific constituency exact polling timings."
+    },
+    {
+      "heading": "What is indelible ink applied during voting?",
+      "text": "Q: Why is ink applied to my finger when I vote? What is indelible ink?\n\nA: Indelible ink (also called election ink or voter ink) is applied to the left index finger of every voter to prevent voting more than once.\n\nProperties:\n- Cannot be easily washed off — stains skin and nail\n- Visible under UV light\n- Remains visible for approximately 72 hours to several days\n- Non-toxic and harmless\n\nProcess: Applied to the left index finger (nail and skin below nail) BEFORE you vote. If you already have ink from a previous vote, you will not be allowed to vote again.\n\nManufacturer: Made exclusively by Mysore Paints and Varnish Limited (MPVL), a Government of Karnataka undertaking, since 1962. India exports this ink to over 25 countries for their elections."
+    },
+    {
+      "heading": "Who is a Booth Level Officer (BLO) and how do they help?",
+      "text": "Q: Who is a Booth Level Officer (BLO) and what do they do?\n\nA: A Booth Level Officer (BLO) is a government employee assigned to a specific polling station area (typically covering 800-1200 voters) to maintain the electoral roll at grassroots level.\n\nRole of a BLO:\n- Conduct door-to-door verification of voter registrations\n- Accept voter registration applications (Form 6, 6A, 8) and forward to ERO\n- Distribute voter slips before elections\n- Update electoral roll with deaths, shifts, and new enrollments\n- First point of contact for any voter registration query\n- Assist in identifying reasons for missing names\n\nWho can be BLO: Government employees such as anganwadi workers, school teachers, revenue officials, postal employees.\n\nHow to contact your BLO: Available on the Voter Helpline App, by calling 1950, or at your local gram panchayat or ward office.\n\nThe BLO is your most accessible contact for any registration problem — they can physically verify details and resolve issues that online portals cannot."
+    },
+    {
+      "heading": "Postal ballot voting — who is eligible?",
+      "text": "Q: What is postal ballot voting in India? Who can vote by post?\n\nA: Postal ballot allows certain categories to vote by post instead of visiting a polling station.\n\nWho is eligible:\n1. Service voters: Armed Forces members (Army, Navy, Air Force), paramilitary forces, and their spouses.\n2. Government officials on election duty away from their constituency.\n3. Persons under preventive detention.\n4. Senior citizens above 85 years (absentee voter facility).\n5. PwD voters with 40%+ benchmark disability (absentee voter facility).\n\nProcess for senior/PwD voters:\n1. Fill Form 12D to apply for postal ballot.\n2. A polling team visits your home with a ballot.\n3. You vote in secret.\n4. Sealed ballot is collected and counted on counting day.\n\nNRI voters: Cannot use postal ballot. Must vote IN PERSON at their designated polling station in India.\n\nDeadlines: Applications must be submitted within a specified time after election notification. Check with your ERO for exact deadlines."
+    },
+    {
+      "heading": "Can migrant workers or students studying away from home vote?",
+      "text": "Q: I study or work in a different city from where I am registered. Can I still vote?\n\nA: This is one of the most common challenges for Indian voters. Your options:\n\nOption 1 — Vote in your home constituency where you are registered:\nTravel back on polling day. This is the most straightforward option.\n\nOption 2 — Transfer your registration to your current city:\nIf you have address proof in your current city, file Form 6 at voters.eci.gov.in in the new constituency. Students can register at hostel or college address OR home address — not both.\n\nOption 3 — Remote Voting Machine (RVM):\nThe ECI has proposed RVMs to allow migrants to vote from their work city. As of 2024, this is still being piloted and is NOT yet available across India.\n\nIMPORTANT: You CANNOT walk into any booth and vote if you are registered in a different constituency. You must be on the electoral roll of that specific booth."
+    }
+  ]
+}

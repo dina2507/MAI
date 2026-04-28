@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ECI chunks: public read, admin-only write
+    match /eci_chunks/{chunkId} {
+      allow read: if true;
+      allow write: if false;  // Only written via admin SDK
+    }
+
+    // User conversations
+    match /conversations/{userId}/messages/{messageId} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == userId;
+    }
+  }
+}
