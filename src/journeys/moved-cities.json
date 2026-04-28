@@ -1,0 +1,55 @@
+{
+  "id": "moved-cities",
+  "title": "Moved Cities / Student Away",
+  "description": "How to transfer your voter registration when you move to a new location.",
+  "estimatedTime": "4 mins",
+  "initialNodeId": "start",
+  "nodes": {
+    "start": {
+      "type": "question",
+      "content": "Are you moving permanently or just temporarily?",
+      "options": [
+        { "label": "Permanently (or for a long time)", "targetNodeId": "permanent_move" },
+        { "label": "Temporarily (short term)", "targetNodeId": "temporary_move" }
+      ]
+    },
+    "temporary_move": {
+      "type": "info",
+      "content": "If you are moving temporarily (e.g., short-term work or short vacation), you should remain registered at your original address. You can travel back to vote.",
+      "isTerminal": true
+    },
+    "permanent_move": {
+      "type": "question",
+      "content": "Are you moving within the same Assembly Constituency, or to a completely different one?",
+      "options": [
+        { "label": "Same Constituency (just a different house)", "targetNodeId": "same_ac" },
+        { "label": "Different Constituency (different city/state)", "targetNodeId": "diff_ac" },
+        { "label": "I don't know", "targetNodeId": "check_ac" }
+      ]
+    },
+    "check_ac": {
+      "type": "action",
+      "content": "You can check your Assembly Constituency online. Find your polling booth details using the Electoral Search.",
+      "actionLabel": "Electoral Search Portal",
+      "actionUrl": "https://electoralsearch.eci.gov.in/",
+      "isTerminal": true
+    },
+    "same_ac": {
+      "type": "info",
+      "content": "Since you are moving within the same constituency, you just need to update your address. You must submit **Form 8** for shifting of residence within the constituency.",
+      "nextNodeId": "apply_form8"
+    },
+    "diff_ac": {
+      "type": "info",
+      "content": "Since you are moving to a different constituency, you need to transfer your registration. You must submit **Form 8** for shifting of residence outside the constituency. Your name will be added to the new place and automatically deleted from the old place.",
+      "nextNodeId": "apply_form8"
+    },
+    "apply_form8": {
+      "type": "action",
+      "content": "You will need a new Proof of Address. You can fill out Form 8 online through the Voter Services Portal.",
+      "actionLabel": "Fill Form 8 Online",
+      "actionUrl": "https://voters.eci.gov.in/",
+      "isTerminal": true
+    }
+  }
+}

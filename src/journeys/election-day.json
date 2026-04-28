@@ -1,0 +1,55 @@
+{
+  "id": "election-day",
+  "title": "Election Day Companion",
+  "description": "Your step-by-step guide on what to do on voting day.",
+  "estimatedTime": "5 mins",
+  "initialNodeId": "start",
+  "nodes": {
+    "start": {
+      "type": "question",
+      "content": "Do you know where your polling booth is located?",
+      "options": [
+        { "label": "Yes", "targetNodeId": "documents" },
+        { "label": "No", "targetNodeId": "find_booth" }
+      ]
+    },
+    "find_booth": {
+      "type": "action",
+      "content": "You can find your exact polling booth and part number by searching your EPIC on the Electoral Search portal or the Voter Helpline App.",
+      "actionLabel": "Find Polling Booth",
+      "actionUrl": "https://electoralsearch.eci.gov.in/",
+      "isTerminal": false,
+      "options": [
+        { "label": "I have found it. What's next?", "targetNodeId": "documents" }
+      ]
+    },
+    "documents": {
+      "type": "question",
+      "content": "Do you have your EPIC (Voter ID) card with you?",
+      "options": [
+        { "label": "Yes", "targetNodeId": "booth_process" },
+        { "label": "No", "targetNodeId": "alt_documents" }
+      ]
+    },
+    "alt_documents": {
+      "type": "info",
+      "content": "If you don't have your EPIC card, you can still vote if your name is on the electoral roll. You must bring one of the 12 alternative approved photo ID documents (e.g., Aadhaar, PAN Card, Passport, Driving License).",
+      "nextNodeId": "booth_process"
+    },
+    "booth_process": {
+      "type": "info",
+      "content": "At the booth:\n\n1. **Polling Officer 1** will check your name on the voter list and your ID proof.\n2. **Polling Officer 2** will ink your finger, give you a slip, and take your signature.\n3. **Polling Officer 3** takes the slip and allows you to proceed to the voting compartment.",
+      "nextNodeId": "evm"
+    },
+    "evm": {
+      "type": "info",
+      "content": "In the voting compartment:\n\n1. Press the blue button on the **EVM** (Electronic Voting Machine) next to the candidate/symbol of your choice.\n2. You will hear a loud beep sound.",
+      "nextNodeId": "vvpat"
+    },
+    "vvpat": {
+      "type": "info",
+      "content": "Verify your vote:\n\n1. Look at the **VVPAT** machine next to the EVM.\n2. A printed slip will be visible behind the glass for 7 seconds, showing the serial number, name, and symbol of the candidate you voted for.\n3. It will then cut and drop into the sealed box.\n\nYour vote is cast successfully!",
+      "isTerminal": true
+    }
+  }
+}

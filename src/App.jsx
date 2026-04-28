@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import AskPage from "./components/ask/AskPage";
+import DoPage from "./components/do/DoPage";
 import "./App.css";
 
 function HomePage() {
@@ -38,10 +39,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/ask" element={<AskPage />} />
-        <Route path="/do" element={<Placeholder name="DO Mode" />} />
+        <Route path="/do" element={<DoPage />} />
         <Route path="/learn" element={<Placeholder name="LEARN Mode" />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
 

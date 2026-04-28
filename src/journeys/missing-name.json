@@ -1,0 +1,55 @@
+{
+  "id": "missing-name",
+  "title": "Name Missing From Voter List",
+  "description": "Diagnostic steps and remedies if your name is not on the electoral roll.",
+  "estimatedTime": "3 mins",
+  "initialNodeId": "start",
+  "nodes": {
+    "start": {
+      "type": "question",
+      "content": "Have you previously registered to vote and had an EPIC (Voter ID) card?",
+      "options": [
+        { "label": "Yes", "targetNodeId": "have_epic" },
+        { "label": "No, I never registered", "targetNodeId": "never_registered" }
+      ]
+    },
+    "never_registered": {
+      "type": "info",
+      "content": "If you have never registered, your name will not be on the list. You need to register as a first-time voter using Form 6.",
+      "isTerminal": true
+    },
+    "have_epic": {
+      "type": "question",
+      "content": "Did you search the electoral roll using your EPIC number exactly as it appears on your card?",
+      "options": [
+        { "label": "Yes, still missing", "targetNodeId": "search_details" },
+        { "label": "No, I haven't", "targetNodeId": "search_epic" }
+      ]
+    },
+    "search_epic": {
+      "type": "action",
+      "content": "Please search the Electoral Search portal using your EPIC number. Sometimes names are misspelled, but searching by EPIC number is the most reliable method.",
+      "actionLabel": "Search by EPIC",
+      "actionUrl": "https://electoralsearch.eci.gov.in/",
+      "isTerminal": true
+    },
+    "search_details": {
+      "type": "question",
+      "content": "Have you moved to a new assembly constituency since you last voted?",
+      "options": [
+        { "label": "Yes", "targetNodeId": "moved" },
+        { "label": "No", "targetNodeId": "not_moved" }
+      ]
+    },
+    "moved": {
+      "type": "info",
+      "content": "If you moved to a different constituency, your name might have been deleted from the old list. You must submit **Form 8** to shift your residence and get your name added to your new constituency's list.",
+      "isTerminal": true
+    },
+    "not_moved": {
+      "type": "info",
+      "content": "If you haven't moved and your name was deleted without notice, it might be an error or due to non-verification. You should contact your Electoral Registration Officer (ERO) or submit **Form 6** to re-register.",
+      "isTerminal": true
+    }
+  }
+}

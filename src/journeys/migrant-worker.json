@@ -1,0 +1,42 @@
+{
+  "id": "migrant-worker",
+  "title": "Migrant Worker Rights",
+  "description": "Understand your voting rights and address proof requirements as a migrant worker.",
+  "estimatedTime": "3 mins",
+  "initialNodeId": "start",
+  "nodes": {
+    "start": {
+      "type": "question",
+      "content": "Where do you want to vote?",
+      "options": [
+        { "label": "At my native village/hometown", "targetNodeId": "native" },
+        { "label": "At my current place of work", "targetNodeId": "current" }
+      ]
+    },
+    "native": {
+      "type": "info",
+      "content": "You can remain registered at your native place if you retain your ordinary residence there and visit regularly. However, you must travel there on election day to cast your vote. There is currently no remote voting facility for domestic migrants.",
+      "isTerminal": true
+    },
+    "current": {
+      "type": "question",
+      "content": "To vote at your current work location, you need to register there using Form 6 (or Form 8 if already registered elsewhere). Do you have a proof of residence for your current address (like a rental agreement, electricity bill, or bank passbook)?",
+      "options": [
+        { "label": "Yes", "targetNodeId": "have_proof" },
+        { "label": "No", "targetNodeId": "no_proof" }
+      ]
+    },
+    "have_proof": {
+      "type": "action",
+      "content": "Great. You can use your rental agreement or other accepted documents to apply for registration at your new address.",
+      "actionLabel": "Apply on NVSP",
+      "actionUrl": "https://voters.eci.gov.in/",
+      "isTerminal": true
+    },
+    "no_proof": {
+      "type": "info",
+      "content": "If you don't have standard proofs, a registered rent agreement or a letter from your employer (in some cases, subject to ERO approval) can help. A post office passbook delivered to your address is also an easy way to get a valid address proof.",
+      "isTerminal": true
+    }
+  }
+}

@@ -1,0 +1,338 @@
+/* ============================================================
+   DO PAGE — EDITORIAL CIVIC JOURNAL
+   ============================================================ */
+
+.do-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ====== HEADER ====== */
+
+.do-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(20px);
+  background: rgba(10, 10, 15, 0.7);
+  border-bottom: 1px solid var(--ink-600);
+}
+
+.do-header-inner {
+  max-width: var(--max-wide);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.do-masthead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--paper-100);
+}
+
+.do-masthead-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--blue-500);
+  box-shadow: 0 0 12px var(--blue-500);
+}
+
+.do-back-btn {
+  background: transparent;
+  border: 1px solid var(--ink-600);
+  color: var(--paper-100);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.do-back-btn:hover {
+  border-color: var(--blue-400);
+  color: var(--blue-400);
+}
+
+/* ====== STAGE ====== */
+
+.do-stage {
+  flex: 1;
+  padding: var(--space-10) var(--space-6);
+  max-width: var(--max-wide);
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ====== CATALOG ====== */
+
+.do-catalog {
+  max-width: var(--max-wide);
+  margin: 0 auto;
+  padding-top: var(--space-10);
+}
+
+.do-title {
+  color: var(--paper-100);
+  max-width: 14ch;
+}
+
+.do-title-accent {
+  color: var(--blue-500);
+}
+
+.do-subtitle {
+  color: var(--ink-400);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-10);
+  max-width: 48ch;
+}
+
+/* ====== JOURNEY GRID ====== */
+
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-6);
+}
+
+.journey-card {
+  text-align: left;
+  background: var(--ink-800);
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  cursor: pointer;
+  color: var(--paper-100);
+  font-family: var(--font-body);
+  position: relative;
+  transition: all var(--duration-base) var(--ease-out);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(29, 78, 216, 0.1) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.journey-card:hover {
+  border-color: var(--blue-500);
+}
+
+.journey-card:hover::before {
+  opacity: 1;
+}
+
+.journey-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  color: var(--blue-400);
+  font-family: var(--font-mono);
+  position: relative;
+  z-index: 1;
+}
+
+.journey-time {
+  background: var(--ink-900);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: var(--ink-300);
+}
+
+.journey-card-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: var(--space-2);
+  position: relative;
+  z-index: 1;
+}
+
+.journey-card-desc {
+  color: var(--ink-300);
+  line-height: 1.5;
+  margin-bottom: var(--space-6);
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.journey-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--blue-500);
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+  transition: all var(--duration-base) var(--ease-out);
+}
+
+.journey-card:hover .journey-card-action {
+  color: var(--blue-400);
+  transform: translateX(4px);
+}
+
+/* ====== RUNNER ====== */
+
+.do-runner-wrapper {
+  max-width: var(--max-prose);
+  margin: 0 auto;
+}
+
+.runner-header {
+  border-bottom: 1px solid var(--ink-600);
+  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.runner-title {
+  color: var(--paper-100);
+  margin-bottom: var(--space-2);
+}
+
+.runner-progress {
+  font-family: var(--font-mono);
+  color: var(--blue-500);
+  font-size: 0.875rem;
+}
+
+.node-content {
+  color: var(--paper-100);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-family: var(--font-display);
+  margin-bottom: var(--space-8);
+}
+
+.node-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Buttons */
+
+.btn-option {
+  background: var(--ink-800);
+  border: 1px solid var(--ink-600);
+  color: var(--paper-100);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn-option:hover {
+  border-color: var(--blue-500);
+  background: rgba(29, 78, 216, 0.1);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--blue-500);
+  color: var(--paper-100);
+  padding: var(--space-3) var(--space-6);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.btn-primary:hover {
+  background: var(--blue-400);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--ink-600);
+  color: var(--paper-100);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.btn-secondary:hover {
+  border-color: var(--paper-100);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: var(--ink-400);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.btn-ghost:hover {
+  color: var(--paper-100);
+}
+
+.terminal-state {
+  margin-top: var(--space-6);
+  padding: var(--space-6);
+  background: var(--ink-800);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--success);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.terminal-message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--paper-100);
+  font-family: var(--font-mono);
+}
+
+.runner-footer {
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--ink-800);
+}

@@ -1,0 +1,60 @@
+{
+  "id": "first-time-voter",
+  "title": "First-Time Voter Registration",
+  "description": "A step-by-step guide to registering as a voter using Form 6.",
+  "estimatedTime": "5 mins",
+  "initialNodeId": "start",
+  "nodes": {
+    "start": {
+      "type": "question",
+      "content": "Are you an Indian citizen who is 18 years of age or older?",
+      "options": [
+        { "label": "Yes", "targetNodeId": "age_proof" },
+        { "label": "No", "targetNodeId": "not_eligible" }
+      ]
+    },
+    "not_eligible": {
+      "type": "info",
+      "content": "You must be an Indian citizen and at least 18 years old to register to vote.",
+      "isTerminal": true
+    },
+    "age_proof": {
+      "type": "question",
+      "content": "Do you have a valid Proof of Age document (e.g., Aadhaar Card, PAN Card, Driving License, 10th Class Certificate)?",
+      "options": [
+        { "label": "Yes, I have one", "targetNodeId": "address_proof" },
+        { "label": "No, I don't", "targetNodeId": "age_proof_alternatives" }
+      ]
+    },
+    "age_proof_alternatives": {
+      "type": "info",
+      "content": "If you don't have the standard documents, you can also provide a birth certificate from a municipal authority or a baptism certificate. Once you have a valid document, proceed to the next step.",
+      "nextNodeId": "address_proof"
+    },
+    "address_proof": {
+      "type": "question",
+      "content": "Do you have a valid Proof of Residence document (e.g., Aadhaar Card, Indian Passport, Electricity/Water/Gas bill, Bank Passbook)?",
+      "options": [
+        { "label": "Yes, I have one", "targetNodeId": "photo_req" },
+        { "label": "No, I don't", "targetNodeId": "address_proof_alternatives" }
+      ]
+    },
+    "address_proof_alternatives": {
+      "type": "info",
+      "content": "If you live with your parents, you can use their proof of address along with a document establishing your relationship with them. Once ready, proceed to the next step.",
+      "nextNodeId": "photo_req"
+    },
+    "photo_req": {
+      "type": "info",
+      "content": "Great. You will also need a recent passport-size photograph (with a light background). Keep a scanned copy ready if applying online.",
+      "nextNodeId": "apply_online"
+    },
+    "apply_online": {
+      "type": "action",
+      "content": "You have all the necessary documents. You can now apply online by filling out **Form 6** on the Voter Services Portal.",
+      "actionLabel": "Go to NVSP Portal",
+      "actionUrl": "https://voters.eci.gov.in/",
+      "isTerminal": true
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "pwd-senior",
+  "title": "PwD / Senior Citizen Guide",
+  "description": "Information on Home Voting, Saksham app, and special polling station facilities.",
+  "estimatedTime": "3 mins",
+  "initialNodeId": "start",
+  "nodes": {
+    "start": {
+      "type": "question",
+      "content": "Are you checking for yourself or someone else who is an 85+ senior citizen or a Person with Disability (PwD)?",
+      "options": [
+        { "label": "For an 85+ Senior Citizen", "targetNodeId": "home_voting" },
+        { "label": "For a Person with Disability (PwD)", "targetNodeId": "pwd_options" },
+        { "label": "I just want to know about booth facilities", "targetNodeId": "booth_facilities" }
+      ]
+    },
+    "home_voting": {
+      "type": "info",
+      "content": "Senior citizens above 85 years of age are eligible for the Home Voting facility. You need to fill out **Form 12D** within 5 days of the election notification.",
+      "nextNodeId": "booth_facilities"
+    },
+    "pwd_options": {
+      "type": "question",
+      "content": "Are you marked as a PwD voter in the electoral roll?",
+      "options": [
+        { "label": "Yes", "targetNodeId": "pwd_marked" },
+        { "label": "No", "targetNodeId": "pwd_unmarked" }
+      ]
+    },
+    "pwd_unmarked": {
+      "type": "action",
+      "content": "You can register yourself as a PwD voter using the Saksham ECI App or the Voter Services Portal. This ensures special facilities are arranged for you.",
+      "actionLabel": "Download Saksham App",
+      "actionUrl": "https://play.google.com/store/apps/details?id=pwd.eci.com.pwdapp",
+      "isTerminal": false,
+      "options": [
+        { "label": "What are my voting options?", "targetNodeId": "pwd_marked" }
+      ]
+    },
+    "pwd_marked": {
+      "type": "info",
+      "content": "As a registered PwD voter with a 40% benchmark disability, you are eligible for the Home Voting facility. Submit **Form 12D** within 5 days of notification. Alternatively, you can use special facilities at the polling booth.",
+      "nextNodeId": "booth_facilities"
+    },
+    "booth_facilities": {
+      "type": "info",
+      "content": "If visiting the polling station, these facilities are available:\n\n- Assured Minimum Facilities (AMF) including ramps and drinking water.\n- Wheelchairs on request.\n- Priority voting (no need to stand in line).\n- Free transport facility (can be booked via Saksham App).\n- Braille on EVMs and Braille voter slips for visually impaired voters.",
+      "isTerminal": true
+    }
+  }
+}
