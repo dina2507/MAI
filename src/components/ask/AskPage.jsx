@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ChatStream from "./ChatStream";
 import Composer from "./Composer";
@@ -99,10 +100,10 @@ export default function AskPage() {
       {/* Editorial header */}
       <header className="ask-header">
         <div className="ask-header-inner">
-          <div className="ask-masthead">
+          <Link to="/" className="ask-masthead">
             <span className="ask-masthead-dot" aria-hidden />
             <span className="text-caption">MAI — ASK</span>
-          </div>
+          </Link>
           {!isEmpty && (
             <button className="ask-clear-btn" onClick={handleClear}>
               New conversation

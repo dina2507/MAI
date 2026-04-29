@@ -1,0 +1,17 @@
+{
+  "name": "MAI — Indian Election Assistant",
+  "short_name": "MAI",
+  "description": "Your vote is your voice. Know how to use it. Ask questions, follow voter journeys, and learn how Indian democracy works.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0A0A0F",
+  "background_color": "#0A0A0F",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

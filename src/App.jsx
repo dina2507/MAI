@@ -6,6 +6,7 @@ import JourneySelector from "./components/do/JourneySelector";
 import JourneyPlayer from "./components/do/JourneyPlayer";
 import LearnHome from "./components/learn/LearnHome";
 import ChapterReader from "./components/learn/ChapterReader";
+import NotFound from "./components/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 
@@ -151,6 +152,7 @@ export default function App() {
           <Route path="/do/:journeyId" element={<JourneyPlayer />} />
           <Route path="/learn" element={<LearnHome />} />
           <Route path="/learn/:chapterId" element={<ChapterReader />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>
