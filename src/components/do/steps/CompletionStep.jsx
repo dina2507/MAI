@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { markComplete } from "../../../hooks/useJourneyProgress";
+import { logMaiEvent } from "../../../services/analytics";
 
 export default function CompletionStep({ step, journey, onComplete }) {
   const navigate = useNavigate();
@@ -11,10 +12,13 @@ export default function CompletionStep({ step, journey, onComplete }) {
 
   // Mark journey as completed + fire confetti
   useEffect(() => {
-    if (journey?.id) markComplete(journey.id);
+    if (journey?.id) {
+      markComplete(journey.id);
+      logMaiEvent("journey_completed", { journey_id: journey.id, journey_title: journey.title });
+    }
     const canvas = canvasRef.current;
     if (canvas) fireConfetti(canvas);
-  }, [journey?.id]);
+  }, [journey?.id, journey?.title]);
 
   function handleAction(action) {
     if (action.type === "journey") {

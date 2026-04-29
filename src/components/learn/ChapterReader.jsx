@@ -5,6 +5,7 @@ import * as Icons from "lucide-react";
 import { ChevronLeft, ChevronRight, BookOpen, Volume2, VolumeX } from "lucide-react";
 import { CHAPTER_MAP, CHAPTERS } from "../../learn/chapters";
 import SectionRenderer from "./SectionRenderer";
+import { logMaiEvent } from "../../services/analytics";
 import "../learn/learn.css";
 
 export default function ChapterReader() {
@@ -17,11 +18,14 @@ export default function ChapterReader() {
   const prevChapter = CHAPTERS[currentIndex - 1] || null;
   const nextChapter = CHAPTERS[currentIndex + 1] || null;
 
-  // Stop speech on chapter change
+  // Log analytics and stop speech on chapter change
   useEffect(() => {
+    if (chapter) {
+      logMaiEvent("chapter_started", { chapter_id: chapterId, chapter_title: chapter.title });
+    }
     window.speechSynthesis?.cancel();
     setIsSpeaking(false);
-  }, [chapterId]);
+  }, [chapterId, chapter]);
 
   // Clean up on unmount
   useEffect(() => {

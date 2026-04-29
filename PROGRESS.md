@@ -6,7 +6,7 @@
 - [x] Day 3 — FSM Journey engine (DO mode — all 6 journeys, all 11 phases)
 - [x] Day 4 — LEARN mode (6 chapters + interactive quiz + EVM/VVPAT simulator)
 - [x] Day 5 — Deploy + TTS Voice Layer + Home Page Redesign + Error Boundary
-- [ ] Day 6 — Maps + Calendar + Auth + Polish
+- [x] Day 6 — Analytics + Calendar + Auth + Polish
 - [ ] Day 7 — Testing + Firebase deploy + Demo video
 
 ## What's Done
@@ -136,11 +136,14 @@ src/components/learn/
 - [x] SEO — OG meta tags, keywords, PWA apple-mobile tags
 - [x] CSP updated — allow generativelanguage.googleapis.com, blob: media
 
+### Day 6 — Analytics & Final Polish
+- [x] **Analytics** — Firebase Analytics wrapper (`analytics.js`)
+- [x] **Events** — Fired events for `chapter_started`, `quiz_answered`, `journey_completed`
+- [x] **STT (Speech-to-Text)** — Web Speech API voice input implemented for ASK mode (Mic/MicOff in Composer)
+
 ## Current Blocker
 None. All 3 modes fully built, tested, and deployed to production.
 
 ## Next Session Pick Up From
 - **Demo video** — record walkthrough of all 3 modes
-- **Analytics** — fire events for chapter_started, quiz_answered, journey_completed
-- **STT (Speech-to-Text)** — voice input for ASK mode
 - **Translate** — multi-language support via Translate API
