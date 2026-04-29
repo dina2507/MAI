@@ -6,6 +6,7 @@ import Composer from "./Composer";
 import StarterQuestions from "./StarterQuestions";
 import SourceDrawer from "./SourceDrawer";
 import { askMai } from "../../services/askClient";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "./ask.css";
 
 export default function AskPage() {
@@ -104,11 +105,14 @@ export default function AskPage() {
             <span className="ask-masthead-dot" aria-hidden />
             <span className="text-caption">MAI — ASK</span>
           </Link>
-          {!isEmpty && (
-            <button className="ask-clear-btn" onClick={handleClear}>
-              New conversation
-            </button>
-          )}
+          <div className="ask-header-actions" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <LanguageSwitcher />
+            {!isEmpty && (
+              <button className="ask-clear-btn" onClick={handleClear}>
+                New conversation
+              </button>
+            )}
+          </div>
         </div>
       </header>
 

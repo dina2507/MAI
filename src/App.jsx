@@ -8,11 +8,15 @@ import LearnHome from "./components/learn/LearnHome";
 import ChapterReader from "./components/learn/ChapterReader";
 import NotFound from "./components/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
+import LanguageSwitcher from "./components/ui/LanguageSwitcher";
 import "./App.css";
 
 function HomePage() {
   return (
     <div className="home-page">
+      <header className="home-topbar">
+        <LanguageSwitcher />
+      </header>
       {/* Hero section */}
       <div className="home-hero">
         <motion.div

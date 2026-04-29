@@ -3,17 +3,19 @@ import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { BookOpen, Cpu } from "lucide-react";
 import { CHAPTERS } from "../../learn/chapters";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "../learn/learn.css";
 
 export default function LearnHome() {
   return (
     <div className="learn-home">
       <header className="learn-home-header">
-        <div className="learn-home-masthead">
+        <div className="learn-home-masthead" style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Link to="/" className="learn-home-link">
             <span className="learn-masthead-dot" />
             <span className="text-caption">MAI — LEARN</span>
           </Link>
+          <LanguageSwitcher />
         </div>
       </header>
 

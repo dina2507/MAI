@@ -136,14 +136,14 @@ src/components/learn/
 - [x] SEO — OG meta tags, keywords, PWA apple-mobile tags
 - [x] CSP updated — allow generativelanguage.googleapis.com, blob: media
 
-### Day 6 — Analytics & Final Polish
+### Day 6 — Analytics, Translate & Final Polish
 - [x] **Analytics** — Firebase Analytics wrapper (`analytics.js`)
 - [x] **Events** — Fired events for `chapter_started`, `quiz_answered`, `journey_completed`
 - [x] **STT (Speech-to-Text)** — Web Speech API voice input implemented for ASK mode (Mic/MicOff in Composer)
+- [x] **Translate** — 10 Indian languages via Google Translate API Web Element (`LanguageSwitcher.jsx`)
 
 ## Current Blocker
 None. All 3 modes fully built, tested, and deployed to production.
 
 ## Next Session Pick Up From
 - **Demo video** — record walkthrough of all 3 modes
-- **Translate** — multi-language support via Translate API

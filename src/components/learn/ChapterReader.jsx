@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, BookOpen, Volume2, VolumeX } from "lucide-re
 import { CHAPTER_MAP, CHAPTERS } from "../../learn/chapters";
 import SectionRenderer from "./SectionRenderer";
 import { logMaiEvent } from "../../services/analytics";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "../learn/learn.css";
 
 export default function ChapterReader() {
@@ -78,7 +79,8 @@ export default function ChapterReader() {
           <ChevronLeft size={16} />
           All chapters
         </Link>
-        <div className="learn-reader-bar-right">
+        <div className="learn-reader-bar-right" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <LanguageSwitcher />
           <button
             className="learn-tts-btn"
             onClick={handleSpeak}

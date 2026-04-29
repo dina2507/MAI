@@ -8,6 +8,7 @@ import { getJourney } from "../../journeys";
 import StepRenderer from "./StepRenderer";
 import ProgressDots from "./ProgressDots";
 import StepHelper from "./StepHelper";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "./do.css";
 
 export default function JourneyPlayer() {
@@ -139,6 +140,7 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
           <ProgressDots history={j.history} current={j.currentStepId} accent={journey.accent} stepIndex={j.stepIndex} totalSteps={j.totalSteps} />
         </div>
         <div className="topbar-right">
+          <LanguageSwitcher />
           <button className="topbar-btn" onClick={handleSpeak} aria-label="Read aloud">
             {isSpeaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
           </button>

@@ -18,6 +18,14 @@
   max-width: var(--max-wide);
   margin: 0 auto;
   padding: var(--space-16) var(--space-6) var(--space-8);
+  position: relative;
+}
+
+.home-topbar {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+  z-index: 50;
 }
 
 /* Hero */

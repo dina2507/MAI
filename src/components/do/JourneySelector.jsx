@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { ALL_JOURNEYS } from "../../journeys";
 import { loadProgress, isJourneyComplete } from "../../hooks/useJourneyProgress";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "./do.css";
 
 export default function JourneySelector() {
@@ -11,16 +12,19 @@ export default function JourneySelector() {
   return (
     <div className="do-home">
       <header className="do-home-header">
-        <div className="do-home-masthead">
+        <div className="do-home-masthead" style={{ flex: 1 }}>
           <Link to="/" className="do-home-link">
             <span className="do-masthead-dot" />
             <span className="text-caption">MAI — DO</span>
           </Link>
         </div>
-        <Link to="/" className="step-secondary-btn" style={{ padding: '8px 12px', height: 'auto', alignSelf: 'center' }}>
-          <Icons.ChevronLeft size={16} />
-          Back to Home
-        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <LanguageSwitcher />
+          <Link to="/" className="step-secondary-btn" style={{ padding: '8px 12px', height: 'auto' }}>
+            <Icons.ChevronLeft size={16} />
+            Back to Home
+          </Link>
+        </div>
       </header>
 
       <main className="do-home-main">
