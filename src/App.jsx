@@ -139,9 +139,9 @@ function HomePage() {
       <footer className="home-footer">
         <div className="home-footer-line" />
         <p className="text-caption home-footer-text">
-          Built for the Google Prompt Wars Challenge · Data sourced exclusively from{" "}
+          MAI — Advanced Election Intelligence · Data sourced exclusively from{" "}
           <a href="https://www.eci.gov.in" target="_blank" rel="noopener">eci.gov.in</a>
-          {" "}· No paid APIs
+          {" "}· Empowering every citizen
         </p>
       </footer>
     </div>

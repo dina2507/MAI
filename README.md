@@ -1,6 +1,6 @@
 # MAI (மை) — Indian Election Assistant 🇮🇳
 
-> **MAI (மை)** means "ink" in Tamil — specifically, the indelible ink applied to a voter's finger. Built for the Google Prompt Wars Challenge.
+> **MAI (மை)** means "ink" in Tamil — specifically, the indelible ink applied to a voter's finger. MAI is a specialized intelligence platform designed to empower Indian citizens with accurate electoral knowledge.
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-maiapp--494222.web.app-F97316?style=for-the-badge&logo=firebase)](https://maiapp-494222.web.app)
 
@@ -84,4 +84,4 @@ This project relies heavily on the Google Cloud ecosystem and Gemini models to p
 *   **Data-Driven Architecture**: The FSM engine in DO Mode is completely driven by JSON configurations, allowing infinite scalable journeys without code changes.
 
 ---
-*Built with ❤️ for the Google Prompt Wars Challenge.*
+*Developed with ❤️ by Dinagar.*
