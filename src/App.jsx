@@ -9,13 +9,16 @@ import ChapterReader from "./components/learn/ChapterReader";
 import NotFound from "./components/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
 import LanguageSwitcher from "./components/ui/LanguageSwitcher";
+import { AuthProvider } from "./contexts/AuthContext";
+import AuthButton from "./components/ui/AuthButton";
 import "./App.css";
 
 function HomePage() {
   return (
     <div className="home-page">
-      <header className="home-topbar">
+      <header className="home-topbar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 24px" }}>
         <LanguageSwitcher />
+        <AuthButton />
       </header>
       {/* Hero section */}
       <div className="home-hero">
@@ -148,17 +151,19 @@ function HomePage() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/ask" element={<AskPage />} />
-          <Route path="/do" element={<JourneySelector />} />
-          <Route path="/do/:journeyId" element={<JourneyPlayer />} />
-          <Route path="/learn" element={<LearnHome />} />
-          <Route path="/learn/:chapterId" element={<ChapterReader />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/ask" element={<AskPage />} />
+            <Route path="/do" element={<JourneySelector />} />
+            <Route path="/do/:journeyId" element={<JourneyPlayer />} />
+            <Route path="/learn" element={<LearnHome />} />
+            <Route path="/learn/:chapterId" element={<ChapterReader />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

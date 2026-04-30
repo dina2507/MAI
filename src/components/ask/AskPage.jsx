@@ -7,6 +7,7 @@ import StarterQuestions from "./StarterQuestions";
 import SourceDrawer from "./SourceDrawer";
 import { askMai } from "../../services/askClient";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
+import AuthButton from "../ui/AuthButton";
 import "./ask.css";
 
 export default function AskPage() {
@@ -107,6 +108,7 @@ export default function AskPage() {
           </Link>
           <div className="ask-header-actions" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <LanguageSwitcher />
+            <AuthButton />
             {!isEmpty && (
               <button className="ask-clear-btn" onClick={handleClear}>
                 New conversation
