@@ -21,6 +21,39 @@
   max-width: var(--max-wide);
   margin: 0 auto;
   padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.learn-home-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.learn-back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--ink-600);
+  border-radius: var(--radius-md);
+  color: var(--paper-100);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.learn-back-home-btn:hover {
+  border-color: var(--saffron-500);
+  color: var(--saffron-500);
+  text-decoration: none;
 }
 
 .learn-home-link {

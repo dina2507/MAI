@@ -79,7 +79,7 @@ export default function ChapterReader() {
           <ChevronLeft size={16} />
           All chapters
         </Link>
-        <div className="learn-reader-bar-right" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div className="learn-reader-bar-right">
           <LanguageSwitcher />
           <button
             className="learn-tts-btn"

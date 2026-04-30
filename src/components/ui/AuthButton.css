@@ -1,0 +1,54 @@
+/* ============================================================
+   AUTH BUTTON
+   ============================================================ */
+
+.auth-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+}
+
+.auth-btn-signed-in {
+  background: transparent;
+  border: 1px solid var(--ink-600);
+  padding: var(--space-1) var(--space-3);
+  color: var(--paper-100);
+}
+
+.auth-btn-signed-in:hover {
+  border-color: var(--ink-400);
+}
+
+.auth-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.auth-name {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .auth-name {
+    display: inline;
+  }
+}
+
+.auth-btn-sign-in {
+  background: var(--ink-800);
+  border: 1px solid var(--saffron-500);
+  padding: var(--space-2) var(--space-4);
+  color: var(--saffron-500);
+}
+
+.auth-btn-sign-in:hover {
+  background: var(--saffron-glow);
+}

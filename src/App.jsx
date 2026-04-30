@@ -16,7 +16,7 @@ import "./App.css";
 function HomePage() {
   return (
     <div className="home-page">
-      <header className="home-topbar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 24px" }}>
+      <header className="home-topbar">
         <LanguageSwitcher />
         <AuthButton />
       </header>

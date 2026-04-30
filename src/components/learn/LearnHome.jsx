@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
-import { BookOpen, Cpu } from "lucide-react";
+import { BookOpen, Cpu, ChevronLeft } from "lucide-react";
 import { CHAPTERS } from "../../learn/chapters";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "../learn/learn.css";
@@ -10,12 +10,18 @@ export default function LearnHome() {
   return (
     <div className="learn-home">
       <header className="learn-home-header">
-        <div className="learn-home-masthead" style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div className="learn-home-masthead">
           <Link to="/" className="learn-home-link">
             <span className="learn-masthead-dot" />
             <span className="text-caption">MAI — LEARN</span>
           </Link>
-          <LanguageSwitcher />
+          <div className="learn-home-actions">
+            <LanguageSwitcher />
+            <Link to="/" className="learn-back-home-btn">
+              <ChevronLeft size={16} />
+              Back to Home
+            </Link>
+          </div>
         </div>
       </header>
 

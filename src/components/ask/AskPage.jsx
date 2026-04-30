@@ -106,7 +106,7 @@ export default function AskPage() {
             <span className="ask-masthead-dot" aria-hidden />
             <span className="text-caption">MAI — ASK</span>
           </Link>
-          <div className="ask-header-actions" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div className="ask-header-actions">
             <LanguageSwitcher />
             <AuthButton />
             {!isEmpty && (
