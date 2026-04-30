@@ -30,7 +30,7 @@ export default function JourneyPlayer() {
     return (
       <div className="journey-not-found">
         <h2 className="text-display-lg">Journey not found</h2>
-        <button onClick={() => navigate("/do")} className="step-primary-btn">
+        <button onClick={() => navigate("/guide")} className="step-primary-btn">
           Back to journeys
         </button>
       </div>
@@ -40,7 +40,7 @@ export default function JourneyPlayer() {
   return (
     <JourneyView
       journey={journey}
-      onExit={() => navigate("/do")}
+      onExit={() => navigate("/guide")}
       resumeFrom={resumePrompt}
       onResumePromptDismiss={() => setResumePrompt(null)}
       showHelper={showHelper}
@@ -172,7 +172,7 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
           </button>
           <button className="footer-btn" onClick={() => setShowHelper(true)}>
             <HelpCircle size={16} />
-            Confused? Ask MAI
+            Confused? Ask Civic
           </button>
         </footer>
       )}

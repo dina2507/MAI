@@ -10,7 +10,7 @@ isSupported().then((supported) => {
   }
 }).catch(console.error);
 
-export const logMaiEvent = (eventName, eventParams = {}) => {
+export const logCivicEvent = (eventName, eventParams = {}) => {
   if (analytics) {
     logEvent(analytics, eventName, eventParams);
   } else {

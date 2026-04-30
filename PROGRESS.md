@@ -1,9 +1,10 @@
-# MAI — Build Progress
+# Civic — Build Progress
+> Developer: Dinagar
 
-## 7-Day Roadmap
+## Build Roadmap
 - [x] Day 1 — Vite setup + Firebase init + Gemini hello world + Design system
 - [x] Day 2 — RAG pipeline (ECI docs → Firestore → grounded Gemini)
-- [x] Day 3 — FSM Journey engine (DO mode — all 6 journeys, all 11 phases)
+- [x] Day 3 — FSM Journey engine (GUIDE mode — all 6 journeys, all 11 phases)
 - [x] Day 4 — LEARN mode (6 chapters + interactive quiz + EVM/VVPAT simulator)
 - [x] Day 5 — Deploy + TTS Voice Layer + Home Page Redesign + Error Boundary
 - [x] Day 6 — Analytics + Calendar + Auth + Polish
@@ -11,7 +12,7 @@
 
 ## What's Done
 
-### Foundation & ASK Mode
+### Foundation & CHAT Mode
 - [x] CLAUDE.md created
 - [x] PROGRESS.md created
 - [x] .gitignore configured
@@ -19,22 +20,22 @@
 - [x] Phase 2 — The Ingestion Pipeline
 - [x] Phase 3 — The Retrieval + Generation Cloud Function
 - [x] Phase 4 — The Design System (Editorial Civic Journal) + responsive polish
-- [x] Phase 5-9 — ASK Mode (Chat UI, Streaming Integration, Hardening, Deployment)
+- [x] Phase 5-9 — CHAT Mode (Chat UI, Streaming Integration, Hardening, Deployment)
 
-### DO Mode — ALL 11 PHASES COMPLETE ✅
-- [x] DO Phase 1 — Journey Data Model (`_types.js`, 5 step types: info, choice, checklist, action, completion)
-- [x] DO Phase 2 — All 6 Journey Definitions (first-time-voter, missing-name, moved-cities, migrant-worker, election-day, pwd-senior)
-- [x] DO Phase 3 — FSM Engine (`useJourney.js` hook + `useJourneyProgress.js` persistence hook)
-- [x] DO Phase 4 — Component Library (`StepRenderer`, `InfoStep`, `ChoiceStep`, `ChecklistStep`, `ActionStep`, `CompletionStep`)
-- [x] DO Phase 5 — Full-Screen Journey Player (`JourneyPlayer.jsx` with resume prompt, exit confirmation)
-- [x] DO Phase 6 — Journey Selector (`JourneySelector.jsx` — DO home with icons, accent colors, "In progress" badges)
-- [x] DO Phase 7 — Checklist & Interactive Elements (required gating, live counters, toggle states)
-- [x] DO Phase 8 — Gemini Fallback Helper (`StepHelper.jsx` — drawer that reuses ASK endpoint with step context)
-- [x] DO Phase 9 — Lightweight Persistence (localStorage, 7-day expiry, auto-clear on completion)
-- [x] DO Phase 10 — Polish & Animations (`do.css` — per-journey accent theming, `ProgressDots.jsx`, mobile responsive)
-- [x] DO Phase 11 — Routing updated (`/do` → JourneySelector, `/do/:journeyId` → JourneyPlayer)
+### GUIDE Mode — ALL 11 PHASES COMPLETE ✅
+- [x] GUIDE Phase 1 — Journey Data Model (`_types.js`, 5 step types: info, choice, checklist, action, completion)
+- [x] GUIDE Phase 2 — All 6 Journey Definitions (first-time-voter, missing-name, moved-cities, migrant-worker, election-day, pwd-senior)
+- [x] GUIDE Phase 3 — FSM Engine (`useJourney.js` hook + `useJourneyProgress.js` persistence hook)
+- [x] GUIDE Phase 4 — Component Library (`StepRenderer`, `InfoStep`, `ChoiceStep`, `ChecklistStep`, `ActionStep`, `CompletionStep`)
+- [x] GUIDE Phase 5 — Full-Screen Journey Player (`JourneyPlayer.jsx` with resume prompt, exit confirmation)
+- [x] GUIDE Phase 6 — Journey Selector (`JourneySelector.jsx` — GUIDE home with icons, accent colors, "In progress" badges)
+- [x] GUIDE Phase 7 — Checklist & Interactive Elements (required gating, live counters, toggle states)
+- [x] GUIDE Phase 8 — Gemini Fallback Helper (`StepHelper.jsx` — drawer that reuses ASK endpoint with step context)
+- [x] GUIDE Phase 9 — Lightweight Persistence (localStorage, 7-day expiry, auto-clear on completion)
+- [x] GUIDE Phase 10 — Polish & Animations (`do.css` — per-journey accent theming, `ProgressDots.jsx`, mobile responsive)
+- [x] GUIDE Phase 11 — Routing updated (`/do` → JourneySelector, `/do/:journeyId` → JourneyPlayer)
 
-### DO Mode — Enhancement Pass ✅
+### GUIDE Mode — Enhancement Pass ✅
 - [x] Bug Fix — Calendar regex (ActionStep date formatting was double-escaped)
 - [x] Bug Fix — Checklist state persistence (`saveStepData` + proactive saves on toggle)
 - [x] Bug Fix — Dead code cleanup (removed orphan DoPage.jsx, JourneyRunner.jsx)
@@ -48,7 +49,7 @@
 - [x] Enhancement — Keyboard shortcuts (Escape, Enter to continue, Number keys for choices)
 - [x] Enhancement — Step-level TTS (Web Speech API "Read aloud" button in topbar)
 
-## DO Mode Architecture
+## GUIDE Mode Architecture
 ```
 src/journeys/
   ├── _types.js                  JSDoc types & helpers
@@ -65,12 +66,12 @@ src/hooks/
   └── useJourneyProgress.js      localStorage persistence (save, load, clear, markComplete, isJourneyComplete)
 
 src/components/do/
-  ├── JourneySelector.jsx        DO home page (6 cards)
+  ├── JourneySelector.jsx        GUIDE home page (6 cards)
   ├── JourneyPlayer.jsx          Full-screen player (topbar, stage, footer, helper)
   ├── StepRenderer.jsx           Step type dispatcher
   ├── ProgressDots.jsx           Dynamic dot progress indicator
   ├── StepHelper.jsx             Gemini fallback drawer
-  ├── do.css                     Complete DO mode stylesheet
+  ├── do.css                     Complete GUIDE mode stylesheet
   └── steps/
       ├── InfoStep.jsx           Pure info + continue
       ├── ChoiceStep.jsx         Branching decisions
@@ -87,7 +88,7 @@ src/components/do/
 - FSM engine is data-driven — journeys are pure JSON, engine renders any of them
 - Per-journey accent theming via CSS custom properties (`--journey-accent`)
 - localStorage persistence with 7-day expiry, auto-clear on completion
-- Gemini helper reuses 100% of ASK's Cloud Function — no new backend
+- Gemini helper reuses 100% of CHAT's Cloud Function — no new backend
 
 ### LEARN Mode ✅
 - [x] 6 chapter data files (`src/learn/chapters.js`) — real ECI facts, no hallucination
@@ -120,9 +121,9 @@ src/components/learn/
 | Path | Component | Status |
 |---|---|---|
 | `/` | HomePage | ✅ |
-| `/ask` | AskPage | ✅ |
-| `/do` | JourneySelector | ✅ |
-| `/do/:journeyId` | JourneyPlayer | ✅ |
+| `/chat` | AskPage | ✅ |
+| `/guide` | JourneySelector | ✅ |
+| `/guide/:journeyId` | JourneyPlayer | ✅ |
 | `/learn` | LearnHome | ✅ |
 | `/learn/:chapterId` | ChapterReader | ✅ |
 
@@ -130,7 +131,7 @@ src/components/learn/
 - [x] Production deploy to Firebase Hosting (https://maiapp-494222.web.app)
 - [x] Premium home page redesign — hero badge, stats row, mode cards with descriptions/CTAs
 - [x] TTS on LEARN mode chapters — Listen/Stop button in reader topbar
-- [x] TTS on DO mode steps — Read-aloud button in journey topbar (user-implemented)
+- [x] TTS on GUIDE mode steps — Read-aloud button in journey topbar (user-implemented)
 - [x] Keyboard shortcuts in all step types — Enter, number keys, Escape (user-implemented)
 - [x] Error boundary wrapping entire app — friendly recovery UI
 - [x] SEO — OG meta tags, keywords, PWA apple-mobile tags
@@ -139,7 +140,7 @@ src/components/learn/
 ### Day 6 — Analytics, Translate & Final Polish
 - [x] **Analytics** — Firebase Analytics wrapper (`analytics.js`)
 - [x] **Events** — Fired events for `chapter_started`, `quiz_answered`, `journey_completed`
-- [x] **STT (Speech-to-Text)** — Web Speech API voice input implemented for ASK mode (Mic/MicOff in Composer)
+- [x] **STT (Speech-to-Text)** — Web Speech API voice input implemented for CHAT mode (Mic/MicOff in Composer)
 - [x] **Translate** — 10 Indian languages via Google Translate API Web Element (`LanguageSwitcher.jsx`)
 
 ## Current Blocker

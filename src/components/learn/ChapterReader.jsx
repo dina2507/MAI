@@ -5,7 +5,7 @@ import * as Icons from "lucide-react";
 import { ChevronLeft, ChevronRight, BookOpen, Volume2, VolumeX } from "lucide-react";
 import { CHAPTER_MAP, CHAPTERS } from "../../learn/chapters";
 import SectionRenderer from "./SectionRenderer";
-import { logMaiEvent } from "../../services/analytics";
+import { logCivicEvent } from "../../services/analytics";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "../learn/learn.css";
 
@@ -22,7 +22,7 @@ export default function ChapterReader() {
   // Log analytics and stop speech on chapter change
   useEffect(() => {
     if (chapter) {
-      logMaiEvent("chapter_started", { chapter_id: chapterId, chapter_title: chapter.title });
+      logCivicEvent("chapter_started", { chapter_id: chapterId, chapter_title: chapter.title });
     }
     window.speechSynthesis?.cancel();
     setIsSpeaking(false);

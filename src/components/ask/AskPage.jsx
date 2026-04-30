@@ -104,7 +104,7 @@ export default function AskPage() {
         <div className="ask-header-inner">
           <Link to="/" className="ask-masthead">
             <span className="ask-masthead-dot" aria-hidden />
-            <span className="text-caption">MAI — ASK</span>
+            <span className="text-caption">Civic — Chat</span>
           </Link>
           <div className="ask-header-actions">
             <LanguageSwitcher />
@@ -131,7 +131,7 @@ export default function AskPage() {
               className="ask-empty"
             >
               <h1 className="text-display-2xl ask-title">
-                Ask about the election process in{" "}
+                Chat about the election process in{" "}
                 <span className="text-display-italic ask-title-accent">India</span>
               </h1>
               <p className="text-body-lg ask-subtitle">
@@ -164,7 +164,7 @@ export default function AskPage() {
           disabled={pending}
         />
         <p className="ask-disclaimer text-caption">
-          MAI cites official ECI documents. For urgent issues, call 1950.
+          Civic cites official ECI documents. For urgent issues, call 1950.
         </p>
       </div>
 

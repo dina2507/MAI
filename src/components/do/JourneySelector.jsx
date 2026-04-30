@@ -15,7 +15,7 @@ export default function JourneySelector() {
         <div className="do-home-masthead">
           <Link to="/" className="do-home-link">
             <span className="do-masthead-dot" />
-            <span className="text-caption">MAI — DO</span>
+            <span className="text-caption">Civic — Guide</span>
           </Link>
           <div className="do-home-actions">
             <LanguageSwitcher />
@@ -54,7 +54,7 @@ export default function JourneySelector() {
               <motion.button
                 key={journey.id}
                 className={`journey-card ${completed ? "completed" : ""}`}
-                onClick={() => navigate(`/do/${journey.id}`)}
+                onClick={() => navigate(`/guide/${journey.id}`)}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + i * 0.06, duration: 0.5 }}

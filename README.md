@@ -1,35 +1,34 @@
-# MAI (மை) — Indian Election Assistant 🇮🇳
+# Civic — Indian Election Assistant 🇮🇳
 
-> **MAI (மை)** means "ink" in Tamil — specifically, the indelible ink applied to a voter's finger. MAI is a specialized intelligence platform designed to empower Indian citizens with accurate electoral knowledge.
+> **Civic** (formerly MAI) is a specialized intelligence platform designed to empower Indian citizens with accurate electoral knowledge. The name reflects our commitment to civic duty and informed participation.
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-maiapp--494222.web.app-F97316?style=for-the-badge&logo=firebase)](https://maiapp-494222.web.app)
 
-MAI is an interactive, culturally-grounded assistant designed to help Indian voters navigate the complex election process. It moves beyond generic chat interfaces to offer a comprehensive, three-pillar approach to civic education and action.
+Civic is an interactive, culturally-grounded assistant designed to help Indian voters navigate the complex election process. It moves beyond generic chat interfaces to offer a comprehensive, three-pillar approach to civic education and action.
 
-## 🌟 The Three Modes of MAI
+## 🌟 The Three Modes of Civic
 
-MAI is built on a custom design system ("Editorial Civic Journal") and provides three distinct modes, ensuring that every Indian voter is informed, prepared, and ready.
+Civic is built on a custom design system ("Editorial Civic Journal") and provides three distinct modes:
 
 ### 1. LEARN Mode 📚
 An interactive, chapter-by-chapter election explainer.
-- **6 Chapters** of factual, ECI-sourced content (no hallucinations).
-- **Interactive Quizzes** to test knowledge with reveal animations.
-- **EVM/VVPAT Simulator**: A high-fidelity, 3-panel interactive state machine (Control Unit, Ballot Unit, VVPAT) with a 7-second realistic countdown.
-- **Accessibility**: Built-in Text-to-Speech (TTS) to read chapters aloud.
+- **6 Chapters** of factual, ECI-sourced content.
+- **Interactive Quizzes** to test knowledge.
+- **EVM/VVPAT Simulator**: A high-fidelity interactive state machine.
+- **Accessibility**: Built-in Text-to-Speech (TTS).
 
-### 2. DO Mode 🚀
-A Finite State Machine (FSM) driven journey player for real voter situations.
-- **Guided Journeys**: 6 distinct, step-by-step flows for common scenarios (First-time voter, Missing name, Moved cities, Migrant worker, Election day companion, PwD/Senior citizen).
-- **Interactive Steps**: Branching choices, required checklists, and actionable steps (Calendar reminders, phone links).
-- **Gemini Fallback Helper**: Stuck on a step? Open the drawer to ask MAI—context-aware and RAG-grounded.
-- **Smart Progress**: Auto-saves progress to `localStorage` (7-day expiry) so users can resume later. Celebrates completion with a custom canvas confetti burst.
-- **Power User Friendly**: Navigate entirely with keyboard shortcuts (Enter, Escape, Number keys).
+### 2. GUIDE Mode 🚀
+(Formerly DO mode) A Finite State Machine (FSM) driven journey player for real voter situations.
+- **Guided Journeys**: 6 distinct flows for common scenarios.
+- **Interactive Steps**: Branching choices and actionable checklists.
+- **Civic Helper**: Context-aware RAG-grounded assistance.
+- **Smart Progress**: Auto-saves progress locally.
 
-### 3. ASK Mode 💬
-A highly accurate RAG (Retrieval-Augmented Generation) chatbot.
-- **Grounded strictly in ECI Data**: Answers are pulled *only* from official Election Commission of India (ECI) FAQs, handbooks, and manuals.
-- **Citations Included**: Every answer cites its source document to ensure trust and transparency.
-- **Streaming UI**: Fast, real-time token streaming directly from Firebase Cloud Functions.
+### 3. CHAT Mode 💬
+(Formerly ASK mode) A highly accurate RAG (Retrieval-Augmented Generation) chatbot.
+- **Grounded strictly in ECI Data**: Official ECI FAQs and handbooks.
+- **Citations Included**: Transparent source documentation.
+- **Streaming UI**: Fast, real-time responses.
 
 ## 🛠️ Tech Stack & Google Services
 

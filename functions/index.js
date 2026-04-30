@@ -71,7 +71,7 @@ function sanitizeQuestion(q) {
 // SYSTEM PROMPT
 // ============================================================
 
-const SYSTEM_PROMPT = `You are MAI, a helpful and friendly AI assistant that helps Indian citizens understand the election process.
+const SYSTEM_PROMPT = `You are Civic, a helpful and friendly AI assistant that helps Indian citizens understand the election process.
 
 RULES:
 1. For any questions related to elections, voting, or procedures, use ONLY information from the passages below. Never use outside knowledge for these topics.

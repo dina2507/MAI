@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
-import { logMaiEvent } from "../../../services/analytics";
+import { logCivicEvent } from "../../../services/analytics";
 
 export function QuizSection({ section }) {
   const { question } = section;
@@ -14,7 +14,7 @@ export function QuizSection({ section }) {
     setRevealed(true);
     
     const isCorrect = i === question.correct;
-    logMaiEvent("quiz_answered", {
+    logCivicEvent("quiz_answered", {
       question_text: question.question,
       is_correct: isCorrect,
       selected_option: question.options[i]

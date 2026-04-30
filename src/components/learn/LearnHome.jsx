@@ -13,7 +13,7 @@ export default function LearnHome() {
         <div className="learn-home-masthead">
           <Link to="/" className="learn-home-link">
             <span className="learn-masthead-dot" />
-            <span className="text-caption">MAI — LEARN</span>
+            <span className="text-caption">Civic — Learn</span>
           </Link>
           <div className="learn-home-actions">
             <LanguageSwitcher />

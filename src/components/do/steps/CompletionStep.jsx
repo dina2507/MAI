@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { markComplete } from "../../../hooks/useJourneyProgress";
-import { logMaiEvent } from "../../../services/analytics";
+import { logCivicEvent } from "../../../services/analytics";
 
 export default function CompletionStep({ step, journey, onComplete }) {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function CompletionStep({ step, journey, onComplete }) {
   useEffect(() => {
     if (journey?.id) {
       markComplete(journey.id);
-      logMaiEvent("journey_completed", { journey_id: journey.id, journey_title: journey.title });
+      logCivicEvent("journey_completed", { journey_id: journey.id, journey_title: journey.title });
     }
     const canvas = canvasRef.current;
     if (canvas) fireConfetti(canvas);
@@ -22,7 +22,7 @@ export default function CompletionStep({ step, journey, onComplete }) {
 
   function handleAction(action) {
     if (action.type === "journey") {
-      navigate(`/do/${action.target}`);
+      navigate(`/guide/${action.target}`);
     } else if (action.type === "link") {
       if (action.target?.startsWith("tel:")) {
         window.location.href = action.target;
@@ -30,16 +30,16 @@ export default function CompletionStep({ step, journey, onComplete }) {
         window.open(action.target, "_blank", "noopener");
       }
     } else if (action.type === "close") {
-      navigate("/do");
+      navigate("/guide");
     }
     onComplete?.();
   }
 
   function handleShare() {
-    const url = `${window.location.origin}/do/${journey?.id}`;
-    const text = `I just completed "${journey?.title}" on MAI — the Indian election assistant! Check it out:`;
+    const url = `${window.location.origin}/guide/${journey?.id}`;
+    const text = `I just completed "${journey?.title}" on Civic — the Indian election assistant! Check it out:`;
     if (navigator.share) {
-      navigator.share({ title: "MAI Journey", text, url }).catch(() => {});
+      navigator.share({ title: "Civic Journey", text, url }).catch(() => {});
     } else {
       const waUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
       window.open(waUrl, "_blank", "noopener");

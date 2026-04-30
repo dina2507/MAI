@@ -30,7 +30,7 @@ function HomePage() {
         >
           <div className="home-badge">
             <span className="home-badge-dot" />
-            <span className="text-caption">MAI — Indian Election Assistant</span>
+            <span className="text-caption">Civic — Indian Election Assistant</span>
           </div>
           <h1 className="text-display-2xl home-title">
             Your vote is your voice.
@@ -40,9 +40,9 @@ function HomePage() {
             </span>
           </h1>
           <p className="text-body-lg home-subtitle">
-            MAI (மை) means "ink" in Tamil — the ink on the voter's finger.
-            Ask questions grounded in ECI documents, follow step-by-step
-            voter journeys, or explore how India's democracy actually works.
+            Civic is a specialized intelligence platform designed to empower 
+            Indian voters. Ask questions grounded in ECI documents, follow 
+            step-by-step voter journeys, or explore how India's democracy actually works.
           </p>
         </motion.div>
 
@@ -79,31 +79,31 @@ function HomePage() {
       <div className="home-modes">
         {[
           {
-            to: "/ask",
+            to: "/chat",
             icon: MessageCircle,
-            name: "ASK",
+            name: "CHAT",
             accent: "#F97316",
-            tagline: "RAG-powered chatbot",
+            tagline: "RAG-powered query assistant",
             description: "Ask any question about Indian elections. Answers are grounded exclusively in official ECI documents — never hallucinated.",
-            cta: "Start asking",
+            cta: "Start inquiry",
           },
           {
-            to: "/do",
+            to: "/guide",
             icon: Navigation,
-            name: "DO",
+            name: "GUIDE",
             accent: "#3B6FEB",
             tagline: "Guided voter journeys",
             description: "Step-by-step guides for real situations — first-time registration, name correction, election day, and more.",
-            cta: "Pick your journey",
+            cta: "Pick your path",
           },
           {
             to: "/learn",
             icon: BookOpen,
             name: "LEARN",
             accent: "#15803D",
-            tagline: "Interactive election guide",
+            tagline: "Interactive election academy",
             description: "6 chapters covering how elections work, voter registration, EVM/VVPAT, and your rights. Includes an interactive EVM simulator.",
-            cta: "Start reading",
+            cta: "Start learning",
           },
         ].map((mode, i) => (
           <motion.div
@@ -139,7 +139,7 @@ function HomePage() {
       <footer className="home-footer">
         <div className="home-footer-line" />
         <p className="text-caption home-footer-text">
-          MAI — Advanced Election Intelligence · Data sourced exclusively from{" "}
+          Civic — Advanced Election Intelligence · Data sourced exclusively from{" "}
           <a href="https://www.eci.gov.in" target="_blank" rel="noopener">eci.gov.in</a>
           {" "}· Empowering every citizen
         </p>
@@ -155,9 +155,9 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/ask" element={<AskPage />} />
-            <Route path="/do" element={<JourneySelector />} />
-            <Route path="/do/:journeyId" element={<JourneyPlayer />} />
+            <Route path="/chat" element={<AskPage />} />
+            <Route path="/guide" element={<JourneySelector />} />
+            <Route path="/guide/:journeyId" element={<JourneyPlayer />} />
             <Route path="/learn" element={<LearnHome />} />
             <Route path="/learn/:chapterId" element={<ChapterReader />} />
             <Route path="*" element={<NotFound />} />

@@ -1,17 +1,17 @@
-# MAI — Indian Election Assistant
-> MAI (மை) means "ink" in Tamil — the ink on the voter's finger.
-> Built for Google Prompt Wars Challenge.
+# Civic — Indian Election Assistant
+> Civic (formerly MAI) is a specialized intelligence platform for Indian voters.
+> Lead Developer: Dinagar
 
 ## Problem Statement
 Create an assistant that helps users understand the Indian election 
 process, timelines, and steps in an interactive and easy-to-follow way.
 
-## What MAI Does
+## What Civic Does
 Three modes, one mission — make every Indian voter informed and ready:
 
 1. **LEARN** — Interactive chapter-by-chapter election explainer + EVM Simulator
-2. **DO** — FSM-driven guided journeys for 6 real voter situations ✅ COMPLETE
-3. **ASK** — Gemini RAG chatbot grounded ONLY on public ECI documents ✅ COMPLETE
+2. **GUIDE** — FSM-driven guided journeys for 6 real voter situations ✅ COMPLETE
+3. **CHAT** — Gemini RAG chatbot grounded ONLY on public ECI documents ✅ COMPLETE
 
 ## Tech Stack
 - **Frontend:** React + Vite (NO component libraries — custom design system)
@@ -37,7 +37,7 @@ Three modes, one mission — make every Indian voter informed and ready:
 | Google Text-to-Speech API | Audio on every step |
 | Google Calendar API | Election date reminders (integrated in DO mode ActionStep) |
 
-## The 6 DO-Mode Journeys (FSM) — ALL BUILT ✅
+## The 6 GUIDE-Mode Journeys (FSM) — ALL BUILT ✅
 1. First-time voter → Form 6 walkthrough (8 steps)
 2. Name missing from list → Diagnostic + 3 branching paths (9 steps)
 3. Moved cities / student away → Form 8 / transfer guide (7 steps)
@@ -70,20 +70,20 @@ src/
 ├── components/
 │   ├── ui/           ← Custom base components (Button, Card, etc.)
 │   ├── learn/        ← LEARN mode components (TODO)
-│   ├── do/           ← DO mode FSM components ✅
-│   │   ├── JourneySelector.jsx    DO home (6 cards)
+│   ├── do/           ← GUIDE mode FSM components ✅
+│   │   ├── JourneySelector.jsx    GUIDE home (6 cards)
 │   │   ├── JourneyPlayer.jsx      Full-screen player
 │   │   ├── StepRenderer.jsx       Step type dispatcher
 │   │   ├── ProgressDots.jsx       Dynamic progress dots
 │   │   ├── StepHelper.jsx         Gemini fallback drawer
-│   │   ├── do.css                 Complete DO stylesheet
+│   │   ├── do.css                 Complete GUIDE stylesheet
 │   │   └── steps/
 │   │       ├── InfoStep.jsx
 │   │       ├── ChoiceStep.jsx
 │   │       ├── ChecklistStep.jsx
 │   │       ├── ActionStep.jsx
 │   │       └── CompletionStep.jsx
-│   └── ask/          ← ASK mode chatbot ✅
+│   └── ask/          ← CHAT mode chatbot ✅
 ├── journeys/         ← FSM journey definitions (JSON data) ✅
 │   ├── _types.js
 │   ├── first-time-voter.json
@@ -106,9 +106,9 @@ src/
 | Path | Component | Status |
 |---|---|---|
 | `/` | HomePage | ✅ |
-| `/ask` | AskPage | ✅ |
-| `/do` | JourneySelector | ✅ |
-| `/do/:journeyId` | JourneyPlayer | ✅ |
+| `/chat` | AskPage | ✅ |
+| `/guide` | JourneySelector | ✅ |
+| `/guide/:journeyId` | JourneyPlayer | ✅ |
 | `/learn` | Placeholder | TODO |
 
 ## Agent Rules (READ BEFORE EVERY ACTION)
@@ -124,8 +124,8 @@ src/
 10. RAG answers must cite which ECI document they came from
 
 ## Current Phase
-- [x] ASK Mode — Complete ✅
-- [x] DO Mode — All 11 phases + Enhancement Pass complete ✅
+- [x] CHAT Mode — Complete ✅
+- [x] GUIDE Mode — All 11 phases + Enhancement Pass complete ✅
   - Bug fixes: calendar regex, checklist persistence, dead code, home nav
   - UX: Step counter ("Step X of Y"), auto-submit helpers, confetti, completion badges, inline exit modal, share, keyboard shortcuts (Enter/Numbers/Escape), and TTS Read-aloud.
 - [x] LEARN Mode — Complete ✅
