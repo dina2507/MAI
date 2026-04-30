@@ -68,6 +68,60 @@
   color: var(--saffron-500);
 }
 
+.ask-history-wrap {
+  position: relative;
+}
+
+.ask-history-dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 260px;
+  background: var(--ink-900);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.ask-history-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--ink-800);
+  color: var(--paper-100);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.ask-history-item:last-child {
+  border-bottom: none;
+}
+
+.ask-history-item:hover {
+  background: var(--ink-800);
+}
+
+.ask-history-preview {
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.ask-history-date {
+  font-size: 0.75rem;
+  color: var(--paper-500);
+}
+
 .ask-header-actions {
   display: flex;
   align-items: center;

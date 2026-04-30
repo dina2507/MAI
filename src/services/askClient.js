@@ -5,18 +5,12 @@ const ENDPOINT =
   import.meta.env.VITE_ASK_ENDPOINT ||
   `https://asia-south1-${import.meta.env.VITE_FIREBASE_PROJECT_ID}.cloudfunctions.net/askGeminiStream`;
 
-/**
- * Stream a question to the backend and receive tokens as they arrive.
- * @param {string} question
- * @param {AbortSignal} signal
- * @param {{ onSources, onToken, onDone, onError }} handlers
- */
-export async function askCivic(question, signal, { onSources, onToken, onDone, onError }) {
+export async function askCivic(question, signal, { onSources, onToken, onDone, onError }, history = []) {
   try {
     const res = await fetch(ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, history }),
       signal,
     });
 

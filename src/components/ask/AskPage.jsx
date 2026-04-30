@@ -1,117 +1,95 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock } from "lucide-react";
 import ChatStream from "./ChatStream";
 import Composer from "./Composer";
 import StarterQuestions from "./StarterQuestions";
 import SourceDrawer from "./SourceDrawer";
-import HistoryDrawer from "./HistoryDrawer";
 import { askCivic } from "../../services/askClient";
-import { useAuth } from "../../contexts/AuthContext";
-import { saveChatSession, listUserChats } from "../../services/chatService";
+import { useChatHistory } from "../../hooks/useChatHistory";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import AuthButton from "../ui/AuthButton";
 import "./ask.css";
 
-export default function ChatPage() {
-  const { user } = useAuth();
-  const [messages, setMessages] = useState([]);
+export default function AskPage() {
+  const { activeMessages, persistMessages, startNewSession, sessions, loadSession } = useChatHistory();
+  const [messages, setMessages] = useState(activeMessages);
   const [pending, setPending] = useState(false);
   const [openSource, setOpenSource] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
-  const [currentChatId, setCurrentChatId] = useState(null);
   const abortRef = useRef(null);
 
-  // Load latest chat on mount if user is logged in
+  // Save to localStorage whenever a request completes
   useEffect(() => {
-    if (user && !currentChatId) {
-      listUserChats(user.uid).then((chats) => {
-        if (chats.length > 0) {
-          setMessages(chats[0].messages);
-          setCurrentChatId(chats[0].id);
-        }
-      });
+    if (!pending && messages.length > 0) {
+      persistMessages(messages);
     }
-  }, [user]);
-
-  const saveHistory = async (msgs) => {
-    if (user && msgs.length > 0) {
-      const id = await saveChatSession(user.uid, msgs, currentChatId);
-      if (id && !currentChatId) setCurrentChatId(id);
-    }
-  };
+  }, [pending]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleAsk(question) {
     if (!question.trim() || pending) return;
 
-    const userMsg = {
-      id: crypto.randomUUID(),
-      role: "user",
-      text: question,
-    };
+    const userMsg = { id: crypto.randomUUID(), role: "user", text: question };
     const aiMsgId = crypto.randomUUID();
-    const aiMsg = {
-      id: aiMsgId,
-      role: "assistant",
-      text: "",
-      sources: [],
-      streaming: true,
-    };
+    const aiMsg = { id: aiMsgId, role: "assistant", text: "", sources: [], streaming: true };
 
-    const newMessages = [...messages, userMsg, aiMsg];
-    setMessages(newMessages);
+    setMessages((m) => [...m, userMsg, aiMsg]);
     setPending(true);
 
     const abort = new AbortController();
     abortRef.current = abort;
 
+    // Build history from completed exchanges (last 6 entries = 3 turns)
+    const history = messages
+      .filter((m) => !m.streaming)
+      .slice(-6)
+      .map((m) => ({ role: m.role, text: m.text }));
+
     try {
-      await askCivic(question, abort.signal, {
-        onSources: (sources) => {
-          setMessages((m) =>
-            m.map((msg) =>
-              msg.id === aiMsgId ? { ...msg, sources } : msg
-            )
-          );
-        },
-        onToken: (token) => {
-          setMessages((m) =>
-            m.map((msg) =>
-              msg.id === aiMsgId ? { ...msg, text: msg.text + token } : msg
-            )
-          );
-        },
-        onDone: () => {
-          setMessages((m) => {
-            const updated = m.map((msg) =>
-              msg.id === aiMsgId ? { ...msg, streaming: false } : msg
+      await askCivic(
+        question,
+        abort.signal,
+        {
+          onSources: (sources) => {
+            setMessages((m) =>
+              m.map((msg) => (msg.id === aiMsgId ? { ...msg, sources } : msg))
             );
-            saveHistory(updated);
-            return updated;
-          });
-          setPending(false);
-        },
-        onError: () => {
-          setMessages((m) => {
-            const updated = m.map((msg) =>
-              msg.id === aiMsgId
-                ? {
-                    ...msg,
-                    text:
-                      msg.text ||
-                      "Something went wrong. Please try again, or call the Voter Helpline at 1950.",
-                    streaming: false,
-                  }
-                : msg
+          },
+          onToken: (token) => {
+            setMessages((m) =>
+              m.map((msg) =>
+                msg.id === aiMsgId ? { ...msg, text: msg.text + token } : msg
+              )
             );
-            saveHistory(updated);
-            return updated;
-          });
-          setPending(false);
+          },
+          onDone: () => {
+            setMessages((m) =>
+              m.map((msg) =>
+                msg.id === aiMsgId ? { ...msg, streaming: false } : msg
+              )
+            );
+            setPending(false);
+          },
+          onError: () => {
+            setMessages((m) =>
+              m.map((msg) =>
+                msg.id === aiMsgId
+                  ? {
+                      ...msg,
+                      text:
+                        msg.text ||
+                        "Something went wrong. Please try again, or call the Voter Helpline at 1950.",
+                      streaming: false,
+                    }
+                  : msg
+              )
+            );
+            setPending(false);
+          },
         },
-      });
-    } catch (err) {
+        history
+      );
+    } catch {
       setPending(false);
     }
   }
@@ -123,35 +101,61 @@ export default function ChatPage() {
 
   function handleClear() {
     if (pending) handleStop();
+    startNewSession();
     setMessages([]);
-    setCurrentChatId(null);
+  }
+
+  function handleLoadSession(sessionId) {
+    const msgs = loadSession(sessionId);
+    setMessages(msgs);
+    setShowHistory(false);
   }
 
   const isEmpty = messages.length === 0;
+  const pastSessions = sessions.filter((s) => s.messages?.length > 0);
 
   return (
     <div className="ask-page">
-      {/* Editorial header */}
       <header className="ask-header">
         <div className="ask-header-inner">
-          <div className="ask-header-actions">
-             {user && (
-               <button 
-                 className="history-toggle-btn" 
-                 onClick={() => setShowHistory(true)}
-                 title="View History"
-               >
-                 <Clock size={20} />
-               </button>
-             )}
-            <Link to="/" className="ask-masthead">
-              <span className="ask-masthead-dot" aria-hidden />
-              <span className="text-caption">Civic — Chat</span>
-            </Link>
-          </div>
+          <Link to="/" className="ask-masthead">
+            <span className="ask-masthead-dot" aria-hidden />
+            <span className="text-caption">CIVIC — CHAT</span>
+          </Link>
           <div className="ask-header-actions">
             <LanguageSwitcher />
             <AuthButton />
+            {pastSessions.length > 0 && (
+              <div className="ask-history-wrap">
+                <button
+                  className="ask-clear-btn"
+                  onClick={() => setShowHistory((v) => !v)}
+                >
+                  History
+                </button>
+                {showHistory && (
+                  <div className="ask-history-dropdown">
+                    {pastSessions.slice(0, 5).map((s) => {
+                      const first = s.messages.find((m) => m.role === "user");
+                      return (
+                        <button
+                          key={s.id}
+                          className="ask-history-item"
+                          onClick={() => handleLoadSession(s.id)}
+                        >
+                          <span className="ask-history-preview">
+                            {first?.text?.slice(0, 60) || "Conversation"}
+                          </span>
+                          <span className="ask-history-date">
+                            {new Date(s.createdAt).toLocaleDateString()}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
             {!isEmpty && (
               <button className="ask-clear-btn" onClick={handleClear}>
                 New conversation
@@ -161,7 +165,6 @@ export default function ChatPage() {
         </div>
       </header>
 
-      {/* Main stage */}
       <main className="ask-stage">
         <AnimatePresence mode="wait">
           {isEmpty ? (
@@ -174,11 +177,11 @@ export default function ChatPage() {
               className="ask-empty"
             >
               <h1 className="text-display-2xl ask-title">
-                Chat about the election process in{" "}
-                <span className="text-display-italic ask-title-accent">India</span>
+                Ask anything about{" "}
+                <span className="text-display-italic ask-title-accent">Indian elections</span>
               </h1>
               <p className="text-body-lg ask-subtitle">
-                Every answer is grounded in official documents from the Election Commission of India.
+                Verified answers grounded in official documentation from the Election Commission of India.
               </p>
               <StarterQuestions onPick={handleAsk} />
             </motion.div>
@@ -190,49 +193,24 @@ export default function ChatPage() {
               transition={{ duration: 0.3 }}
               className="ask-conversation"
             >
-              <ChatStream
-                messages={messages}
-                onOpenSource={setOpenSource}
-              />
+              <ChatStream messages={messages} onOpenSource={setOpenSource} />
             </motion.div>
           )}
         </AnimatePresence>
       </main>
 
-      {/* Composer */}
       <div className="ask-composer-wrap">
-        <Composer
-          onSubmit={handleAsk}
-          onStop={handleStop}
-          disabled={pending}
-        />
+        <Composer onSubmit={handleAsk} onStop={handleStop} disabled={pending} />
         <p className="ask-disclaimer text-caption">
           Civic cites official ECI documents. For urgent issues, call 1950.
         </p>
       </div>
 
-      {/* Modals & Drawers */}
       <AnimatePresence>
         {openSource && (
-          <SourceDrawer
-            source={openSource}
-            onClose={() => setOpenSource(null)}
-          />
-        )}
-        {showHistory && (
-          <HistoryDrawer
-            userId={user?.uid}
-            currentChatId={currentChatId}
-            onSelect={(chat) => {
-              setMessages(chat.messages);
-              setCurrentChatId(chat.id);
-            }}
-            onClose={() => setShowHistory(false)}
-          />
+          <SourceDrawer source={openSource} onClose={() => setOpenSource(null)} />
         )}
       </AnimatePresence>
     </div>
   );
 }
-
-
