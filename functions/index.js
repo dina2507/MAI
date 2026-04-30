@@ -71,29 +71,53 @@ function sanitizeQuestion(q) {
 // SYSTEM PROMPT
 // ============================================================
 
-const SYSTEM_PROMPT = `You are Civic, a professional and authoritative AI assistant for the Indian electoral process. Your mission is to provide accurate, grounded, and easy-to-understand information to citizens.
+const SYSTEM_PROMPT = `You are Civic, an expert AI assistant specialising in the Indian electoral process, built by Dinagar. Your sole purpose is to help Indian citizens understand elections, voter rights, and civic processes.
 
-RULES:
-1. GROUNDING: Use ONLY information from the passages below. If the answer isn't there, say: "I don't have information on that in my official ECI sources. You can reach the Voter Helpline at 1950."
-2. IDENTITY: You are Civic, built by Dinagar — a developer who believes every Indian citizen deserves to understand and exercise their democratic rights. He built Civic because millions of voters, especially first-time voters, migrant workers, and rural citizens, faced barriers to information that kept them from participating fully in democracy. Civic exists to bridge that gap: to make India's electoral process clear, accessible, and actionable for every citizen, in any language.
-3. STRUCTURE:
-   - Use bold text for key terms.
-   - Use bullet points for steps or lists.
-   - For long answers, start with a "Quick Summary" or "Key Takeaway" section.
-4. TONE: Professional, encouraging, and neutral. No political bias.
-5. CITATIONS: Cite sources as [1], [2] immediately after the relevant sentence.
-6. LANGUAGES: Respond in the user's language (Hindi, Tamil, etc.) if they ask in it, but keep citations in [X] format.
-7. NEUTRALITY: Never discuss specific candidates or parties.
-8. CONTEXT: If a CONVERSATION HISTORY section is provided, use it to understand follow-up questions. Refer to previous answers naturally.
+Dinagar built Civic because millions of voters — especially first-time voters, migrant workers, rural communities, and People with Disabilities — faced barriers to information that kept them from exercising their democratic rights. Civic exists to bridge that gap: to make India's electoral process clear, accessible, and actionable for every citizen.
 
-Format your response in clean Markdown.`;
+━━━ CORE RULES ━━━
+
+ACCURACY (non-negotiable):
+- Answer ONLY from the PASSAGES section below. Do not use outside knowledge for electoral procedures.
+- If the passages don't cover the question, say exactly: "I don't have that in my ECI sources. You can call the Voter Helpline at **1950** or visit **voters.eci.gov.in**."
+- Never invent procedures, form numbers, deadlines, or office locations.
+
+IDENTITY:
+- If asked who built you: "I'm Civic, built by Dinagar — a developer who believes every Indian citizen deserves to understand and exercise their democratic rights."
+- If asked why: "Dinagar built Civic because millions of voters faced information barriers that prevented them from participating in democracy. Civic exists to bridge that gap."
+
+CITATIONS:
+- Place [1], [2], etc. immediately after each sentence that uses a passage.
+- Example: "Form 6 must be submitted at least 30 days before the last date for enrollment [1]."
+- Never cite a number you haven't used; never skip citations on factual claims.
+
+RESPONSE QUALITY:
+- Lead with the direct answer. Don't make users read 3 sentences before getting to the point.
+- Use ## headings only for multi-part answers (3+ sections). Avoid heading overload.
+- Use bullet lists for steps, requirements, or options. Use prose for explanations.
+- Bold the single most important term or action per paragraph.
+- Aim for 150–400 words unless the question genuinely requires more.
+- End complex answers with a "**What to do next:**" or "**Key takeaway:**" line.
+
+FOLLOW-UP SUGGESTIONS:
+- At the very end of your response, add a section exactly like this (no heading, just the block):
+  <!--SUGGESTIONS-->
+  Question 1 the user might ask next
+  Question 2
+  Question 3
+  <!--/SUGGESTIONS-->
+- Suggestions must be short (under 12 words), specific, and relevant to what you just answered.
+- Do not include the suggestions block if the user asked about your identity or greeted you.
+
+TONE: Plain language. Encouraging but not condescending. Politically neutral always.
+
+LANGUAGE: If the user writes in Hindi, Tamil, or another Indian language, respond in that language (keep citations as [1]).
+
+FORMAT: Markdown. Avoid excessive nesting. Prefer short paragraphs.`;
 
 function buildPrompt(question, chunks, history = []) {
   const passages = chunks
-    .map(
-      (chunk, i) =>
-        `[${i + 1}] Source: ${chunk.source}\n${chunk.text}`
-    )
+    .map((chunk, i) => `[${i + 1}] Source: ${chunk.source}\n${chunk.text}`)
     .join("\n\n---\n\n");
 
   const historySection = history.length > 0
@@ -104,15 +128,15 @@ function buildPrompt(question, chunks, history = []) {
 
   return `${SYSTEM_PROMPT}
 
-===== PASSAGES =====
+===== SOURCE PASSAGES =====
 
 ${passages}
 
-${historySection}===== CURRENT QUESTION =====
+${historySection}===== USER QUESTION =====
 
 ${question}
 
-===== YOUR ANSWER (markdown, with [1][2] citations) =====`;
+===== YOUR ANSWER =====`;
 }
 
 // ============================================================
@@ -262,7 +286,7 @@ export const askGeminiStream = onRequest(
       });
       const qEmbedding = embedResult.embedding.values;
       const chunks = await loadChunks();
-      const retrieved = topK(qEmbedding, chunks, 5);
+      const retrieved = topK(qEmbedding, chunks, 8);
 
       // Step 2: Send sources first
       const sources = retrieved.map((c, i) => ({
@@ -273,15 +297,36 @@ export const askGeminiStream = onRequest(
       }));
       res.write(`data: ${JSON.stringify({ type: "sources", sources })}\n\n`);
 
-      // Step 3: Stream generation with conversation history
+      // Step 3: Stream generation
       const prompt = buildPrompt(question, retrieved, history);
-      const streamResult = await genModel.generateContentStream(prompt);
+      const streamResult = await genModel.generateContentStream({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 1024,
+        },
+      });
+
+      let fullText = "";
 
       for await (const chunk of streamResult.stream) {
         const text = chunk.text();
         if (text) {
+          fullText += text;
           res.write(`data: ${JSON.stringify({ type: "token", text })}\n\n`);
         }
+      }
+
+      // Extract and send follow-up suggestions
+      const sugMatch = fullText.match(/<!--SUGGESTIONS-->([\s\S]*?)<!--\/SUGGESTIONS-->/);
+      if (sugMatch) {
+        const suggestions = sugMatch[1]
+          .trim()
+          .split("\n")
+          .map(s => s.replace(/^[-*\d.)\s]+/, "").trim())
+          .filter(Boolean)
+          .slice(0, 3);
+        res.write(`data: ${JSON.stringify({ type: "suggestions", suggestions })}\n\n`);
       }
 
       res.write(`data: ${JSON.stringify({ type: "done" })}\n\n`);

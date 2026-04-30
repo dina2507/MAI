@@ -1,11 +1,8 @@
-// src/services/askClient.js
-// Streaming client for the askGeminiStream endpoint
-
 const ENDPOINT =
   import.meta.env.VITE_ASK_ENDPOINT ||
   `https://asia-south1-${import.meta.env.VITE_FIREBASE_PROJECT_ID}.cloudfunctions.net/askGeminiStream`;
 
-export async function askCivic(question, signal, { onSources, onToken, onDone, onError }, history = []) {
+export async function askCivic(question, signal, { onSources, onToken, onSuggestions, onDone, onError }, history = []) {
   try {
     const res = await fetch(ENDPOINT, {
       method: "POST",
@@ -29,7 +26,7 @@ export async function askCivic(question, signal, { onSources, onToken, onDone, o
 
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split("\n\n");
-      buffer = lines.pop() || ""; // keep incomplete
+      buffer = lines.pop() || "";
 
       for (const line of lines) {
         if (!line.startsWith("data: ")) continue;
@@ -37,10 +34,11 @@ export async function askCivic(question, signal, { onSources, onToken, onDone, o
           const payload = JSON.parse(line.slice(6));
           if (payload.type === "sources") onSources?.(payload.sources);
           else if (payload.type === "token") onToken?.(payload.text);
+          else if (payload.type === "suggestions") onSuggestions?.(payload.suggestions);
           else if (payload.type === "done") onDone?.();
           else if (payload.type === "error") onError?.(new Error(payload.message));
-        } catch (e) {
-          // malformed event, ignore
+        } catch {
+          // malformed event, skip
         }
       }
     }

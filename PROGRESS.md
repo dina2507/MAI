@@ -7,144 +7,134 @@
 - [x] Day 3 — FSM Journey engine (GUIDE mode — all 6 journeys, all 11 phases)
 - [x] Day 4 — LEARN mode (6 chapters + interactive quiz + EVM/VVPAT simulator)
 - [x] Day 5 — Deploy + TTS Voice Layer + Home Page Redesign + Error Boundary
-- [x] Day 6 — Analytics + Calendar + Auth + Polish
-- [ ] Day 7 — Testing + Firebase deploy + Demo video
+- [x] Day 6 — Analytics + Google Translate + Auth + Polish
+- [x] Day 7 — Sidebar Nav + Chat History + Booth Finder + Production Chat Quality
 
 ## What's Done
 
 ### Foundation & CHAT Mode
-- [x] CLAUDE.md created
-- [x] PROGRESS.md created
-- [x] .gitignore configured
 - [x] Phase 1 — Firebase & Project Foundation
-- [x] Phase 2 — The Ingestion Pipeline
-- [x] Phase 3 — The Retrieval + Generation Cloud Function
+- [x] Phase 2 — The Ingestion Pipeline (PDF → chunks → embeddings)
+- [x] Phase 3 — The Retrieval + Generation Cloud Function (RAG)
 - [x] Phase 4 — The Design System (Editorial Civic Journal) + responsive polish
-- [x] Phase 5-9 — CHAT Mode (Chat UI, Streaming Integration, Hardening, Deployment)
+- [x] Phase 5–9 — CHAT Mode (Chat UI, Streaming SSE, Hardening, Deployment)
 
 ### GUIDE Mode — ALL 11 PHASES COMPLETE ✅
-- [x] GUIDE Phase 1 — Journey Data Model (`_types.js`, 5 step types: info, choice, checklist, action, completion)
-- [x] GUIDE Phase 2 — All 6 Journey Definitions (first-time-voter, missing-name, moved-cities, migrant-worker, election-day, pwd-senior)
-- [x] GUIDE Phase 3 — FSM Engine (`useJourney.js` hook + `useJourneyProgress.js` persistence hook)
-- [x] GUIDE Phase 4 — Component Library (`StepRenderer`, `InfoStep`, `ChoiceStep`, `ChecklistStep`, `ActionStep`, `CompletionStep`)
-- [x] GUIDE Phase 5 — Full-Screen Journey Player (`JourneyPlayer.jsx` with resume prompt, exit confirmation)
-- [x] GUIDE Phase 6 — Journey Selector (`JourneySelector.jsx` — GUIDE home with icons, accent colors, "In progress" badges)
-- [x] GUIDE Phase 7 — Checklist & Interactive Elements (required gating, live counters, toggle states)
-- [x] GUIDE Phase 8 — Gemini Fallback Helper (`StepHelper.jsx` — drawer that reuses ASK endpoint with step context)
-- [x] GUIDE Phase 9 — Lightweight Persistence (localStorage, 7-day expiry, auto-clear on completion)
-- [x] GUIDE Phase 10 — Polish & Animations (`do.css` — per-journey accent theming, `ProgressDots.jsx`, mobile responsive)
-- [x] GUIDE Phase 11 — Routing updated (`/do` → JourneySelector, `/do/:journeyId` → JourneyPlayer)
+- [x] GUIDE Phase 1 — Journey Data Model (`_types.js`, 5 step types)
+- [x] GUIDE Phase 2 — All 6 Journey Definitions
+- [x] GUIDE Phase 3 — FSM Engine (`useJourney.js` + `useJourneyProgress.js`)
+- [x] GUIDE Phase 4 — Component Library (StepRenderer + 5 step types)
+- [x] GUIDE Phase 5 — Full-Screen Journey Player
+- [x] GUIDE Phase 6 — Journey Selector (home with icons, accent colors, badges)
+- [x] GUIDE Phase 7 — Checklist & Interactive Elements
+- [x] GUIDE Phase 8 — Gemini Fallback Helper (StepHelper.jsx)
+- [x] GUIDE Phase 9 — Lightweight Persistence (localStorage, 7-day expiry)
+- [x] GUIDE Phase 10 — Polish & Animations
+- [x] GUIDE Phase 11 — Routing (`/guide`, `/guide/:journeyId`)
 
 ### GUIDE Mode — Enhancement Pass ✅
-- [x] Bug Fix — Calendar regex (ActionStep date formatting was double-escaped)
-- [x] Bug Fix — Checklist state persistence (`saveStepData` + proactive saves on toggle)
-- [x] Bug Fix — Dead code cleanup (removed orphan DoPage.jsx, JourneyRunner.jsx)
-- [x] Bug Fix — Home navigation (added back-to-home link in JourneySelector header)
-- [x] Enhancement — Step counter in topbar ("3 / 8" below progress dots)
-- [x] Enhancement — Auto-submit helper suggestions (click = instant Gemini query)
-- [x] Enhancement — Completion confetti celebration (canvas particle animation, no library)
-- [x] Enhancement — Journey completion badges (green ✓ icon + "Completed" on selector cards)
-- [x] Enhancement — Inline exit modal (replaced window.confirm with animated design-system modal)
-- [x] Enhancement — WhatsApp/native share on completion
-- [x] Enhancement — Keyboard shortcuts (Escape, Enter to continue, Number keys for choices)
-- [x] Enhancement — Step-level TTS (Web Speech API "Read aloud" button in topbar)
-
-## GUIDE Mode Architecture
-```
-src/journeys/
-  ├── _types.js                  JSDoc types & helpers
-  ├── first-time-voter.json      8 steps
-  ├── missing-name.json          9 steps with branches
-  ├── moved-cities.json          7 steps
-  ├── migrant-worker.json        6 steps with compare loop
-  ├── election-day.json          10 steps
-  ├── pwd-senior.json            7 steps
-  └── index.js                   ALL_JOURNEYS, JOURNEY_MAP, getJourney()
-
-src/hooks/
-  ├── useJourney.js              FSM engine (state, history, goTo, back, reset, saveStepData)
-  └── useJourneyProgress.js      localStorage persistence (save, load, clear, markComplete, isJourneyComplete)
-
-src/components/do/
-  ├── JourneySelector.jsx        GUIDE home page (6 cards)
-  ├── JourneyPlayer.jsx          Full-screen player (topbar, stage, footer, helper)
-  ├── StepRenderer.jsx           Step type dispatcher
-  ├── ProgressDots.jsx           Dynamic dot progress indicator
-  ├── StepHelper.jsx             Gemini fallback drawer
-  ├── do.css                     Complete GUIDE mode stylesheet
-  └── steps/
-      ├── InfoStep.jsx           Pure info + continue
-      ├── ChoiceStep.jsx         Branching decisions
-      ├── ChecklistStep.jsx      Toggle items + required gating
-      ├── ActionStep.jsx         External actions (link, calendar, phone, copy)
-      └── CompletionStep.jsx     Journey end + next actions
-```
-
-## Key Decisions
-- Custom design system only — no component libraries
-- RAG data source: ECI public PDFs only
-- Streaming SSE via Firebase Cloud Functions works natively without WebSockets
-- Hardened function with input sanitation and rate-limiting
-- FSM engine is data-driven — journeys are pure JSON, engine renders any of them
-- Per-journey accent theming via CSS custom properties (`--journey-accent`)
-- localStorage persistence with 7-day expiry, auto-clear on completion
-- Gemini helper reuses 100% of CHAT's Cloud Function — no new backend
+- [x] Step counter ("3 / 8"), confetti on completion, completion badges
+- [x] Inline exit modal, WhatsApp/native share
+- [x] Keyboard shortcuts (Escape, Enter, number keys)
+- [x] Step-level TTS (Web Speech API)
 
 ### LEARN Mode ✅
-- [x] 6 chapter data files (`src/learn/chapters.js`) — real ECI facts, no hallucination
-- [x] 5 section types: `prose`, `callout`, `timeline`, `quiz`, `evm`
-- [x] Interactive quiz per chapter — A/B/C/D, reveal animation, explanation on reveal
-- [x] Interactive EVM/VVPAT Simulator — 3-panel (Control Unit, Ballot Unit, VVPAT), state machine, 7s countdown
-- [x] Chapter reader with sticky topbar, hero, scroll-animated sections, prev/next nav
-- [x] LEARN home with 3-column chapter grid, accent-per-chapter theming, Interactive/Quiz badges
-- [x] Routing: `/learn` → LearnHome, `/learn/:chapterId` → ChapterReader
-- [x] Upgraded HomePage — mode cards with icons and accent hover effects
+- [x] 6 chapter data files — real ECI facts
+- [x] 5 section types: prose, callout, timeline, quiz, evm
+- [x] Interactive quiz per chapter — A/B/C/D, reveal animation
+- [x] EVM/VVPAT Simulator — 3-panel state machine, 7s countdown
+- [x] Chapter reader with sticky topbar, scroll-animated sections, prev/next nav
+- [x] LEARN home with chapter grid, per-chapter accent theming
 
-## LEARN Mode Architecture
-```
-src/learn/
-  ├── _types.js            JSDoc types for Chapter, Section, QuizQuestion
-  └── chapters.js          6 chapter definitions (all real ECI data)
+### Day 5 — Deploy + Voice + Polish ✅
+- [x] Production deploy → https://maiapp-494222.web.app
+- [x] Premium home page — hero badge, stats row, mode cards
+- [x] TTS on LEARN chapters and GUIDE steps
+- [x] Error boundary + SEO OG meta tags
+- [x] CSP hardened
 
-src/components/learn/
-  ├── LearnHome.jsx        Chapter grid + EVM callout
-  ├── ChapterReader.jsx    Full article reader with nav
-  ├── SectionRenderer.jsx  Section type dispatcher
-  ├── learn.css            Complete LEARN stylesheet + EVM simulator CSS
-  └── sections/
-      ├── ContentSections.jsx  ProseSection, CalloutSection, TimelineSection
-      ├── QuizSection.jsx      Interactive quiz with reveal
-      └── EVMSimulator.jsx     3-panel EVM/VVPAT state machine
-```
+### Day 6 — Analytics, Translate & Auth ✅
+- [x] Firebase Analytics wrapper (`analytics.js`)
+- [x] Events: `chapter_started`, `quiz_answered`, `journey_completed`
+- [x] Web Speech API voice input for CHAT mode Composer
+- [x] Google Translate — 10 Indian languages via LanguageSwitcher
+- [x] Firebase Auth — Google Sign-in (AuthContext + AuthButton)
+- [x] CSP updated for all Google domains (translate, auth, analytics, maps)
+
+### Day 7 — Sidebar, Chat History, Booth Finder, Production Chat ✅
+
+#### Sidebar Navigation
+- [x] `Sidebar.jsx` + `Sidebar.css` — collapsible (260px ↔ 64px icon-only)
+- [x] Persistent across all routes via `AppLayout` in `App.jsx`
+- [x] Sections: brand, New Conversation, mode nav, Recent Chats, user profile
+- [x] Per-mode accent colours on active nav item
+- [x] Recent Chats — collapsible section, up to 15 sessions visible
+- [x] User profile footer — avatar, name, email, sign-out button
+- [x] Mobile drawer — slides in from left with backdrop overlay
+- [x] Mobile top bar — 52px sticky bar with hamburger + brand
+
+#### Chat History Persistence
+- [x] `ChatContext.jsx` — shared chat state between Sidebar and AskPage
+- [x] `useChatHistory.js` — localStorage, up to 20 sessions, auto-titled from first message
+- [x] Session title = first user message (48 char truncation)
+- [x] Sessions load on click from sidebar (navigate to /chat + restore messages)
+- [x] "New conversation" button starts fresh session
+- [x] History persisted after each completed request (triggers on pending → false)
+
+#### Polling Booth Finder (/map)
+- [x] `BoothFinder.jsx` + `BoothFinder.css` — standalone Google Maps page
+- [x] `/map` route added to App.jsx
+- [x] 4th mode card on homepage (purple accent #8B5CF6)
+- [x] Dark-themed Google Maps (DARK_MAP_STYLES matching app palette)
+- [x] Geolocation one-tap ("Use my location")
+- [x] Address/PIN code search with Google Places autocomplete
+- [x] Places search for polling booths and election offices
+- [x] Numbered purple markers, results sidebar, click-to-pan
+- [x] Directions link via Google Maps URL
+- [x] Graceful no-API-key fallback (with link to ECI electoral portal)
+- [x] CSP updated in firebase.json for maps.googleapis.com
+- [x] Required env var: `VITE_MAPS_API_KEY`
+
+#### Production Chat Quality
+- [x] System prompt rewrite — direct answers first, strict citation rules, length guidance
+- [x] RAG retrieval increased from k=5 to k=8 (more context per query)
+- [x] Temperature set to 0.3 (factual, grounded, less creative drift)
+- [x] Conversation history (last 3 turns) passed to Gemini for multi-turn support
+- [x] Follow-up question suggestions — AI generates 3 via `<!--SUGGESTIONS-->` block, parsed as SSE event
+- [x] Follow-up suggestions rendered as clickable chips after each answer
+- [x] Message.jsx upgraded — full markdown: h2/h3, tables, blockquotes, code blocks, links, hr
+- [x] 6 diverse StarterQuestions (was 4) — covers registration, EVM, migrant rights, etc.
+- [x] `onSuggestions` SSE handler in askClient.js
+
+#### App Architecture Updates
+- [x] App.jsx — `AppLayout` wraps all routes, `ChatProvider` at root
+- [x] Homepage — 4-column mode grid (was 3), no topbar auth (moved to sidebar)
+- [x] `JourneySelector.jsx` + `LearnHome.jsx` — removed LanguageSwitcher (now in sidebar)
+- [x] `AskPage.jsx` — no own header, uses `ChatContext`
 
 ## Routes
 | Path | Component | Status |
 |---|---|---|
 | `/` | HomePage | ✅ |
-| `/chat` | AskPage | ✅ |
+| `/chat` | AskPage (ChatContext) | ✅ |
 | `/guide` | JourneySelector | ✅ |
 | `/guide/:journeyId` | JourneyPlayer | ✅ |
 | `/learn` | LearnHome | ✅ |
 | `/learn/:chapterId` | ChapterReader | ✅ |
+| `/map` | BoothFinder | ✅ |
 
-### Day 5 — Deploy + Voice + Polish ✅
-- [x] Production deploy to Firebase Hosting (https://maiapp-494222.web.app)
-- [x] Premium home page redesign — hero badge, stats row, mode cards with descriptions/CTAs
-- [x] TTS on LEARN mode chapters — Listen/Stop button in reader topbar
-- [x] TTS on GUIDE mode steps — Read-aloud button in journey topbar (user-implemented)
-- [x] Keyboard shortcuts in all step types — Enter, number keys, Escape (user-implemented)
-- [x] Error boundary wrapping entire app — friendly recovery UI
-- [x] SEO — OG meta tags, keywords, PWA apple-mobile tags
-- [x] CSP updated — allow generativelanguage.googleapis.com, blob: media
+## Architecture Decisions
+- Chat state lifted into `ChatContext` (not local to AskPage) so sidebar can manage sessions
+- Sidebar state (collapsed/mobile) in `AppLayout` in `App.jsx` — passed as props, not context
+- `useChatHistory` writes to localStorage; `ChatContext` owns the messages state
+- Follow-up suggestions parsed from a structured comment block in the Gemini response
+- Booth Finder uses modern Google Maps JS API with `importLibrary()` pattern
+- All 3 original modes keep their own per-page headers (Guide/Learn have back-to-home)
 
-### Day 6 — Analytics, Translate & Final Polish
-- [x] **Analytics** — Firebase Analytics wrapper (`analytics.js`)
-- [x] **Events** — Fired events for `chapter_started`, `quiz_answered`, `journey_completed`
-- [x] **STT (Speech-to-Text)** — Web Speech API voice input implemented for CHAT mode (Mic/MicOff in Composer)
-- [x] **Translate** — 10 Indian languages via Google Translate API Web Element (`LanguageSwitcher.jsx`)
-
-## Current Blocker
-None. All 3 modes fully built, tested, and deployed to production.
+## Current Blockers
+None. All 4 modes fully built and deployed.
 
 ## Next Session Pick Up From
-- **Demo video** — record walkthrough of all 3 modes
+- Demo video — record walkthrough of all 4 modes
+- Maps API key setup in Firebase — enable Maps JS API + Places API in Google Cloud Console
+- Optional: Firestore-based chat history sync for authenticated users (cross-device)

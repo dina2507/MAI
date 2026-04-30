@@ -7,18 +7,19 @@ Create an assistant that helps users understand the Indian election
 process, timelines, and steps in an interactive and easy-to-follow way.
 
 ## What Civic Does
-Three modes, one mission — make every Indian voter informed and ready:
+Four modes, one mission — make every Indian voter informed and ready:
 
-1. **LEARN** — Interactive chapter-by-chapter election explainer + EVM Simulator
+1. **CHAT** — Gemini RAG chatbot grounded ONLY on public ECI documents ✅ COMPLETE
 2. **GUIDE** — FSM-driven guided journeys for 6 real voter situations ✅ COMPLETE
-3. **CHAT** — Gemini RAG chatbot grounded ONLY on public ECI documents ✅ COMPLETE
+3. **LEARN** — Interactive chapter-by-chapter election explainer + EVM Simulator ✅ COMPLETE
+4. **FIND BOOTH** — Google Maps polling station locator ✅ COMPLETE
 
 ## Tech Stack
-- **Frontend:** React + Vite (NO component libraries — custom design system)
-- **Styling:** Tailwind CSS utilities only + custom CSS — NO shadcn, NO MUI
+- **Frontend:** React 19 + Vite (NO component libraries — custom design system)
+- **Styling:** Tailwind CSS utilities + custom CSS — NO shadcn, NO MUI
 - **Animations:** Framer Motion
-- **Backend:** Firebase Cloud Functions (Node.js)
-- **AI:** Gemini 1.5 Pro via Cloud Functions proxy
+- **Backend:** Firebase Cloud Functions (Node.js, region: asia-south1)
+- **AI:** Gemini Flash (streaming, temp 0.3) + Gemini Embedding 2 (768-dim, top-8) via Cloud Functions proxy
 - **RAG Store:** Firebase Firestore (chunked ECI documents)
 - **Auth:** Firebase Auth — Google Sign-in only
 - **Database:** Firebase Firestore
@@ -27,20 +28,21 @@ Three modes, one mission — make every Indian voter informed and ready:
 ## Google Services (all must have real roles)
 | Service | Role |
 |---|---|
-| Gemini 1.5 Pro | RAG-grounded Q&A on ECI documents |
-| Firebase Firestore | ECI doc chunks, journey state, user progress |
-| Firebase Cloud Functions | Secure Gemini API proxy |
-| Firebase Auth | Google Sign-in, save progress |
+| Gemini Flash | Streaming RAG Q&A + GUIDE mode fallback helper |
+| Gemini Embedding 2 | 768-dim cosine similarity retrieval, top-8 chunks |
+| Firebase Firestore | ECI doc chunks, journey state, rate limits |
+| Firebase Cloud Functions | Secure Gemini API proxy (rate limited) |
+| Firebase Auth | Google Sign-in, user identity |
 | Firebase Hosting | Production deploy |
-| Google Maps JS API | Polling booth + ERO office locator |
-| Google Translate API | 10 Indian languages |
-| Google Text-to-Speech API | Audio on every step |
-| Google Calendar API | Election date reminders (integrated in DO mode ActionStep) |
+| Google Maps JS API | Polling booth + ERO office locator (/map route) |
+| Google Translate API | 10 Indian languages (LanguageSwitcher in sidebar) |
+| Google Text-to-Speech API | Audio on every LEARN/GUIDE step |
+| Google Calendar API | Election date reminders (ActionStep in GUIDE mode) |
 
 ## The 6 GUIDE-Mode Journeys (FSM) — ALL BUILT ✅
 1. First-time voter → Form 6 walkthrough (8 steps)
 2. Name missing from list → Diagnostic + 3 branching paths (9 steps)
-3. Moved cities / student away → Form 8 / transfer guide (7 steps)
+3. Moved cities / student away → Form 8A / transfer guide (7 steps)
 4. Migrant worker → Rights + compare loop + calendar (6 steps)
 5. Election day companion → Booth → EVM → VVPAT (10 steps)
 6. PwD / Senior citizen → Home voting + Saksham guide (7 steps)
@@ -60,7 +62,7 @@ Three modes, one mission — make every Indian voter informed and ready:
 - Font: Plus Jakarta Sans (headings) + Inter (body)
 - Primary color: Deep Saffron #F97316
 - Accent: India Blue #1D4ED8
-- Background: Near-black #0A0A0A (dark mode first)
+- Background: Near-black #0A0A0F (dark mode first)
 - NO AI-looking dashboards. Human, editorial, cultural aesthetic.
 - Motion: subtle, purposeful — Framer Motion only
 
@@ -68,22 +70,50 @@ Three modes, one mission — make every Indian voter informed and ready:
 ```
 src/
 ├── components/
-│   ├── ui/           ← Custom base components (Button, Card, etc.)
-│   ├── learn/        ← LEARN mode components (TODO)
+│   ├── ui/
+│   │   ├── Sidebar.jsx            Collapsible navigation (260px/64px)
+│   │   ├── Sidebar.css
+│   │   ├── AuthButton.jsx
+│   │   ├── AuthButton.css
+│   │   └── LanguageSwitcher.jsx
+│   ├── ask/          ← CHAT mode chatbot ✅
+│   │   ├── AskPage.jsx            Uses ChatContext, no own header
+│   │   ├── ChatStream.jsx
+│   │   ├── Message.jsx            Full markdown + follow-up suggestions
+│   │   ├── Composer.jsx           Voice input + STT
+│   │   ├── StarterQuestions.jsx   6 diverse starter prompts
+│   │   ├── Citation.jsx
+│   │   ├── SourceDrawer.jsx
+│   │   ├── ThinkingIndicator.jsx
+│   │   └── ask.css
 │   ├── do/           ← GUIDE mode FSM components ✅
-│   │   ├── JourneySelector.jsx    GUIDE home (6 cards)
-│   │   ├── JourneyPlayer.jsx      Full-screen player
-│   │   ├── StepRenderer.jsx       Step type dispatcher
-│   │   ├── ProgressDots.jsx       Dynamic progress dots
-│   │   ├── StepHelper.jsx         Gemini fallback drawer
-│   │   ├── do.css                 Complete GUIDE stylesheet
+│   │   ├── JourneySelector.jsx
+│   │   ├── JourneyPlayer.jsx
+│   │   ├── StepRenderer.jsx
+│   │   ├── ProgressDots.jsx
+│   │   ├── StepHelper.jsx
+│   │   ├── do.css
 │   │   └── steps/
 │   │       ├── InfoStep.jsx
 │   │       ├── ChoiceStep.jsx
 │   │       ├── ChecklistStep.jsx
 │   │       ├── ActionStep.jsx
 │   │       └── CompletionStep.jsx
-│   └── ask/          ← CHAT mode chatbot ✅
+│   ├── learn/        ← LEARN mode ✅
+│   │   ├── LearnHome.jsx
+│   │   ├── ChapterReader.jsx
+│   │   ├── SectionRenderer.jsx
+│   │   ├── learn.css
+│   │   └── sections/
+│   │       ├── ContentSections.jsx
+│   │       ├── QuizSection.jsx
+│   │       └── EVMSimulator.jsx
+│   └── map/          ← FIND BOOTH mode ✅
+│       ├── BoothFinder.jsx        Google Maps + Places API
+│       └── BoothFinder.css
+├── contexts/
+│   ├── AuthContext.jsx            Firebase Auth (Google Sign-in)
+│   └── ChatContext.jsx            Shared chat state (sidebar ↔ AskPage)
 ├── journeys/         ← FSM journey definitions (JSON data) ✅
 │   ├── _types.js
 │   ├── first-time-voter.json
@@ -93,13 +123,18 @@ src/
 │   ├── election-day.json
 │   ├── pwd-senior.json
 │   └── index.js
-├── hooks/            ← Custom React hooks ✅
+├── hooks/
 │   ├── useJourney.js              FSM engine
-│   └── useJourneyProgress.js      localStorage persistence
-├── rag/              ← RAG pipeline utilities
-├── services/         ← Firebase + Google API wrappers
-├── design-system/    ← tokens.css, typography, animations
-└── pages/            ← Route-level components
+│   ├── useJourneyProgress.js      Journey localStorage persistence
+│   └── useChatHistory.js          Chat sessions (20 max, auto-titled)
+├── services/
+│   ├── firebase.js                Firebase init (app, db, functions, auth)
+│   ├── askClient.js               SSE streaming client (history + suggestions)
+│   └── analytics.js               Firebase Analytics wrapper
+├── design-system/    ← tokens.css, typography
+└── learn/
+    ├── _types.js
+    └── chapters.js                6 chapter definitions
 ```
 
 ## Routes
@@ -109,33 +144,39 @@ src/
 | `/chat` | AskPage | ✅ |
 | `/guide` | JourneySelector | ✅ |
 | `/guide/:journeyId` | JourneyPlayer | ✅ |
-| `/learn` | Placeholder | TODO |
+| `/learn` | LearnHome | ✅ |
+| `/learn/:chapterId` | ChapterReader | ✅ |
+| `/map` | BoothFinder | ✅ |
+
+## Environment Variables
+```
+VITE_FIREBASE_API_KEY
+VITE_FIREBASE_AUTH_DOMAIN
+VITE_FIREBASE_PROJECT_ID
+VITE_FIREBASE_STORAGE_BUCKET
+VITE_FIREBASE_MESSAGING_SENDER_ID
+VITE_FIREBASE_APP_ID
+VITE_MAPS_API_KEY          # Optional — enables /map route
+```
 
 ## Agent Rules (READ BEFORE EVERY ACTION)
 1. NEVER install shadcn/ui, MUI, Ant Design, Chakra, or any component library
 2. NEVER expose API keys in frontend code — always use Cloud Functions
 3. NEVER suggest paid APIs — all data must be free and publicly available
 4. NEVER rewrite a file completely when fixing a bug — diagnose first
-5. ALWAYS explain what a new concept does before implementing it
-6. ALWAYS check PROGRESS.md before starting work to know current state
-7. ALWAYS update PROGRESS.md at end of session
-8. When building UI — think editorial magazine, not SaaS dashboard
-9. Mobile-first. Test at 375px width first.
-10. RAG answers must cite which ECI document they came from
+5. ALWAYS check PROGRESS.md before starting work to know current state
+6. ALWAYS update PROGRESS.md at end of session
+7. When building UI — think editorial magazine, not SaaS dashboard
+8. Mobile-first. Test at 375px width first.
+9. RAG answers must cite which ECI document they came from
+10. Chat state is shared via ChatContext — never duplicate in AskPage local state
+11. Sidebar state (collapsed/mobile) lives in AppLayout in App.jsx — pass as props
 
 ## Current Phase
 - [x] CHAT Mode — Complete ✅
 - [x] GUIDE Mode — All 11 phases + Enhancement Pass complete ✅
-  - Bug fixes: calendar regex, checklist persistence, dead code, home nav
-  - UX: Step counter ("Step X of Y"), auto-submit helpers, confetti, completion badges, inline exit modal, share, keyboard shortcuts (Enter/Numbers/Escape), and TTS Read-aloud.
 - [x] LEARN Mode — Complete ✅
-  - 6 chapters with real ECI content (5 section types each)
-  - Interactive quiz per chapter with reveal animation
-  - EVM/VVPAT Simulator (3-panel state machine, 7s countdown)
-  - TTS Listen button in chapter reader topbar
 - [x] Day 5 — Deploy + Polish ✅
-  - Production live at https://maiapp-494222.web.app
-  - Premium home page with hero, stats, mode cards
-  - Error boundary, SEO meta tags, CSP hardened
-- [ ] Day 6 — Testing, video, final polish
+- [x] Day 6 — Analytics + Translate + Auth ✅
+- [x] Day 7 — Sidebar, Chat History, BoothFinder, Production Chat ✅
 → Check PROGRESS.md for detailed status

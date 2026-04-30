@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { BookOpen, Cpu, ChevronLeft } from "lucide-react";
 import { CHAPTERS } from "../../learn/chapters";
-import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "../learn/learn.css";
 
 export default function LearnHome() {
@@ -16,7 +15,6 @@ export default function LearnHome() {
             <span className="text-caption">Civic — Learn</span>
           </Link>
           <div className="learn-home-actions">
-            <LanguageSwitcher />
             <Link to="/" className="learn-back-home-btn">
               <ChevronLeft size={16} />
               Back to Home

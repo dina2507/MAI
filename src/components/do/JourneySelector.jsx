@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { ALL_JOURNEYS } from "../../journeys";
 import { loadProgress, isJourneyComplete } from "../../hooks/useJourneyProgress";
-import LanguageSwitcher from "../ui/LanguageSwitcher";
 import "./do.css";
 
 export default function JourneySelector() {
@@ -18,7 +17,6 @@ export default function JourneySelector() {
             <span className="text-caption">Civic — Guide</span>
           </Link>
           <div className="do-home-actions">
-            <LanguageSwitcher />
             <Link to="/" className="do-back-btn">
               <Icons.ChevronLeft size={16} />
               Back to Home

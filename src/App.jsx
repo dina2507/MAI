@@ -1,26 +1,62 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MessageCircle, Navigation, BookOpen, ChevronRight } from "lucide-react";
+import { MessageCircle, Navigation, BookOpen, MapPin, ChevronRight, Menu } from "lucide-react";
 import AskPage from "./components/ask/AskPage";
 import JourneySelector from "./components/do/JourneySelector";
 import JourneyPlayer from "./components/do/JourneyPlayer";
 import LearnHome from "./components/learn/LearnHome";
 import ChapterReader from "./components/learn/ChapterReader";
+import BoothFinder from "./components/map/BoothFinder";
 import NotFound from "./components/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
-import LanguageSwitcher from "./components/ui/LanguageSwitcher";
+import Sidebar from "./components/ui/Sidebar";
 import { AuthProvider } from "./contexts/AuthContext";
-import AuthButton from "./components/ui/AuthButton";
+import { ChatProvider } from "./contexts/ChatContext";
 import "./App.css";
+
+const MODE_CARDS = [
+  {
+    to: "/chat",
+    icon: MessageCircle,
+    name: "CHAT",
+    accent: "#F97316",
+    tagline: "RAG-powered Q&A assistant",
+    description: "Ask anything about Indian elections. Every answer is grounded in official ECI documents — never hallucinated. Cites sources inline.",
+    cta: "Start asking",
+  },
+  {
+    to: "/guide",
+    icon: Navigation,
+    name: "GUIDE",
+    accent: "#3B6FEB",
+    tagline: "Step-by-step voter journeys",
+    description: "Guided flows for real situations — first-time registration, name correction, election day walkthrough, and more.",
+    cta: "Pick your journey",
+  },
+  {
+    to: "/learn",
+    icon: BookOpen,
+    name: "LEARN",
+    accent: "#15803D",
+    tagline: "Interactive election academy",
+    description: "6 chapters on how elections work, voter rights, EVM/VVPAT, and registration. Includes an interactive EVM simulator.",
+    cta: "Start learning",
+  },
+  {
+    to: "/map",
+    icon: MapPin,
+    name: "FIND BOOTH",
+    accent: "#8B5CF6",
+    tagline: "Locate your polling station",
+    description: "Find the polling booth and Electoral Registration Office nearest to you using Google Maps.",
+    cta: "Find my booth",
+  },
+];
 
 function HomePage() {
   return (
     <div className="home-page">
-      <header className="home-topbar">
-        <LanguageSwitcher />
-        <AuthButton />
-      </header>
-      {/* Hero section */}
       <div className="home-hero">
         <motion.div
           className="home-hero-content"
@@ -35,18 +71,13 @@ function HomePage() {
           <h1 className="text-display-2xl home-title">
             Your vote is your voice.
             <br />
-            <span className="text-display-italic home-title-accent">
-              Know how to use it.
-            </span>
+            <span className="text-display-italic home-title-accent">Know how to use it.</span>
           </h1>
           <p className="text-body-lg home-subtitle">
-            Civic is a specialized intelligence platform designed to empower 
-            Indian voters. Ask questions grounded in ECI documents, follow 
-            step-by-step voter journeys, or explore how India's democracy actually works.
+            Civic helps every Indian voter understand the election process, timelines, and steps — through verified answers, guided journeys, and interactive learning.
           </p>
         </motion.div>
 
-        {/* Floating stats */}
         <motion.div
           className="home-stats"
           initial={{ opacity: 0, y: 16 }}
@@ -54,13 +85,13 @@ function HomePage() {
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           <div className="home-stat">
-            <span className="home-stat-value">3</span>
+            <span className="home-stat-value">4</span>
             <span className="home-stat-label">Modes</span>
           </div>
           <div className="home-stat-divider" />
           <div className="home-stat">
             <span className="home-stat-value">6</span>
-            <span className="home-stat-label">Guided Journeys</span>
+            <span className="home-stat-label">Journeys</span>
           </div>
           <div className="home-stat-divider" />
           <div className="home-stat">
@@ -69,48 +100,19 @@ function HomePage() {
           </div>
           <div className="home-stat-divider" />
           <div className="home-stat">
-            <span className="home-stat-value">∞</span>
-            <span className="home-stat-label">Questions</span>
+            <span className="home-stat-value">ECI</span>
+            <span className="home-stat-label">Verified</span>
           </div>
         </motion.div>
       </div>
 
-      {/* Mode cards */}
       <div className="home-modes">
-        {[
-          {
-            to: "/chat",
-            icon: MessageCircle,
-            name: "CHAT",
-            accent: "#F97316",
-            tagline: "RAG-powered query assistant",
-            description: "Ask any question about Indian elections. Answers are grounded exclusively in official ECI documents — never hallucinated.",
-            cta: "Start inquiry",
-          },
-          {
-            to: "/guide",
-            icon: Navigation,
-            name: "GUIDE",
-            accent: "#3B6FEB",
-            tagline: "Guided voter journeys",
-            description: "Step-by-step guides for real situations — first-time registration, name correction, election day, and more.",
-            cta: "Pick your path",
-          },
-          {
-            to: "/learn",
-            icon: BookOpen,
-            name: "LEARN",
-            accent: "#15803D",
-            tagline: "Interactive election academy",
-            description: "6 chapters covering how elections work, voter registration, EVM/VVPAT, and your rights. Includes an interactive EVM simulator.",
-            cta: "Start learning",
-          },
-        ].map((mode, i) => (
+        {MODE_CARDS.map((mode, i) => (
           <motion.div
             key={mode.name}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 + i * 0.1, duration: 0.6 }}
+            transition={{ delay: 0.15 + i * 0.09, duration: 0.55 }}
           >
             <Link
               to={mode.to}
@@ -119,31 +121,60 @@ function HomePage() {
             >
               <div className="home-mode-header">
                 <div className="home-mode-icon">
-                  <mode.icon size={22} />
+                  <mode.icon size={20} />
                 </div>
                 <span className="home-mode-name">{mode.name}</span>
-                <ChevronRight size={18} className="home-mode-arrow" />
+                <ChevronRight size={16} className="home-mode-arrow" />
               </div>
               <div className="home-mode-tagline text-caption">{mode.tagline}</div>
               <p className="home-mode-desc">{mode.description}</p>
               <div className="home-mode-cta">
                 {mode.cta}
-                <ChevronRight size={14} />
+                <ChevronRight size={13} />
               </div>
             </Link>
           </motion.div>
         ))}
       </div>
 
-      {/* Footer */}
       <footer className="home-footer">
         <div className="home-footer-line" />
         <p className="text-caption home-footer-text">
-          Civic — Advanced Election Intelligence · Data sourced exclusively from{" "}
+          Civic — Data sourced exclusively from{" "}
           <a href="https://www.eci.gov.in" target="_blank" rel="noopener">eci.gov.in</a>
-          {" "}· Empowering every citizen
+          {" "}· Built by Dinagar
         </p>
       </footer>
+    </div>
+  );
+}
+
+function AppLayout({ children }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  return (
+    <div className={`app-layout ${collapsed ? "app-layout--collapsed" : ""}`}>
+      <Sidebar
+        collapsed={collapsed}
+        onToggle={() => setCollapsed((v) => !v)}
+        mobileOpen={mobileOpen}
+        onMobileClose={() => setMobileOpen(false)}
+      />
+      <div className="app-main">
+        {/* Mobile top bar */}
+        <div className="app-mobile-bar">
+          <button
+            className="app-mobile-hamburger"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
+          <span className="app-mobile-brand">Civic</span>
+        </div>
+        {children}
+      </div>
     </div>
   );
 }
@@ -152,17 +183,22 @@ export default function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/chat" element={<AskPage />} />
-            <Route path="/guide" element={<JourneySelector />} />
-            <Route path="/guide/:journeyId" element={<JourneyPlayer />} />
-            <Route path="/learn" element={<LearnHome />} />
-            <Route path="/learn/:chapterId" element={<ChapterReader />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <ChatProvider>
+          <BrowserRouter>
+            <AppLayout>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/chat" element={<AskPage />} />
+                <Route path="/guide" element={<JourneySelector />} />
+                <Route path="/guide/:journeyId" element={<JourneyPlayer />} />
+                <Route path="/learn" element={<LearnHome />} />
+                <Route path="/learn/:chapterId" element={<ChapterReader />} />
+                <Route path="/map" element={<BoothFinder />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AppLayout>
+          </BrowserRouter>
+        </ChatProvider>
       </AuthProvider>
     </ErrorBoundary>
   );
