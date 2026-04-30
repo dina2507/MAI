@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Clock } from "lucide-react";
 import ChatStream from "./ChatStream";
 import Composer from "./Composer";
 import StarterQuestions from "./StarterQuestions";
 import SourceDrawer from "./SourceDrawer";
-import { askMai } from "../../services/askClient";
+import HistoryDrawer from "./HistoryDrawer";
+import { askCivic } from "../../services/askClient";
 import { useAuth } from "../../contexts/AuthContext";
-import { saveChatSession, loadLastChatSession } from "../../services/chatService";
+import { saveChatSession, listUserChats } from "../../services/chatService";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import AuthButton from "../ui/AuthButton";
 import "./ask.css";
@@ -17,23 +19,26 @@ export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [pending, setPending] = useState(false);
   const [openSource, setOpenSource] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
+  const [currentChatId, setCurrentChatId] = useState(null);
   const abortRef = useRef(null);
 
-  // Load history on mount or when user changes
+  // Load latest chat on mount if user is logged in
   useEffect(() => {
-    if (user) {
-      loadLastChatSession(user.uid).then((history) => {
-        if (history) setMessages(history);
+    if (user && !currentChatId) {
+      listUserChats(user.uid).then((chats) => {
+        if (chats.length > 0) {
+          setMessages(chats[0].messages);
+          setCurrentChatId(chats[0].id);
+        }
       });
-    } else {
-      setMessages([]);
     }
   }, [user]);
 
-  // Save history when messages change (after AI is done)
   const saveHistory = async (msgs) => {
     if (user && msgs.length > 0) {
-      await saveChatSession(user.uid, msgs);
+      const id = await saveChatSession(user.uid, msgs, currentChatId);
+      if (id && !currentChatId) setCurrentChatId(id);
     }
   };
 
@@ -62,7 +67,7 @@ export default function ChatPage() {
     abortRef.current = abort;
 
     try {
-      await askMai(question, abort.signal, {
+      await askCivic(question, abort.signal, {
         onSources: (sources) => {
           setMessages((m) =>
             m.map((msg) =>
@@ -119,9 +124,7 @@ export default function ChatPage() {
   function handleClear() {
     if (pending) handleStop();
     setMessages([]);
-    if (user) {
-      saveChatSession(user.uid, []);
-    }
+    setCurrentChatId(null);
   }
 
   const isEmpty = messages.length === 0;
@@ -131,10 +134,21 @@ export default function ChatPage() {
       {/* Editorial header */}
       <header className="ask-header">
         <div className="ask-header-inner">
-          <Link to="/" className="ask-masthead">
-            <span className="ask-masthead-dot" aria-hidden />
-            <span className="text-caption">Civic — Chat</span>
-          </Link>
+          <div className="ask-header-actions">
+             {user && (
+               <button 
+                 className="history-toggle-btn" 
+                 onClick={() => setShowHistory(true)}
+                 title="View History"
+               >
+                 <Clock size={20} />
+               </button>
+             )}
+            <Link to="/" className="ask-masthead">
+              <span className="ask-masthead-dot" aria-hidden />
+              <span className="text-caption">Civic — Chat</span>
+            </Link>
+          </div>
           <div className="ask-header-actions">
             <LanguageSwitcher />
             <AuthButton />
@@ -197,7 +211,7 @@ export default function ChatPage() {
         </p>
       </div>
 
-      {/* Source drawer */}
+      {/* Modals & Drawers */}
       <AnimatePresence>
         {openSource && (
           <SourceDrawer
@@ -205,8 +219,20 @@ export default function ChatPage() {
             onClose={() => setOpenSource(null)}
           />
         )}
+        {showHistory && (
+          <HistoryDrawer
+            userId={user?.uid}
+            currentChatId={currentChatId}
+            onSelect={(chat) => {
+              setMessages(chat.messages);
+              setCurrentChatId(chat.id);
+            }}
+            onClose={() => setShowHistory(false)}
+          />
+        )}
       </AnimatePresence>
     </div>
   );
 }
+
 

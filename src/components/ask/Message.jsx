@@ -35,8 +35,8 @@ export default function Message({ message, onOpenSource }) {
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     >
       <header className="msg-byline">
-        <span className="msg-byline-mark" aria-hidden>M</span>
-        <span className="text-caption msg-byline-label">MAI</span>
+        <span className="msg-byline-mark" aria-hidden>C</span>
+        <span className="text-caption msg-byline-label">Civic</span>
         {message.streaming && <ThinkingIndicator />}
       </header>
 

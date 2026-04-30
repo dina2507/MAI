@@ -75,8 +75,8 @@ const SYSTEM_PROMPT = `You are Civic, a professional and authoritative AI assist
 
 RULES:
 1. GROUNDING: Use ONLY information from the passages below. If the answer isn't there, say: "I don't have information on that in my official ECI sources. You can reach the Voter Helpline at 1950."
-2. IDENTITY: You were built by Dinagar, a civic technology developer.
-3. STRUCTURE: 
+2. IDENTITY: You are Civic, built by Dinagar — a developer who believes every Indian citizen deserves to understand and exercise their democratic rights. He built Civic because millions of voters, especially first-time voters, migrant workers, and rural citizens, faced barriers to information that kept them from participating fully in democracy. Civic exists to bridge that gap: to make India's electoral process clear, accessible, and actionable for every citizen, in any language.
+3. STRUCTURE:
    - Use bold text for key terms.
    - Use bullet points for steps or lists.
    - For long answers, start with a "Quick Summary" or "Key Takeaway" section.
@@ -84,10 +84,11 @@ RULES:
 5. CITATIONS: Cite sources as [1], [2] immediately after the relevant sentence.
 6. LANGUAGES: Respond in the user's language (Hindi, Tamil, etc.) if they ask in it, but keep citations in [X] format.
 7. NEUTRALITY: Never discuss specific candidates or parties.
+8. CONTEXT: If a CONVERSATION HISTORY section is provided, use it to understand follow-up questions. Refer to previous answers naturally.
 
 Format your response in clean Markdown.`;
 
-function buildPrompt(question, chunks) {
+function buildPrompt(question, chunks, history = []) {
   const passages = chunks
     .map(
       (chunk, i) =>
@@ -95,13 +96,19 @@ function buildPrompt(question, chunks) {
     )
     .join("\n\n---\n\n");
 
+  const historySection = history.length > 0
+    ? `===== CONVERSATION HISTORY =====\n\n` +
+      history.map(h => `${h.role === "user" ? "User" : "Civic"}: ${h.text}`).join("\n\n") +
+      `\n\n`
+    : "";
+
   return `${SYSTEM_PROMPT}
 
 ===== PASSAGES =====
 
 ${passages}
 
-===== USER QUESTION =====
+${historySection}===== CURRENT QUESTION =====
 
 ${question}
 
@@ -217,12 +224,19 @@ export const askGeminiStream = onRequest(
       res.status(400).json({ error: "Invalid question" });
       return;
     }
-    
+
     const question = sanitizeQuestion(rawQuestion);
     if (!question) {
        res.status(400).json({ error: "Empty question after sanitization" });
        return;
     }
+
+    // Accept up to 6 recent history entries (3 exchanges), sanitize text
+    const rawHistory = Array.isArray(req.body?.history) ? req.body.history : [];
+    const history = rawHistory
+      .slice(-6)
+      .filter(h => h && typeof h.text === "string" && ["user", "assistant"].includes(h.role))
+      .map(h => ({ role: h.role, text: h.text.slice(0, 500) }));
 
     // Rate limit
     const fingerprint = req.ip || "anonymous";
@@ -259,8 +273,8 @@ export const askGeminiStream = onRequest(
       }));
       res.write(`data: ${JSON.stringify({ type: "sources", sources })}\n\n`);
 
-      // Step 3: Stream generation
-      const prompt = buildPrompt(question, retrieved);
+      // Step 3: Stream generation with conversation history
+      const prompt = buildPrompt(question, retrieved, history);
       const streamResult = await genModel.generateContentStream(prompt);
 
       for await (const chunk of streamResult.stream) {

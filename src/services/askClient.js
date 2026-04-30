@@ -11,7 +11,7 @@ const ENDPOINT =
  * @param {AbortSignal} signal
  * @param {{ onSources, onToken, onDone, onError }} handlers
  */
-export async function askMai(question, signal, { onSources, onToken, onDone, onError }) {
+export async function askCivic(question, signal, { onSources, onToken, onDone, onError }) {
   try {
     const res = await fetch(ENDPOINT, {
       method: "POST",

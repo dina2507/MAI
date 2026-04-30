@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { X, Send } from "lucide-react";
-import { askMai } from "../../services/askClient";
+import { askCivic } from "../../services/askClient";
 
 export default function StepHelper({ journey, step, onClose }) {
   const [question, setQuestion] = useState("");
@@ -22,7 +22,7 @@ export default function StepHelper({ journey, step, onClose }) {
     abortRef.current = new AbortController();
     let buffer = "";
 
-    await askMai(fullQuestion, abortRef.current.signal, {
+    await askCivic(fullQuestion, abortRef.current.signal, {
       onSources: () => {},
       onToken: (token) => {
         buffer += token;

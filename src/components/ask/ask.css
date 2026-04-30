@@ -665,6 +665,109 @@
   background: var(--saffron-glow);
 }
 
+/* ====== HISTORY SIDEBAR ====== */
+
+.history-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.history-drawer {
+  width: 100%;
+  max-width: 320px;
+  height: 100%;
+  background: var(--ink-800);
+  border-right: 1px solid var(--ink-600);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.history-header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--ink-600);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.history-card {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.history-card:hover {
+  background: var(--ink-700);
+  border-color: var(--ink-600);
+}
+
+.history-card.active {
+  background: var(--ink-900);
+  border-color: var(--saffron-500);
+}
+
+.history-card-title {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--paper-100);
+  margin-bottom: var(--space-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-card-date {
+  font-size: 0.75rem;
+  color: var(--ink-400);
+}
+
+.history-empty {
+  padding: var(--space-10);
+  text-align: center;
+  color: var(--ink-400);
+  font-style: italic;
+}
+
+.history-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--ink-600);
+  color: var(--paper-100);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.history-toggle-btn:hover {
+  border-color: var(--saffron-500);
+  color: var(--saffron-500);
+}
+
 /* ====== MOBILE ====== */
 
 @media (max-width: 640px) {
@@ -674,4 +777,5 @@
   .msg-user-text { font-size: 1.25rem; }
   .msg-body { font-size: 1rem; }
   .drawer { max-width: 100%; }
+  .history-drawer { max-width: 85%; }
 }
