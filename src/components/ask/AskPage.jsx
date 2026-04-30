@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ChatStream from "./ChatStream";
@@ -6,15 +6,36 @@ import Composer from "./Composer";
 import StarterQuestions from "./StarterQuestions";
 import SourceDrawer from "./SourceDrawer";
 import { askMai } from "../../services/askClient";
+import { useAuth } from "../../contexts/AuthContext";
+import { saveChatSession, loadLastChatSession } from "../../services/chatService";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
 import AuthButton from "../ui/AuthButton";
 import "./ask.css";
 
-export default function AskPage() {
+export default function ChatPage() {
+  const { user } = useAuth();
   const [messages, setMessages] = useState([]);
   const [pending, setPending] = useState(false);
   const [openSource, setOpenSource] = useState(null);
   const abortRef = useRef(null);
+
+  // Load history on mount or when user changes
+  useEffect(() => {
+    if (user) {
+      loadLastChatSession(user.uid).then((history) => {
+        if (history) setMessages(history);
+      });
+    } else {
+      setMessages([]);
+    }
+  }, [user]);
+
+  // Save history when messages change (after AI is done)
+  const saveHistory = async (msgs) => {
+    if (user && msgs.length > 0) {
+      await saveChatSession(user.uid, msgs);
+    }
+  };
 
   async function handleAsk(question) {
     if (!question.trim() || pending) return;
@@ -33,7 +54,8 @@ export default function AskPage() {
       streaming: true,
     };
 
-    setMessages((m) => [...m, userMsg, aiMsg]);
+    const newMessages = [...messages, userMsg, aiMsg];
+    setMessages(newMessages);
     setPending(true);
 
     const abort = new AbortController();
@@ -56,16 +78,18 @@ export default function AskPage() {
           );
         },
         onDone: () => {
-          setMessages((m) =>
-            m.map((msg) =>
+          setMessages((m) => {
+            const updated = m.map((msg) =>
               msg.id === aiMsgId ? { ...msg, streaming: false } : msg
-            )
-          );
+            );
+            saveHistory(updated);
+            return updated;
+          });
           setPending(false);
         },
         onError: () => {
-          setMessages((m) =>
-            m.map((msg) =>
+          setMessages((m) => {
+            const updated = m.map((msg) =>
               msg.id === aiMsgId
                 ? {
                     ...msg,
@@ -75,8 +99,10 @@ export default function AskPage() {
                     streaming: false,
                   }
                 : msg
-            )
-          );
+            );
+            saveHistory(updated);
+            return updated;
+          });
           setPending(false);
         },
       });
@@ -93,6 +119,9 @@ export default function AskPage() {
   function handleClear() {
     if (pending) handleStop();
     setMessages([]);
+    if (user) {
+      saveChatSession(user.uid, []);
+    }
   }
 
   const isEmpty = messages.length === 0;
@@ -180,3 +209,4 @@ export default function AskPage() {
     </div>
   );
 }
+
