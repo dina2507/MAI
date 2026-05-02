@@ -175,7 +175,7 @@ export const askGemini = onCall(
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY.value());
     const embedModel = genAI.getGenerativeModel({ model: "gemini-embedding-2" });
-    const genModel = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    const genModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     try {
       // Step 1: Embed the question
@@ -276,7 +276,7 @@ export const askGeminiStream = onRequest(
 
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY.value());
     const embedModel = genAI.getGenerativeModel({ model: "gemini-embedding-2" });
-    const genModel = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    const genModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     try {
       // Step 1: Retrieve context
@@ -303,7 +303,7 @@ export const askGeminiStream = onRequest(
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.3,
-          maxOutputTokens: 1024,
+          maxOutputTokens: 4096,
         },
       });
 

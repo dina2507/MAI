@@ -150,6 +150,7 @@ export default function BoothFinder() {
       // Use the new searchByText for better results with keywords
       const request = {
         textQuery: "polling booth OR election office OR voter registration office",
+        fields: ["id", "displayName", "location", "formattedAddress", "rating"],
         locationBias: { center, radius: 5000 },
         maxResultCount: 12,
         language: "en-IN",
@@ -164,6 +165,7 @@ export default function BoothFinder() {
         // Fallback: wider search
         const wideRequest = {
           textQuery: "government election office",
+          fields: ["id", "displayName", "location", "formattedAddress", "rating"],
           locationBias: { center, radius: 15000 },
           maxResultCount: 8,
         };
@@ -267,7 +269,7 @@ export default function BoothFinder() {
     if (!selectedPlace) return null;
     const name = selectedPlace.displayName || selectedPlace.name;
     const id = selectedPlace.id || selectedPlace.place_id;
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}&query_place_id=${id}`;
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(name)}&destination_place_id=${id}`;
   };
 
   // ── No API key ───────────────────────────────────
