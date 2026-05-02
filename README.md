@@ -235,6 +235,15 @@ src/
 │   ├── firebase.js        Firebase init
 │   ├── askClient.js       SSE streaming client (history + suggestions)
 │   └── analytics.js       Firebase Analytics wrapper
+├── test/                  108 tests across 12 files
+│   ├── setup.js           Test setup (jest-dom, localStorage mock)
+│   ├── helpers.js         Shared test utilities + factories
+│   ├── hooks/             useJourney, useJourneyProgress, useChatHistory
+│   ├── services/          askClient SSE parser, analytics
+│   ├── components/        ErrorBoundary, NotFound, App
+│   ├── journeys/          Journey JSON data integrity
+│   ├── learn/             Chapter data integrity
+│   └── integration/       Full journey flows, chat session flows
 └── design-system/         CSS tokens and typography
 
 functions/
@@ -242,6 +251,34 @@ functions/
 ├── ingest.js              PDF → chunks → embeddings pipeline
 └── rateLimit.js           Rate limiting (10/min, 100/day per fingerprint)
 ```
+
+---
+
+## Testing
+
+**108 tests** across **12 test files** — all passing. Built with **Vitest** + **React Testing Library**.
+
+```bash
+npm test              # Run all tests once
+npm run test:watch    # Watch mode (re-run on save)
+```
+
+### Coverage
+
+| Category | Files | Tests | What's covered |
+|----------|-------|-------|----------------|
+| **Hooks (unit)** | 3 | 44 | useJourney FSM engine, useJourneyProgress localStorage persistence + 7-day expiry, useChatHistory session CRUD + 20-session cap |
+| **Services (unit)** | 2 | 13 | SSE streaming parser (all event types, error handling, AbortError), analytics dev-mode fallback |
+| **Components (render)** | 3 | 12 | ErrorBoundary error catching + fallback UI, NotFound 404 page, App module exports |
+| **Data integrity** | 2 | 27 | All 6 journey JSONs (step types, reference validation, reachability), all 6 chapter definitions (quiz structure, timeline items, callout types) |
+| **Integration** | 2 | 12 | End-to-end FSM journey flows with branching, BFS reachability analysis for all journeys, multi-session chat workflows |
+
+### Test categories
+- ✅ Unit tests — hooks, services, utilities
+- ✅ Component tests — ErrorBoundary, NotFound, App
+- ✅ Data integrity — all journey + chapter JSON validated structurally
+- ✅ Integration tests — full user flows through FSM, multi-session chat
+- ✅ Edge cases — corrupted localStorage, nonexistent steps, AbortError, 7-day expiry, malformed SSE
 
 ---
 
