@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
@@ -89,3 +90,19 @@ export default function ChecklistStep({ step, onNext, journey, onSaveData }) {
     </motion.div>
   );
 }
+
+ChecklistStep.propTypes = {
+  step: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      hint: PropTypes.string,
+      required: PropTypes.bool,
+    })).isRequired,
+    continueStepId: PropTypes.string.isRequired,
+  }).isRequired,
+  journey: PropTypes.object.isRequired,
+  onNext: PropTypes.func.isRequired,
+  onSaveData: PropTypes.func,
+};

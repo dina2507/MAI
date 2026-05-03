@@ -2,6 +2,31 @@
    APP SHELL — Sidebar layout + Home Page
    ============================================================ */
 
+/* ── Route lazy-load placeholder ────────────────────────── */
+.route-loading {
+  flex: 1;
+  min-height: 60vh;
+}
+
+/* ── Skip navigation link (accessibility) ───────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 9999;
+  background: var(--saffron-500);
+  color: var(--ink-900);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 /* ── Sidebar layout shell ────────────────────────────── */
 
 .app-layout {

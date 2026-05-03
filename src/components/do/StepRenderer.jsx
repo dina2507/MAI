@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import InfoStep from "./steps/InfoStep";
 import ChoiceStep from "./steps/ChoiceStep";
 import ChecklistStep from "./steps/ChecklistStep";
@@ -27,3 +28,15 @@ export default function StepRenderer({ step, journey, onNext, onComplete, onSave
     />
   );
 }
+
+StepRenderer.propTypes = {
+  step: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    title: PropTypes.string,
+  }).isRequired,
+  journey: PropTypes.object.isRequired,
+  onNext: PropTypes.func.isRequired,
+  onComplete: PropTypes.func,
+  onSaveData: PropTypes.func,
+};

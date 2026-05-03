@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -56,3 +57,16 @@ export default function ChoiceStep({ step, onNext }) {
     </motion.div>
   );
 }
+
+ChoiceStep.propTypes = {
+  step: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string,
+    choices: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      sublabel: PropTypes.string,
+      nextStepId: PropTypes.string.isRequired,
+    })).isRequired,
+  }).isRequired,
+  onNext: PropTypes.func.isRequired,
+};

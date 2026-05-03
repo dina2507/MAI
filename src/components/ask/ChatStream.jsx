@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import Message from "./Message";
 
@@ -17,3 +18,13 @@ export default function ChatStream({ messages, onOpenSource, onAsk }) {
     </div>
   );
 }
+
+ChatStream.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    role: PropTypes.oneOf(["user", "assistant"]).isRequired,
+    text: PropTypes.string.isRequired,
+  })).isRequired,
+  onOpenSource: PropTypes.func.isRequired,
+  onAsk: PropTypes.func.isRequired,
+};

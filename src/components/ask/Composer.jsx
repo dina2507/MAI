@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import { ArrowUp, Square, Mic, MicOff } from "lucide-react";
 import { motion } from "framer-motion";
@@ -108,3 +109,9 @@ export default function Composer({ onSubmit, onStop, disabled }) {
     </form>
   );
 }
+
+Composer.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onStop: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+};

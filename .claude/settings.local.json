@@ -8,7 +8,13 @@
       "Bash(curl -s http://localhost:4173/)",
       "Bash(curl -s http://localhost:5174/)",
       "Bash(grep -E \"\\\\.\\(jsx|js|ts|tsx\\)$\")",
-      "Bash(xargs wc *)"
+      "Bash(xargs wc *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(firebase deploy *)",
+      "Bash(npm install *)",
+      "Bash(npm test *)"
     ]
   }
 }

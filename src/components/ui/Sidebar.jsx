@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -198,3 +199,10 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
     </>
   );
 }
+
+Sidebar.propTypes = {
+  collapsed: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired,
+  mobileOpen: PropTypes.bool.isRequired,
+  onMobileClose: PropTypes.func.isRequired,
+};

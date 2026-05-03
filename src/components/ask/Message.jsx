@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -158,6 +159,19 @@ export default function Message({ message, onOpenSource, onAsk }) {
     </motion.article>
   );
 }
+
+Message.propTypes = {
+  message: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    role: PropTypes.oneOf(["user", "assistant"]).isRequired,
+    text: PropTypes.string.isRequired,
+    sources: PropTypes.array,
+    suggestions: PropTypes.arrayOf(PropTypes.string),
+    streaming: PropTypes.bool,
+  }).isRequired,
+  onOpenSource: PropTypes.func.isRequired,
+  onAsk: PropTypes.func,
+};
 
 function renderWithCitations(children, sources, onOpenSource) {
   if (!sources?.length) return children;

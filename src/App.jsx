@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+import PropTypes from "prop-types";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MessageCircle, Navigation, BookOpen, MapPin, ChevronRight, Menu } from "lucide-react";
-import AskPage from "./components/ask/AskPage";
-import JourneySelector from "./components/do/JourneySelector";
-import JourneyPlayer from "./components/do/JourneyPlayer";
-import LearnHome from "./components/learn/LearnHome";
-import ChapterReader from "./components/learn/ChapterReader";
-import BoothFinder from "./components/map/BoothFinder";
 import NotFound from "./components/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Sidebar from "./components/ui/Sidebar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import "./App.css";
+
+const AskPage = lazy(() => import("./components/ask/AskPage"));
+const JourneySelector = lazy(() => import("./components/do/JourneySelector"));
+const JourneyPlayer = lazy(() => import("./components/do/JourneyPlayer"));
+const LearnHome = lazy(() => import("./components/learn/LearnHome"));
+const ChapterReader = lazy(() => import("./components/learn/ChapterReader"));
+const BoothFinder = lazy(() => import("./components/map/BoothFinder"));
 
 const MODE_CARDS = [
   {
@@ -155,6 +157,7 @@ function AppLayout({ children }) {
 
   return (
     <div className={`app-layout ${collapsed ? "app-layout--collapsed" : ""}`}>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Sidebar
         collapsed={collapsed}
         onToggle={() => setCollapsed((v) => !v)}
@@ -167,17 +170,23 @@ function AppLayout({ children }) {
           <button
             className="app-mobile-hamburger"
             onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
+            aria-label="Open navigation menu"
           >
             <Menu size={20} />
           </button>
           <span className="app-mobile-brand">Civic</span>
         </div>
-        {children}
+        <main id="main-content" tabIndex={-1} style={{ outline: "none" }}>
+          {children}
+        </main>
       </div>
     </div>
   );
 }
+
+AppLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default function App() {
   return (
@@ -186,16 +195,18 @@ export default function App() {
         <ChatProvider>
           <BrowserRouter>
             <AppLayout>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/chat" element={<AskPage />} />
-                <Route path="/guide" element={<JourneySelector />} />
-                <Route path="/guide/:journeyId" element={<JourneyPlayer />} />
-                <Route path="/learn" element={<LearnHome />} />
-                <Route path="/learn/:chapterId" element={<ChapterReader />} />
-                <Route path="/map" element={<BoothFinder />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <Suspense fallback={<div className="route-loading" aria-label="Loading…" />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/chat" element={<AskPage />} />
+                  <Route path="/guide" element={<JourneySelector />} />
+                  <Route path="/guide/:journeyId" element={<JourneyPlayer />} />
+                  <Route path="/learn" element={<LearnHome />} />
+                  <Route path="/learn/:chapterId" element={<ChapterReader />} />
+                  <Route path="/map" element={<BoothFinder />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
             </AppLayout>
           </BrowserRouter>
         </ChatProvider>

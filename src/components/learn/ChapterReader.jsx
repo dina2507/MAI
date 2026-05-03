@@ -19,12 +19,13 @@ export default function ChapterReader() {
   const prevChapter = CHAPTERS[currentIndex - 1] || null;
   const nextChapter = CHAPTERS[currentIndex + 1] || null;
 
-  // Log analytics and stop speech on chapter change
+  // Log analytics and cancel TTS on chapter change
   useEffect(() => {
     if (chapter) {
       logCivicEvent("chapter_started", { chapter_id: chapterId, chapter_title: chapter.title });
     }
     window.speechSynthesis?.cancel();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSpeaking(false);
   }, [chapterId, chapter]);
 
@@ -45,7 +46,7 @@ export default function ChapterReader() {
       .filter((s) => s.type === "prose" || s.type === "callout")
       .map((s) => {
         const title = s.title ? s.title + ". " : "";
-        const body = (s.body || "").replace(/[*#_\[\]()>]/g, "").replace(/\n+/g, " ");
+        const body = (s.body || "").replace(/[*#_[\]()>]/g, "").replace(/\n+/g, " ");
         return title + body;
       })
       .join("\n\n");

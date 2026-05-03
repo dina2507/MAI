@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
@@ -49,3 +50,7 @@ export default function StarterQuestions({ onPick }) {
     </div>
   );
 }
+
+StarterQuestions.propTypes = {
+  onPick: PropTypes.func.isRequired,
+};

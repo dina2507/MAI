@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
@@ -39,3 +40,13 @@ export default function InfoStep({ step, onNext }) {
     </motion.div>
   );
 }
+
+InfoStep.propTypes = {
+  step: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string,
+    eyebrow: PropTypes.string,
+    nextStepId: PropTypes.string.isRequired,
+  }).isRequired,
+  onNext: PropTypes.func.isRequired,
+};

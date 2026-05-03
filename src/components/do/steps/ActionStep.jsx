@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Calendar, Phone, Copy, Check } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -71,6 +72,16 @@ export default function ActionStep({ step, onNext }) {
  * Generates a Google Calendar link and opens it in a new tab.
  * Date defaults to 1 week from today if not provided.
  */
+ActionStep.propTypes = {
+  step: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string,
+    actions: PropTypes.array,
+    continueStepId: PropTypes.string,
+  }).isRequired,
+  onNext: PropTypes.func.isRequired,
+};
+
 function addToGoogleCalendar({ title, description, date }) {
   const start = date ? new Date(date) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const end = new Date(start.getTime() + 60 * 60 * 1000);

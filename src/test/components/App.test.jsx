@@ -3,8 +3,6 @@
  * Tests routing, layout, navigation cards rendering.
  */
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 
 // Mock firebase modules globally
 vi.mock('firebase/app', () => ({
@@ -32,30 +30,17 @@ vi.mock('firebase/analytics', () => ({
 // Mock framer-motion to avoid animation complexities
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }) => {
-      const { initial, animate, transition, whileHover, whileTap, ...rest } = props;
-      return <div {...rest}>{children}</div>;
-    },
-    span: ({ children, ...props }) => {
-      const { initial, animate, transition, ...rest } = props;
-      return <span {...rest}>{children}</span>;
-    },
+    div: ({ children, initial: _i, animate: _a, transition: _t, whileHover: _wh, whileTap: _wt, ...rest }) =>
+      <div {...rest}>{children}</div>,
+    span: ({ children, initial: _i, animate: _a, transition: _t, ...rest }) =>
+      <span {...rest}>{children}</span>,
   },
   AnimatePresence: ({ children }) => <>{children}</>,
 }));
 
 import App from '../../App';
 
-function renderApp(route = '/') {
-  return render(
-    <MemoryRouter initialEntries={[route]}>
-      <App />
-    </MemoryRouter>
-  );
-}
-
-// We need to override the BrowserRouter in App for testing
-// Let's test individual parts instead
+// App uses BrowserRouter internally; test individual exports instead
 describe('App Component', () => {
   it('exports a default component', () => {
     expect(App).toBeDefined();

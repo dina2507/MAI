@@ -1,4 +1,6 @@
-export default function ProgressDots({ history, current, accent, stepIndex, totalSteps }) {
+import PropTypes from "prop-types";
+
+export default function ProgressDots({ history, accent, stepIndex, totalSteps }) {
   const filled = history.length;
   const total = filled + 1; // visible position
 
@@ -21,3 +23,10 @@ export default function ProgressDots({ history, current, accent, stepIndex, tota
     </div>
   );
 }
+
+ProgressDots.propTypes = {
+  history: PropTypes.arrayOf(PropTypes.string).isRequired,
+  accent: PropTypes.string,
+  stepIndex: PropTypes.number,
+  totalSteps: PropTypes.number,
+};

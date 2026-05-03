@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, X, HelpCircle, RotateCcw, Volume2, VolumeX } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useJourney } from "../../hooks/useJourney";
 import { useJourneyProgress, loadProgress, clearProgress } from "../../hooks/useJourneyProgress";
 import { getJourney } from "../../journeys";
@@ -16,15 +16,13 @@ export default function JourneyPlayer() {
   const navigate = useNavigate();
   const journey = getJourney(journeyId);
   const [showHelper, setShowHelper] = useState(false);
-  const [resumePrompt, setResumePrompt] = useState(null);
 
-  useEffect(() => {
-    if (!journey) return;
+  // Lazy initial state: check for saved progress once on mount
+  const [resumePrompt, setResumePrompt] = useState(() => {
+    if (!journey) return null;
     const saved = loadProgress(journey.id);
-    if (saved && saved.currentStepId !== journey.startStepId) {
-      setResumePrompt(saved);
-    }
-  }, [journey]);
+    return saved && saved.currentStepId !== journey.startStepId ? saved : null;
+  });
 
   if (!journey) {
     return (
@@ -64,8 +62,10 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
     currentStep: j.currentStep,
   });
 
+  // Cancel TTS when step changes — setState here is intentional cleanup
   useEffect(() => {
     window.speechSynthesis?.cancel();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSpeaking(false);
   }, [j.currentStepId]);
 
@@ -84,19 +84,20 @@ function JourneyView({ journey, onExit, resumeFrom, onResumePromptDismiss, showH
   }
 
   // Keyboard shortcuts
+  const { canGoBack, back } = j;
   useEffect(() => {
     function handleKey(e) {
       if (e.key === "Escape") {
         if (showHelper) {
           setShowHelper(false);
-        } else if (j.canGoBack) {
-          j.back();
+        } else if (canGoBack) {
+          back();
         }
       }
     }
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [showHelper, j.canGoBack, j.back]);
+  }, [showHelper, setShowHelper, canGoBack, back]);
 
   function handleExit() {
     if (!j.isComplete && j.history.length > 0) {

@@ -2,7 +2,7 @@
  * Unit tests for useJourneyProgress — localStorage persistence layer
  * Tests save/load/clear/complete progress and 7-day expiry logic.
  */
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   saveProgress,
   loadProgress,

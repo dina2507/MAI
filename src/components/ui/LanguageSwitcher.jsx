@@ -19,15 +19,13 @@ const LANGUAGES = [
 
 export default function LanguageSwitcher() {
   const [open, setOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState("en");
+  // Read current language from cookie on first render (lazy init)
+  const [currentLang, setCurrentLang] = useState(() => {
+    const match = document.cookie.match(/googtrans=\/en\/([^;]+)/);
+    return match?.[1] || "en";
+  });
 
   useEffect(() => {
-    // Read the current language from the googtrans cookie
-    const match = document.cookie.match(/googtrans=\/en\/([^;]+)/);
-    if (match && match[1]) {
-      setCurrentLang(match[1]);
-    }
-
     // Inject Google Translate script if not already present
     if (!document.getElementById("google-translate-script")) {
       window.googleTranslateElementInit = () => {
@@ -52,18 +50,17 @@ export default function LanguageSwitcher() {
     setCurrentLang(code);
     setOpen(false);
 
+    /* eslint-disable react-hooks/immutability */
     if (code === "en") {
-      // Clear cookie to revert to original
       document.cookie = "googtrans=/en/en; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       document.cookie = "googtrans=/en/en; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
     } else {
-      // Set googtrans cookie for the whole site
       document.cookie = `googtrans=/en/${code}; path=/`;
       document.cookie = `googtrans=/en/${code}; domain=${window.location.hostname}; path=/`;
     }
-    
     // Reload page to apply translation cleanly (prevents React DOM hydration errors)
     window.location.reload();
+    /* eslint-enable react-hooks/immutability */
   }
 
   const currentLabel = LANGUAGES.find((l) => l.code === currentLang)?.label || "English";

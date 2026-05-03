@@ -47,7 +47,6 @@ function splitIntoChunks(text, source, sourceUrl) {
 
   const chunks = [];
   let current = "";
-  let currentStartIdx = 0;
 
   for (const para of paragraphs) {
     const paraTokens = Math.ceil(para.length / CHARS_PER_TOKEN);

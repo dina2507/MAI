@@ -14,7 +14,7 @@ export function saveProgress(journeyId, state) {
         savedAt: Date.now(),
       })
     );
-  } catch (e) {
+  } catch {
     // Storage full or disabled — silently ignore
   }
 }
@@ -30,7 +30,7 @@ export function loadProgress(journeyId) {
       return null;
     }
     return parsed;
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -38,7 +38,9 @@ export function loadProgress(journeyId) {
 export function clearProgress(journeyId) {
   try {
     localStorage.removeItem(STORAGE_PREFIX + journeyId);
-  } catch (e) {}
+  } catch {
+    // Ignore storage errors
+  }
 }
 
 /**
@@ -51,7 +53,9 @@ export function markComplete(journeyId) {
     completed[journeyId] = Date.now();
     localStorage.setItem(COMPLETED_KEY, JSON.stringify(completed));
     clearProgress(journeyId);
-  } catch (e) {}
+  } catch {
+    // Ignore storage errors
+  }
 }
 
 /**
@@ -63,22 +67,25 @@ export function isJourneyComplete(journeyId) {
     if (!raw) return false;
     const completed = JSON.parse(raw);
     return !!completed[journeyId];
-  } catch (e) {
+  } catch {
     return false;
   }
 }
 
 /**
- * useJourneyProgress — auto-saves journey state on change
+ * useJourneyProgress — auto-saves journey state on change.
+ * Accepts the full state object but only re-runs when currentStepId changes.
  */
 export function useJourneyProgress(journeyId, state) {
+  const { currentStepId, currentStep } = state;
   useEffect(() => {
     if (!journeyId) return;
-    if (state.currentStep?.type === "completion") {
+    if (currentStep?.type === "completion") {
       // Don't persist completed journeys — markComplete handles it
       clearProgress(journeyId);
       return;
     }
     saveProgress(journeyId, state);
-  }, [journeyId, state.currentStepId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [journeyId, currentStepId, currentStep]);
 }

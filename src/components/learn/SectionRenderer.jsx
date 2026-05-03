@@ -1,4 +1,5 @@
-import { motion, AnimatePresence } from "framer-motion";
+import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 import { ProseSection, CalloutSection, TimelineSection } from "./sections/ContentSections";
 import { QuizSection } from "./sections/QuizSection";
 import { EVMSimulator } from "./sections/EVMSimulator";
@@ -26,3 +27,10 @@ export default function SectionRenderer({ section }) {
     </motion.div>
   );
 }
+
+SectionRenderer.propTypes = {
+  section: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  }).isRequired,
+};

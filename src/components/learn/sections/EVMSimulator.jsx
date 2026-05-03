@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, AlertCircle } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 // 5 sample candidates matching real EVM layout style
 const CANDIDATES = [
@@ -24,10 +24,11 @@ export function EVMSimulator() {
   const [selected, setSelected] = useState(null);
   const [vvpatTimer, setVvpatTimer] = useState(7);
 
-  // VVPAT countdown
+  // VVPAT countdown — state transition is intentional when timer expires
   useEffect(() => {
     if (stage !== STAGES.VVPAT) return;
     if (vvpatTimer === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStage(STAGES.DONE);
       return;
     }

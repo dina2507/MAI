@@ -54,21 +54,19 @@ export default function BoothFinder() {
   const [status, setStatus] = useState("idle"); // idle | loading | loaded | error | no-key
   const [results, setResults] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [searchCenter, setSearchCenter] = useState(null);
   const [locating, setLocating] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!API_KEY) { setStatus("no-key"); return; }
-    
+
     async function init() {
       setStatus("loading");
       try {
-        // Pre-load core libraries
         await loadMapsLibrary("maps");
         await loadMapsLibrary("places");
         await loadMapsLibrary("marker");
-        
         initMap();
         setStatus("loaded");
       } catch (err) {
@@ -77,8 +75,9 @@ export default function BoothFinder() {
         setStatus("error");
       }
     }
-    
+
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function initMap() {
@@ -119,7 +118,6 @@ export default function BoothFinder() {
   }
 
   async function searchNearby(center, map) {
-    setSearchCenter(center);
     clearMarkers();
     setResults([]);
     setSelectedPlace(null);
@@ -260,7 +258,7 @@ export default function BoothFinder() {
           searchNearby({ lat: loc.lat(), lng: loc.lng() }, mapInstanceRef.current);
         }
       });
-    } catch (err) {
+    } catch {
       setErrorMsg("Geocoding failed.");
     }
   }

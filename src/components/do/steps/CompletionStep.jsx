@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { Check, ArrowRight, X, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,7 @@ export default function CompletionStep({ step, journey, onComplete }) {
       navigate(`/guide/${action.target}`);
     } else if (action.type === "link") {
       if (action.target?.startsWith("tel:")) {
+        // eslint-disable-next-line react-hooks/immutability
         window.location.href = action.target;
       } else {
         window.open(action.target, "_blank", "noopener");
@@ -106,6 +108,23 @@ export default function CompletionStep({ step, journey, onComplete }) {
     </motion.div>
   );
 }
+
+CompletionStep.propTypes = {
+  step: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    summary: PropTypes.string,
+    nextActions: PropTypes.arrayOf(PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      target: PropTypes.string,
+    })),
+  }).isRequired,
+  journey: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+  onComplete: PropTypes.func,
+};
 
 /**
  * Lightweight confetti using canvas — no library needed.
